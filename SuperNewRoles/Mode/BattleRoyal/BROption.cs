@@ -1,6 +1,6 @@
 namespace SuperNewRoles.Mode.BattleRoyal;
 
-class BROption
+internal class BROption
 {
     public static CustomOption BattleRoyalMode;
     public static CustomOption IsViewAlivePlayer;

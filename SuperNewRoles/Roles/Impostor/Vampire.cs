@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class Vampire
+internal class Vampire
 {
     /// <summary>
     /// ヴァンパイアの血痕処理
@@ -48,17 +48,17 @@ class Vampire
         }
     }
     [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDead))]
-    class VitalsPanelSetDeadPatch
+    private class VitalsPanelSetDeadPatch
     {
-        static bool Prefix(VitalsPanel __instance)
+        private static bool Prefix(VitalsPanel __instance)
         {
             return __instance.PlayerInfo.Object is null || !__instance.PlayerInfo.Object.IsRole(RoleId.Vampire, RoleId.Dependents);
         }
     }
     [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDisconnected))]
-    class VitalsPanelSetDisconnectPatch
+    private class VitalsPanelSetDisconnectPatch
     {
-        static bool Prefix(VitalsPanel __instance)
+        private static bool Prefix(VitalsPanel __instance)
         {
             return __instance.PlayerInfo.Object is null || !__instance.PlayerInfo.Object.IsRole(RoleId.Vampire, RoleId.Dependents);
         }
@@ -72,7 +72,7 @@ class Vampire
     }
     public static class FixedUpdate
     {
-        static int Count = 0;
+        private static int Count = 0;
         public static void DependentsOnly()
         {
             if (RoleClass.IsMeeting) return;

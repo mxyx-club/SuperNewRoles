@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.Zombie;
 
-class FixedUpdate
+internal class FixedUpdate
 {
     public static float NameChangeTimer;
     public static bool IsStart;

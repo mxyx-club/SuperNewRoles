@@ -2,10 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
@@ -15,9 +13,9 @@ using UnityEngine.Networking;
 namespace SuperNewRoles.Modules;
 public static class ContentManager
 {
-    private readonly static Dictionary<string, DownloadedContent> Contents = new();
-    private readonly static string BasePath = $@"{Path.GetDirectoryName(Application.dataPath)}\SuperNewRoles\DownloadContent\";
-    private readonly static DirectoryInfo directory = new(BasePath);
+    private static readonly Dictionary<string, DownloadedContent> Contents = new();
+    private static readonly string BasePath = $@"{Path.GetDirectoryName(Application.dataPath)}\SuperNewRoles\DownloadContent\";
+    private static readonly DirectoryInfo directory = new(BasePath);
     private const string ContentURL = "https://raw.githubusercontent.com/SuperNewRoles/SupernewRolesData/main/Contents";
     public static MD5 MD5Hash = MD5.Create();
     public static void Load()
@@ -102,9 +100,10 @@ public static class ContentManager
         }
         return (T)content.Value;
     }
-    static bool Downloading = false;
+
+    private static bool Downloading = false;
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
-    class AmongUsClientAwakePatch
+    private class AmongUsClientAwakePatch
     {
         public static void Postfix(AmongUsClient __instance)
         {

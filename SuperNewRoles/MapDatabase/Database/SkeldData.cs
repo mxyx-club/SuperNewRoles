@@ -1,11 +1,10 @@
-using Agartha;
 using UnityEngine;
 
 namespace SuperNewRoles.MapDatabase.Database;
 
 public class SkeldData : MapDatabase
 {
-    static private Vector2[] MapPositions = new Vector2[]
+    private static Vector2[] MapPositions = new Vector2[]
     {
         //カフェ
         new(0f, 5.3f), new(-5.2f, 1.2f), new(-0.9f, -3.1f), new(4.6f, 1.2f),
@@ -41,7 +40,7 @@ public class SkeldData : MapDatabase
         new(2.6f, -7.1f), new(6.3f, -9.5f)
     };
 
-    static private Vector2[] NonMapPositions = new Vector2[]
+    private static Vector2[] NonMapPositions = new Vector2[]
     {
         //ナビ左上
         new(13.55f, -3.5f),

@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.PlusMode;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -432,7 +429,7 @@ public class SetNameUpdate
                 CustomOptionHolder.EgoistOption.GetSelection() is 0 && CustomOptionHolder.SpyOption.GetSelection() is 0 &&
                 (canSeeImpostorRoleTurnRemaining < 0 ||
                 (canSeeImpostorRoleTurnRemaining == 0 && !RoleClass.IsMeeting)))
-                //会議開始時に1減らすので会議が終わってから見えるように
+            //会議開始時に1減らすので会議が終わってから見えるように
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {

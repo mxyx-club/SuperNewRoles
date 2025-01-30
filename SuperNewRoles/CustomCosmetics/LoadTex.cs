@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics;
 
-class LoadTex
+internal class LoadTex
 {
     internal delegate bool LoadImageDelegate(IntPtr tex, IntPtr data, bool markNonReadable);
     internal delegate Il2CppStructArray<byte> EncodeImageDelegate(IntPtr tex);

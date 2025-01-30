@@ -3,7 +3,7 @@ using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class Clergyman
+internal class Clergyman
 {
     public static void ResetCooldown()
     {

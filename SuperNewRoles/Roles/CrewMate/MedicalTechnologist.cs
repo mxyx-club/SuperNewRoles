@@ -76,10 +76,10 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     /// <summary>
     /// 採取対象に表示するマーク ( © => 赤血球 )
     /// </summary>
-    const string ErythrocyteMark = "<color=#b32323> \u00A9</color>";
+    private const string ErythrocyteMark = "<color=#b32323> \u00A9</color>";
 
     [Flags]
-    enum JudgmentType
+    private enum JudgmentType
     {
         None = 0b00,                //  (false, false)
         TeamType = 0b01,            //  (false, true)
@@ -471,7 +471,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             this.DetailedTeamType = detailedTeamRoleType;
         }
 
-        static TeamType GetRoleAndModifierTeamType(PlayerControl Sample)
+        private static TeamType GetRoleAndModifierTeamType(PlayerControl Sample)
         {
             TeamType roleTeamType = CustomRoles.GetRoleTeamType(Sample); // マッドはImpostor, フレンズ及び式神はこの時点ではDefaultNeutral になる
             TeamType ModifierTeamType = roleTeamType;
@@ -488,7 +488,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             return roleAndModifierTeamType;
         }
 
-        static DetailedTeamRoleType GetDetailedTeamType(PlayerControl Sample, TeamType roleAndModifierTeamType) =>
+        private static DetailedTeamRoleType GetDetailedTeamType(PlayerControl Sample, TeamType roleAndModifierTeamType) =>
             roleAndModifierTeamType == TeamType.Neutral
                 ? GetDetailedNeutralType(Sample) // 勝利陣営分類が第三陣営の時, 第三陣営の詳細な陣営を取得する。
                 : (DetailedTeamRoleType)roleAndModifierTeamType; // 勝利陣営分類が第三陣営以外の時, 役職及びモデファイラの勝利陣営分類を詳細な陣営に変換する。
@@ -499,7 +499,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         /// </summary>
         /// <param name="Sample">解析対象の検体</param>
         /// <returns>DetailedTeamRoleType : 第三陣営の詳細な勝利陣営</returns>
-        static DetailedTeamRoleType GetDetailedNeutralType(PlayerControl Sample)
+        private static DetailedTeamRoleType GetDetailedNeutralType(PlayerControl Sample)
         {
             // RoleIdで判定できない役を判定する
             if (Sample.IsLovers()) return DetailedTeamRoleType.Lovers; // TODO : ラバーズリワークの影響を受ける。別のラバーズを別陣営判定にするかはリワーク後, 要相談。

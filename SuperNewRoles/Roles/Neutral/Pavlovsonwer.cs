@@ -100,7 +100,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
     public CustomButtonInfo[] CustomButtonInfos { get; }
 
     public RoleTypes RealRole => RoleTypes.Crewmate;
-    public RoleTypes DesyncRole =>  RoleTypes.Impostor;
+    public RoleTypes DesyncRole => RoleTypes.Impostor;
 
     public int CreateCountLimit = OwnerDogLimit.GetInt();
 
@@ -224,7 +224,7 @@ public class PavlovsOwner : RoleBase, INeutral, INameHandler, IRpcHandler, IFixe
     }
     public void BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
-        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.PlayerId == Player.PlayerId || !player.IsPavlovsTeam())
                 continue;

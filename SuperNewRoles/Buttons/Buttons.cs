@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -18,14 +15,12 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using SuperNewRoles.WaveCannonObj;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
 
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
-static class HudManagerStartPatch
+internal static class HudManagerStartPatch
 {
     #region Buttons
     public static CustomButton DebuggerButton;
@@ -2583,7 +2578,7 @@ static class HudManagerStartPatch
                 writer.Write((byte)255);
                 writer.Write(false);
                 writer.EndRPC();
-                RPCProcedure.UncheckedUsePlatform((byte)255, false);
+                RPCProcedure.UncheckedUsePlatform(255, false);
                 NunButton.Timer = NunButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Nun; },

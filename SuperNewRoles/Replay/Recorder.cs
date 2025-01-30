@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
@@ -33,7 +29,7 @@ namespace SuperNewRoles.Replay
                 ReplayManager.IsRecording = ConfigRoles.ReplayEnable.Value;
         }
 
-        static NetworkedPlayerInfo.PlayerOutfit CopyOutfit(NetworkedPlayerInfo.PlayerOutfit outfit)
+        private static NetworkedPlayerInfo.PlayerOutfit CopyOutfit(NetworkedPlayerInfo.PlayerOutfit outfit)
         {
             NetworkedPlayerInfo.PlayerOutfit result = new()
             {
@@ -68,11 +64,12 @@ namespace SuperNewRoles.Replay
             currenttime = 0;
             ReplayActionTime = 0;
         }
-        static float currenttime;
+
+        private static float currenttime;
         public static Dictionary<byte, NetworkedPlayerInfo.PlayerOutfit> FirstOutfits;
         public static Dictionary<byte, RoleId> FirstRoles;
-        static Dictionary<byte, List<Vector2>> PlayerPositions;
-        static List<(byte, byte, float)> MeetingVoteData;
+        private static Dictionary<byte, List<Vector2>> PlayerPositions;
+        private static List<(byte, byte, float)> MeetingVoteData;
         public static List<ReplayAction> ReplayActions;
         public static float ReplayActionTime;
         public static void HudUpdate()
@@ -219,8 +216,9 @@ namespace SuperNewRoles.Replay
             writer.Close();
             Logger.Info("End-Save-");
         }
-        static BinaryWriter writer;
-        static string filePath;
+
+        private static BinaryWriter writer;
+        private static string filePath;
         public static void WriteReplayDataFirst()
         {
             (writer, filePath) = ReplayFileWriter.CreateWriter();

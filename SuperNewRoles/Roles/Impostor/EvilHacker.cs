@@ -1,4 +1,3 @@
-using System;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;

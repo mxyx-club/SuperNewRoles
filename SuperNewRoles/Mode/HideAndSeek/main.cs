@@ -1,6 +1,6 @@
 namespace SuperNewRoles.Mode.HideAndSeek;
 
-class main
+internal class main
 {
     public static bool IsAllInMod;
     public static void ClearAndReloads()

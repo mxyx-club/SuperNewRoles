@@ -4,7 +4,7 @@ using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class Chat
+internal class Chat
 {
     public static bool IsOldSHR = false;
     public static CustomGameOverReason? WinCond = null;

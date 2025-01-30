@@ -6,7 +6,7 @@ using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles;
 
-class Teleporter
+internal class Teleporter
 {
     public static void ResetCooldown()
     {

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SuperNewRoles.MapCustoms;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
-class OptimizeMapPatch
+internal class OptimizeMapPatch
 {
     public static void Postfix()
     {

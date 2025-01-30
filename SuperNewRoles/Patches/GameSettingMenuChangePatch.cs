@@ -1,15 +1,12 @@
-using System;
-using System.Linq;
 using HarmonyLib;
-using Il2CppSystem.Collections.Generic;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class GameSettingMenuChangePatch
+internal class GameSettingMenuChangePatch
 {
     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
-    class GameSettingMenuStartPatch
+    private class GameSettingMenuStartPatch
     {
         public static void Prefix(GameSettingMenu __instance)
         {

@@ -28,7 +28,8 @@ public class SeerBase : RoleBase
         this.SeerMode = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 1 : Mode;
     }
 }
-class SeerHandler
+
+internal class SeerHandler
 //マッド・イビル・フレンズ・ジャッカル・サイドキック　シーア
 {
     private static SpriteRenderer FullScreenRenderer;

@@ -12,7 +12,7 @@ public static class AssetLoader
         input.CopyTo(ms);
         return ms.ToArray();
     }
-    
+
 #nullable enable
     public static T? LoadAsset<T>(this AssetBundle assetBundle, string name) where T : UnityEngine.Object
     {

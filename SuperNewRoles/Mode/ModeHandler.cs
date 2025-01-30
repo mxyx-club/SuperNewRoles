@@ -10,7 +10,7 @@ using static SuperNewRoles.Patches.CheckGameEndPatch;
 namespace SuperNewRoles.Mode;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CloseDoorsOfType))]
-class CloseDoorsPatch
+internal class CloseDoorsPatch
 {
     public static bool Prefix() => !ModeHandler.IsMode(ModeId.Zombie, ModeId.BattleRoyal, ModeId.CopsRobbers, ModeId.HideAndSeek, ModeId.PantsRoyal);
 }
@@ -107,7 +107,7 @@ public static class ModeHandler
     /// <summary>Modeの封印処理が有効か (外部取得 及び カスタムサーバ使用下における封印処理の除外)</summary>
     /// <returns>true : 有効(封印する) / false : 無効(封印しない)</returns>
     public static bool EnableModeSealing => isSealModeOption && !ModHelpers.IsCustomServer();
-    
+
     public static CustomOptionBlank Mode;
     public static CustomOption ModeSetting;
     public static CustomOption ThisModeSetting;

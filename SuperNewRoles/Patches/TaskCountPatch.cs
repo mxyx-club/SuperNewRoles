@@ -7,13 +7,13 @@ using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patches;
 
-class TaskCount
+internal class TaskCount
 {
     public static PlayerData<bool> IsClearTaskPlayer;
     [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.Initialize))]
-    class NormalPlayerTaskInitializePatch
+    private class NormalPlayerTaskInitializePatch
     {
-        static void Postfix(NormalPlayerTask __instance)
+        private static void Postfix(NormalPlayerTask __instance)
         {
             if (__instance.TaskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
             List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(__instance.TaskType)).ToList<global::Console>();
@@ -150,7 +150,8 @@ class TaskCount
                 __instance.TotalTasks = 1;
         }
     }
-    static void CountDefaultTask(GameData __instance)
+
+    private static void CountDefaultTask(GameData __instance)
     {
         __instance.TotalTasks = 0;
         __instance.CompletedTasks = 0;
@@ -171,7 +172,7 @@ class TaskCount
     /// (タスク完了の判定処理 及び, クルーメイトゴーストへの変更処理)
     /// </summary>
     /// <param name="__instance"></param>
-    static void ReleaseHountAbility(GameData __instance)
+    private static void ReleaseHountAbility(GameData __instance)
     {
         if (!AmongUsClient.Instance.AmHost) return; // 生存していたら早期return
         if (!Mode.PlusMode.PlusGameOptions.IsReleasingHauntAfterCompleteTasks) return; // 設定が無効の場合早期return

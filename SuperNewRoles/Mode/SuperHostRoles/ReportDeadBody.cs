@@ -1,15 +1,13 @@
 using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class ReportDeadBody
+internal class ReportDeadBody
 {
     public static bool ReportDeadBodyPatch(PlayerControl __instance, NetworkedPlayerInfo target)
     {

@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using HarmonyLib;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
@@ -39,7 +33,7 @@ public static class FixedUpdate
             }
         }
         else if
-            (!PlayerControl.LocalPlayer.IsImpostor() &&(
+            (!PlayerControl.LocalPlayer.IsImpostor() && (
             (playerSHR != null && playerSHR.HasKillButtonClient) ||
             PlayerControl.LocalPlayer.IsRole
                 (

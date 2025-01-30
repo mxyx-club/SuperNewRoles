@@ -1,14 +1,8 @@
-using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
-using Il2CppInterop.Generator.Extensions;
 using InnerNet;
-using Steamworks;
-using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
-using UnityEngine.UIElements.StyleSheets;
 using static MeetingHud;
 
 namespace SuperNewRoles.Helpers;
@@ -195,7 +189,7 @@ public static class RPCHelper
             Instance.VotingComplete(states, exiled, tie);
         else
         {
-            Logger.Info("Desync Send Now ->"+seer.GetClientId().ToString());
+            Logger.Info("Desync Send Now ->" + seer.GetClientId().ToString());
             MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(Instance.NetId, (byte)RpcCalls.VotingComplete, SendOption.Reliable, targetClientId: seer.GetClientId());
             val.WritePacked(states.Length);
             foreach (VoterState voterState in states)
@@ -247,7 +241,7 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(gm.NetId);
-                writer.StartMessage((byte)4);
+                writer.StartMessage(4);
                 writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
                 writer.EndMessage();
             }
@@ -668,8 +662,8 @@ public static class RPCHelper
     {
         if (AmongUsClient.Instance.AmClient)
         {
-            ((MonoBehaviour)player).StopAllCoroutines();
-            ((MonoBehaviour)player).StartCoroutine(player.CoExitVent(id));
+            player.StopAllCoroutines();
+            player.StartCoroutine(player.CoExitVent(id));
         }
         MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, 20, SendOption.None);
         messageWriter.WritePacked(id);

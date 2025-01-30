@@ -1,7 +1,6 @@
 using System;
 using AmongUs.GameOptions;
 using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles.Role;
@@ -134,13 +133,14 @@ public class Conjurer : RoleBase, IImpostor, IWrapUpHandler, ICustomButton
                 Positions[Count - 1]
                ) < CanAddLength.GetFloat();
     }
+
     /// <summary>
     /// pがpolyから形成された多角形の中にあるか
     /// </summary>
     /// <param name="p">調べたい点</param>
     /// <param name="poly">多角形の頂点</param>
     /// <returns>多角形の中にある</returns>
-    static bool PointInPolygon(Vector2 p, Vector2[] poly)
+    private static bool PointInPolygon(Vector2 p, Vector2[] poly)
     {
         Vector2 p1, p2;
         bool inside = false;

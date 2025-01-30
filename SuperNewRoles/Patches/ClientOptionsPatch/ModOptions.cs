@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Epic.OnlineServices.Presence;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -29,10 +28,10 @@ public static class ClientModOptionsPatch
     };
     private static bool OnProcessorAffinityMaskClick(SelectionBehaviour button)
     {
-        ConfigRoles._ProcessorAffinityMask.Value = ConfigRoles._ProcessorAffinityMask.Value == (ulong)3 ? (ulong)1 : (ulong)3;
+        ConfigRoles._ProcessorAffinityMask.Value = ConfigRoles._ProcessorAffinityMask.Value == 3 ? 1 : (ulong)3;
         SuperNewRolesPlugin.UpdateCPUProcessorAffinity();
         button.Title = ProcessorAffinityMaskTitle;
-        return ConfigRoles._ProcessorAffinityMask.Value == (ulong)3;
+        return ConfigRoles._ProcessorAffinityMask.Value == 3;
     }
     private static string ProcessorAffinityMaskTitle
     {
@@ -40,9 +39,9 @@ public static class ClientModOptionsPatch
         {
             ulong mask = ConfigRoles._ProcessorAffinityMask.Value;
             string showCore = "1";
-            if (mask == (ulong)1)
+            if (mask == 1)
                 showCore = "1";
-            else if (mask == (ulong)3)
+            else if (mask == 3)
                 showCore = "2";
             else
                 showCore = "?";
@@ -271,7 +270,7 @@ public static class ClientModOptionsPatch
         new SelectionBehaviour("ReplayOptionsQualityMedium",()=>UpdateReplayQuality(ReplayQualityMediumTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityMediumTime,pos:new(0, -0.1f, -0.5f),scale:Vector3.one*0.75f),
         new SelectionBehaviour("ReplayOptionsQualityHigh",()=>UpdateReplayQuality(ReplayQualityHighTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityHighTime,pos:new(1.75f, -0.1f, -0.5f),scale:Vector3.one*0.75f)};
 
-    static bool UpdateReplayQuality(float timer)
+    private static bool UpdateReplayQuality(float timer)
     {
         ConfigRoles.ReplayQualityTime.Value = timer;
         UpdateState(ReplayOptions[1].Button, timer == ReplayQualityLowTime);
@@ -279,7 +278,8 @@ public static class ClientModOptionsPatch
         UpdateState(ReplayOptions[3].Button, timer == ReplayQualityHighTime);
         return true;
     }
-    static List<GameObject> ReplayEnableObjects;
+
+    private static List<GameObject> ReplayEnableObjects;
     public static void ReplaySetUpOptions()
     {
         if (ReplayPopup.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;

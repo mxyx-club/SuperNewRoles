@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
 using AmongUs.GameOptions;
 using SuperNewRoles.MapDatabase.Database;
 using UnityEngine;
@@ -10,9 +8,9 @@ namespace SuperNewRoles.MapDatabase;
 
 public abstract class MapDatabase
 {
-    abstract protected Vector2[] MapArea { get; }
-    abstract protected Vector2[] NonMapArea { get; }
-    abstract protected SystemTypes[] SabotageTypes { get; }
+    protected abstract Vector2[] MapArea { get; }
+    protected abstract Vector2[] NonMapArea { get; }
+    protected abstract SystemTypes[] SabotageTypes { get; }
 
     public SystemTypes[] GetSabotageSystemTypes() => SabotageTypes;
     public bool CheckMapArea(Vector2 position)
@@ -126,7 +124,7 @@ public abstract class MapDatabase
         {
             for (int x = x1; x < x2; x++)
             {
-                num = CheckMapAreaDebug(new Vector2(((float)x) / resolution, ((float)y) / resolution));
+                num = CheckMapAreaDebug(new Vector2(x / resolution, y / resolution));
                 texture.SetPixel(x - x1, y - y1, (num == 0) ? color : new Color((num > 1 ? 100 : 0) / 255f, (150 + (num * 5)) / 255f, 0));
                 if (num > 0) r++;
             }
@@ -137,7 +135,8 @@ public abstract class MapDatabase
         return CreateReadabeTexture(texture);
     }
 
-    static private MapDatabase[] AllMapData = new MapDatabase[] { new SkeldData(), new MiraData(), new PolusData(), null!, new AirshipData(), new FungleData() };
-    static public MapDatabase GetCurrentMapData() => AllMapData.Length > currentMapId ? AllMapData[currentMapId] : null!;
-    static int currentMapId => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId);
+    private static MapDatabase[] AllMapData = new MapDatabase[] { new SkeldData(), new MiraData(), new PolusData(), null!, new AirshipData(), new FungleData() };
+    public static MapDatabase GetCurrentMapData() => AllMapData.Length > currentMapId ? AllMapData[currentMapId] : null!;
+
+    private static int currentMapId => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId);
 }

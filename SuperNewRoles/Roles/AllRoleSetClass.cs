@@ -21,7 +21,7 @@ using Object = UnityEngine.Object;
 namespace SuperNewRoles;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CoSetRole))]
-class SetRoleLogger
+internal class SetRoleLogger
 {
     public static void Postfix(PlayerControl __instance, RoleTypes role)
     {
@@ -29,7 +29,7 @@ class SetRoleLogger
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
-class RpcSetRoleReplacer
+internal class RpcSetRoleReplacer
 {
     public static void Postfix(PlayerControl __instance, RoleTypes roleType)
     {
@@ -37,7 +37,7 @@ class RpcSetRoleReplacer
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
-class Startgamepatch
+internal class Startgamepatch
 {
     public static void Postfix()
     {
@@ -79,7 +79,7 @@ public class PairRoleDetail
     }
 }
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
-class RoleManagerSelectRolesPatch
+internal class RoleManagerSelectRolesPatch
 {
     public static bool IsSetRoleRPC = false;
     public static bool Prefix(RoleManager __instance)
@@ -155,7 +155,8 @@ class RoleManagerSelectRolesPatch
                     player.Data.Disconnected = false;
                 }
             }, 0.25f);
-            new LateTask(() => {
+            new LateTask(() =>
+            {
 
                 PlayerControl RoleTargetPlayer = null;
                 RoleTypes RoleTargetRole = RoleTypes.Crewmate;
@@ -314,7 +315,8 @@ class RoleManagerSelectRolesPatch
         }, 3f, "SetImpostor");
     }
 }
-class AllRoleSetClass
+
+internal class AllRoleSetClass
 {
     public enum AssignType
     {
@@ -946,7 +948,8 @@ class AllRoleSetClass
             _ => true,
         };
     }
-    static List<RoleId> GetTeamChanceList(bool IsTen, TeamRoleType Team)
+
+    private static List<RoleId> GetTeamChanceList(bool IsTen, TeamRoleType Team)
     {
         AssignType assignType = AssignType.Crewmate;
         switch (Team)

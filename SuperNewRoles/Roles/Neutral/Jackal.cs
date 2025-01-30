@@ -2,17 +2,13 @@ using System.Collections.Generic;
 using System.Text;
 using AmongUs.GameOptions;
 using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using UnityEngine;
-using UnityEngine.UI;
 using static SuperNewRoles.Helpers.RPCHelper;
-using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 

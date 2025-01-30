@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using BepInEx.Unity.IL2CPP.Utils;
 using UnityEngine.Networking;
@@ -17,7 +16,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
         {
             AmongUsClient.Instance.StartCoroutine(PostIE(url, data, callback));
         }
-        static IEnumerator PostIE(string url, string data, Action<long, DownloadHandler> callback)
+
+        private static IEnumerator PostIE(string url, string data, Action<long, DownloadHandler> callback)
         {
             var request = new UnityWebRequest(url, "POST");
             byte[] bodyRaw = Encoding.UTF8.GetBytes(data);
@@ -32,7 +32,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             Logger.Info($"Connected To {url} And Status Code: {request.responseCode}", "SNRWeb");
         }
 
-        static IEnumerator GetIE(string url, Action<long, DownloadHandler> callback)
+        private static IEnumerator GetIE(string url, Action<long, DownloadHandler> callback)
         {
             var request = new UnityWebRequest(url, "GET")
             {

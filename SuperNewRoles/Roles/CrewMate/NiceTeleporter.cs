@@ -6,7 +6,7 @@ using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class NiceTeleporter
+internal class NiceTeleporter
 {
     public static void ResetCooldown()
     {

@@ -4,7 +4,8 @@ using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
-class Celebrity
+
+internal class Celebrity
 {
     internal class AbilityOverflowingBrilliance
     {

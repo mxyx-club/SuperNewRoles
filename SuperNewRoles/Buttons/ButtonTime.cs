@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
 
-class ButtonTime
+internal class ButtonTime
 {
     public static void Update()
     {

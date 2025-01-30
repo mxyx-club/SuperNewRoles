@@ -1,23 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using SuperNewRoles;
 using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
@@ -25,14 +23,11 @@ using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
-using SuperNewRoles.MapOption;
-using static Il2CppSystem.Xml.XmlWellFormedWriter.AttributeValueCache;
-using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))]
-class AwakeMeetingPatch
+internal class AwakeMeetingPatch
 {
     public static void Prefix(MeetingHud __instance) => BatteryIconDestroy(__instance);
     public static void Postfix()
@@ -47,7 +42,7 @@ class AwakeMeetingPatch
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote))]
-class CastVotePatch
+internal class CastVotePatch
 {
     /// <summary>
     /// 投票が有効であるか無効であるかを取得し, 無効ならば投票を反映せず, 投票者の投票権を復活させる。
@@ -94,7 +89,7 @@ class CastVotePatch
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.RpcVotingComplete))]
-class RpcVotingComplete
+internal class RpcVotingComplete
 {
     public static void Postfix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref NetworkedPlayerInfo exiled, [HarmonyArgument(2)] bool tie)
     {
@@ -102,7 +97,7 @@ class RpcVotingComplete
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
-class VotingComplete
+internal class VotingComplete
 {
     public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] Il2CppStructArray<VoterState> states, [HarmonyArgument(1)] ref NetworkedPlayerInfo exiled, [HarmonyArgument(2)] bool tie)
     {
@@ -122,7 +117,7 @@ class VotingComplete
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
-class VotingComplatePatch
+internal class VotingComplatePatch
 {
     public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, NetworkedPlayerInfo exiled, bool tie)
     {
@@ -130,7 +125,7 @@ class VotingComplatePatch
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
-class CheckForEndVotingPatch
+internal class CheckForEndVotingPatch
 {
     // Key:役職　Value:票数
     public static Dictionary<RoleId, int> VoteCountDictionary => new() {
@@ -200,7 +195,7 @@ class CheckForEndVotingPatch
             {
                 int votingTime = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime);
                 float num4 = __instance.discussionTimer - GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.DiscussionTime);
-                if (votingTime > 0 && num4 >= (float)votingTime)
+                if (votingTime > 0 && num4 >= votingTime)
                 {
                     __instance.discussionTimer = 0;
                     Mode.BattleRoyal.SelectRoleSystem.OnEndSetRole();
@@ -565,7 +560,7 @@ class CheckForEndVotingPatch
                 var supportType = AntiBlackOut.GetSupportType(exiledPlayer);
                 bool IsDesyncMode = false;
                 (PlayerControl player, NetworkedPlayerInfo exiled, bool tie) DesyncDetail = default;
-                Logger.Info("AntiBlackOut:          Selected is "+supportType.ToString());
+                Logger.Info("AntiBlackOut:          Selected is " + supportType.ToString());
                 switch (supportType)
                 {
                     case AntiBlackOut.SupportType.NoneExile:
@@ -634,9 +629,9 @@ class CheckForEndVotingPatch
                             }, 5f);
 
                             Logger.Info("BBB");
-                            
+
                             CustomRpcSender customRpcSender = CustomRpcSender.Create(sendOption: SendOption.Reliable);
-                            
+
                             customRpcSender.AutoStartRpc(exiledObject.NetId, (byte)RpcCalls.SetName)
                                 .Write(exiledObject.Data.NetId)
                                 .Write(AntiBlackOut.RealExiled.DefaultOutfit.PlayerName)
@@ -735,7 +730,7 @@ class CheckForEndVotingPatch
     }
 }
 
-static class ExtendedMeetingHud
+internal static class ExtendedMeetingHud
 {
     public static Dictionary<byte, int> CustomCalculateVotes(this MeetingHud __instance)
     {
@@ -759,7 +754,7 @@ static class ExtendedMeetingHud
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.SetForegroundForDead))]
-class MeetingHudSetForegroundForDeadPatch
+internal class MeetingHudSetForegroundForDeadPatch
 {
     public static bool Prefix()
     {
@@ -768,7 +763,7 @@ class MeetingHudSetForegroundForDeadPatch
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
-class MeetingHudUpdateButtonsPatch
+internal class MeetingHudUpdateButtonsPatch
 {
     public static bool Prefix(MeetingHud __instance)
     {
@@ -789,7 +784,8 @@ class MeetingHudUpdateButtonsPatch
         }
         return false;
     }
-    static void Postfix(MeetingHud __instance)
+
+    private static void Postfix(MeetingHud __instance)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
@@ -821,7 +817,7 @@ class MeetingHudUpdateButtonsPatch
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateButtons))]
-class MeetingHudPopulateButtonsPatch
+internal class MeetingHudPopulateButtonsPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
@@ -839,7 +835,7 @@ class MeetingHudPopulateButtonsPatch
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
-class MeetingHudClosePatch
+internal class MeetingHudClosePatch
 {
     public static void Prefix(MeetingHud __instance)
     {
@@ -864,7 +860,7 @@ class MeetingHudClosePatch
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-class MeetingHudStartPatch
+internal class MeetingHudStartPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
@@ -1071,7 +1067,7 @@ public class MeetingHudUpdatePatch
             }
             Cache = ConfigRoles.IsLightAndDarker.Value;
         }
-        
+
     }
     public static string GetLightAndDarkerText(bool isLight) => $" ({(isLight ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"))[0]})";
 }

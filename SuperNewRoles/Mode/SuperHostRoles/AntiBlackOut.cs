@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -63,7 +59,7 @@ public static class AntiBlackOut
     public static void SendAntiBlackOutInformation(PlayerControl target, ABOInformationType informationType, params string[] formatstrings)
     {
         CustomRpcSender crs = CustomRpcSender.Create();
-        int targetClientId = target == null ? - 1 : target.GetClientId();
+        int targetClientId = target == null ? -1 : target.GetClientId();
         if (target == null)
             target = PlayerControl.LocalPlayer;
         string SendName = CustomOptionHolder.Cs(RoleClass.JackalBlue, "AntiBlackOutChatTitle");
@@ -221,7 +217,8 @@ public static class AntiBlackOut
                 playerData.PlayerInfo.IsDead = playerData.IsDead;
         }
 
-        new LateTask(() => {
+        new LateTask(() =>
+        {
             if (RealExiled != null && RealExiled.Object != null)
                 RealExiled.Object.Exiled();
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -236,7 +233,7 @@ public static class AntiBlackOut
                 PlayerControl player = gamePlayerData?.PlayerInfo?.Object;
                 if (player == null)
                 {
-                    Logger.Error($"GamePlayerData({gamePlayerData.PlayerId}) is null.","AntiBlackOutWrapUp");
+                    Logger.Error($"GamePlayerData({gamePlayerData.PlayerId}) is null.", "AntiBlackOutWrapUp");
                     continue;
                 }
                 Logger.Info($"Processing => {gamePlayerData.PlayerId}", "AntiBlackOutWrapUpProcessing");

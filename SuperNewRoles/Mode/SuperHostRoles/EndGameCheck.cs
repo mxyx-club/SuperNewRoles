@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
-using Il2CppInterop.Generator.Extensions;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -13,7 +12,7 @@ using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class EndGameCheck
+internal class EndGameCheck
 {
     public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
     {

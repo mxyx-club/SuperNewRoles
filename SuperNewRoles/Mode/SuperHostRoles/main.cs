@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class Main
+internal class Main
 {
     public static void ClearAndReloads()
     {

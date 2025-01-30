@@ -1,15 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using Innersloth.Assets;
-using Sentry;
-using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 

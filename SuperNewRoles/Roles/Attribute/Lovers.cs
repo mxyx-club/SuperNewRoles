@@ -6,10 +6,10 @@ using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles;
 
-class Lovers
+internal class Lovers
 {
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
-    class HandleDisconnectPatch
+    private class HandleDisconnectPatch
     {
         public static void Postfix(PlayerControl player)
         {

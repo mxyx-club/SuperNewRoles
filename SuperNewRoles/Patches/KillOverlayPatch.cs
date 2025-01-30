@@ -1,11 +1,9 @@
-using System;
-using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class KillOverlayA
+internal class KillOverlayA
 {
     [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.Initialize))]
     public static class OverlayKillAnimationInitializePatch

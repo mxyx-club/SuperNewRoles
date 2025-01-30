@@ -1,6 +1,6 @@
 namespace SuperNewRoles.Mode.Detective;
 
-class DetectiveOptions
+internal class DetectiveOptions
 {
     public static CustomOption DetectiveMode;
     public static CustomOption IsWinNotCheckDetective;

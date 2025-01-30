@@ -12,7 +12,6 @@ using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using SuperNewRoles.CustomModOption;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.MapDatabase;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -203,7 +202,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         // ロードが終わってないなら待つ
         LoadHarmonyPatchTask.Wait();
     }
-    static bool ViewdNonVersion = false;
+
+    private static bool ViewdNonVersion = false;
     public static void SetNonVanilaVersionPatch()
     {
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version))
@@ -298,7 +298,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         }
     }
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-    class GetBroadcastVersionPatch
+    private class GetBroadcastVersionPatch
     {
         public static void Postfix(ref int __result)
         {

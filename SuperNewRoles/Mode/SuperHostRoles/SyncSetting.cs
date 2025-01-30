@@ -6,9 +6,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
-using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -273,7 +271,7 @@ public static class SyncSetting
         OptionDatas[player] = optdata.DeepCopy();
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
-    
+
     public static void GamblersetCool(PlayerControl player)
     {
         if (!AmongUsClient.Instance.AmHost) return;

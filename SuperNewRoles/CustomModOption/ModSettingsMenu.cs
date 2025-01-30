@@ -5,7 +5,6 @@ using SuperNewRoles;
 using SuperNewRoles.Mode;
 using TMPro;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.CustomModOption;
 
@@ -164,7 +163,7 @@ public class ModSettingsMenu : MonoBehaviour
         ImpostorButton.OnClick.AddListener(() => OpenTab(OptionTabId.Impostor));
         ImpostorButton.OnMouseOut.AddListener(() => { if (NowTabId != OptionTabId.Impostor) impostor_renderer.color = Color.gray; });
         ImpostorButton.OnMouseOver.AddListener(() => impostor_renderer.color = Color.white);
-        
+
         GameObject neutral = Instantiate(instance, header.transform);
         neutral.name = "NeutralButton";
         neutral.transform.localPosition += new Vector3(0.75f, 0f) * 2;
@@ -216,7 +215,7 @@ public class ModSettingsMenu : MonoBehaviour
         OnlySelectedRoleToggle = Instantiate(CheckboxOrigin, ScrollBar.Inner);
         OnlySelectedRoleToggle.transform.localPosition = new(1.9f, 0.82f, 0);
         OnlySelectedRoleToggle.LabelBackground.enabled = false;
-        OnlySelectedRoleToggle.TitleText.transform.localPosition = new(2.7f, - 0.02f, 0f);
+        OnlySelectedRoleToggle.TitleText.transform.localPosition = new(2.7f, -0.02f, 0f);
         OnlySelectedRoleToggle.boolOptionName = AmongUs.GameOptions.BoolOptionNames.Invalid;
         OnlySelectedRoleToggle.OnValueChanged = (Il2CppSystem.Action<OptionBehaviour>)((x) =>
         {
@@ -239,7 +238,8 @@ public class ModSettingsMenu : MonoBehaviour
         GenericSettings = new("Generic Tab");
         GenericSettings.transform.SetParent(ScrollBar.Inner);
         GenericSettings.transform.localPosition = new(0f, 0f, -5f);
-        OnTabOpen[0] = () => {
+        OnTabOpen[0] = () =>
+        {
             if (OptionGeneratedTabs.Contains(OptionTabId.Generic))
                 return;
             CreateNotRoleOptions(GenericSettings.transform, CustomOptionType.Generic);

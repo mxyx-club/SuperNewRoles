@@ -2,31 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.BattleRoyal;
-using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static GameData;
-using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
 
 namespace SuperNewRoles.Patches;
@@ -133,7 +127,7 @@ public static class NetworkTransformFixedUpdatePatch
 */
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
-static class PlayerControlCheckUseZiplinePatch
+internal static class PlayerControlCheckUseZiplinePatch
 {
     public static bool Prefix(PlayerControl target, ZiplineBehaviour ziplineBehaviour, bool fromTop)
     {
@@ -152,7 +146,7 @@ static class PlayerControlCheckUseZiplinePatch
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-static class PlayerControlSetCooldownPatch
+internal static class PlayerControlSetCooldownPatch
 {
     public static bool Prefix(PlayerControl __instance, float time)
     {
@@ -237,7 +231,7 @@ public static class PlayerControlAwakePatch
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
-class CompleteTask
+internal class CompleteTask
 {
     public static void Postfix(PlayerControl __instance, uint idx)
     {
@@ -353,7 +347,7 @@ public static class LongBoiPlayerBodySetHeightFromColorPatch
 }
 //[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.PetPet))]
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleRpc))]
-class PlayerPhysicsPetPetPatch
+internal class PlayerPhysicsPetPetPatch
 {
     public static bool Prefix(PlayerPhysics __instance, byte callId)
     {
@@ -368,7 +362,7 @@ class PlayerPhysicsPetPetPatch
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.TryPet))]
-class PlayerControlTryPetPatch
+internal class PlayerControlTryPetPatch
 {
     public static bool Prefix(PlayerControl __instance)
     {
@@ -380,7 +374,7 @@ class PlayerControlTryPetPatch
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
-class ReportDeadBodyPatch
+internal class ReportDeadBodyPatch
 {
     /// <summary>
     /// 会議が開かれた回数を記録する(ReportDeadBodyでカウントしているが, RPCを飛ばしている為 ゲストに共有されている)

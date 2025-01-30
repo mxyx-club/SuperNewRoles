@@ -2,7 +2,6 @@ using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -17,7 +16,7 @@ public static class Helpers
     }
     public static void ResetToCrewAndSetRole(this PlayerControl player, RoleTypes role, bool isNotModOnly = true)
     {
-        CustomRpcSender sender = CustomRpcSender.Create("ResetToCrewAndSetRole", sendOption:SendOption.Reliable);
+        CustomRpcSender sender = CustomRpcSender.Create("ResetToCrewAndSetRole", sendOption: SendOption.Reliable);
         sender.RpcSetRole(player, RoleTypes.Tracker, true);
         if (!(player.IsMod() && isNotModOnly))
         {

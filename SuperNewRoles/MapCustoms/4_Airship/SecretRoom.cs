@@ -19,13 +19,12 @@ public static class SecretRoom
 {
     public static PlayerControl leftplayer;
     public static PlayerControl rightplayer;
-
-    static PoolablePlayer left;
-    static PoolablePlayer right;
+    private static PoolablePlayer left;
+    private static PoolablePlayer right;
     public static PlayerControl UsePlayer;
     public static bool IsWait = false;
     public static TextMeshPro LowerInfoText;
-    static readonly List<Vector2> TeleportPositions = new()
+    private static readonly List<Vector2> TeleportPositions = new()
         {
             new Vector2(-0.78f, -1f), new Vector2(-13, -1), new Vector2(-13, 1.5f), new Vector2(-21, -1.2f), new Vector2(-10, -7), new Vector2(-6.2f, -11),
             new Vector2(-13.4f, -12.2f), new Vector2(2.2f, -12), new Vector2(7.2f, -11.4f), new Vector2(16.3f, -8.6f), new Vector2(24.9f, -5.7f), new Vector2(33.6f, -0.6f), new Vector2(31.5f, 5.6f),
@@ -321,12 +320,13 @@ public static class SecretRoom
             }
         }
     }
-    static bool onTask;
+
+    private static bool onTask;
     public static DateTime lastUpdate;
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
-    class VitalsMinigameStartPatch
+    private class VitalsMinigameStartPatch
     {
-        static void Postfix()
+        private static void Postfix()
         {
             onTask = true;
         }
@@ -477,7 +477,8 @@ public static class SecretRoom
             }
             return true;
         }
-        static IEnumerator Escape(Console __instance, Coroutine coro)
+
+        private static IEnumerator Escape(Console __instance, Coroutine coro)
         {
             while (true)
             {
@@ -530,7 +531,7 @@ public static class SecretRoom
             }
         }
 
-        static IEnumerator Move2(Console __instance)
+        private static IEnumerator Move2(Console __instance)
         {
             PlayerPhysics myPhysics = PlayerControl.LocalPlayer.MyPhysics;
             Vector2 worldPos = __instance.name.Contains("2") ? new Vector2(0.14f, -5.025f) : __instance.transform.position;
@@ -594,14 +595,16 @@ public static class SecretRoom
             return false;
         }
     }
-    static void ViewMinigame()
+
+    private static void ViewMinigame()
     {
         var moto = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
         CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
     }
-    static Console ActivateConsole(GameObject obj, float Distance = 1.7f)
+
+    private static Console ActivateConsole(GameObject obj, float Distance = 1.7f)
     {
         if (obj == null) return null;
         obj.layer = LayerMask.NameToLayer("ShortObjects");

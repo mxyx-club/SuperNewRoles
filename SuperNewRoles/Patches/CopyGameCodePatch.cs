@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class CopyGameCode
+internal class CopyGameCode
 {
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public class GameStartManagerStartPatch

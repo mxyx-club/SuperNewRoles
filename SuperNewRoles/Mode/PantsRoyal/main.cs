@@ -37,7 +37,8 @@ public static class main
         LastUpdateTime = 7;
         CurrentTurnData = null;
     }
-    readonly static Dictionary<SystemTypes, Vector2> AirshipSpawnPositions = new()
+
+    private static readonly Dictionary<SystemTypes, Vector2> AirshipSpawnPositions = new()
     {
         {SystemTypes.Security, new(7.0886f, -12.501f) }, //セキュ
         {SystemTypes.VaultRoom, new(-8.7701f, 12.4399f) }, //金庫
@@ -49,7 +50,7 @@ public static class main
         {SystemTypes.Records,new() },
 
     };
-    readonly static List<Vector2> AirshipToiletSpawnPositions = new()
+    private static readonly List<Vector2> AirshipToiletSpawnPositions = new()
     {
         new(29.3f, 7.5f),
         new(30.825f, 7.5f),

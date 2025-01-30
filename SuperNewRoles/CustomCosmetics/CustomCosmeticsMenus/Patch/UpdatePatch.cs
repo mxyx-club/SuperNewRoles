@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch;
 
 [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]
-class UpdatePatch
+internal class UpdatePatch
 {
     public static PlayerVoteArea area;
     public static void Postfix(PlayerCustomizationMenu __instance)

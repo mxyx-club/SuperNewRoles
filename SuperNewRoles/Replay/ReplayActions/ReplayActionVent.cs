@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionVent : ReplayAction
@@ -39,13 +35,13 @@ public class ReplayActionVent : ReplayAction
         }
         if (isEnter)
         {
-            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
-            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoEnterVent(id));
+            source.MyPhysics.StopAllCoroutines();
+            source.MyPhysics.StartCoroutine(source.MyPhysics.CoEnterVent(id));
         }
         else
         {
-            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
-            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoExitVent(id));
+            source.MyPhysics.StopAllCoroutines();
+            source.MyPhysics.StartCoroutine(source.MyPhysics.CoExitVent(id));
         }
     }
     public override void OnReplay()
@@ -58,13 +54,13 @@ public class ReplayActionVent : ReplayAction
         }
         if (!isEnter)
         {
-            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
-            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoEnterVent(id));
+            source.MyPhysics.StopAllCoroutines();
+            source.MyPhysics.StartCoroutine(source.MyPhysics.CoEnterVent(id));
         }
         else
         {
-            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
-            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoExitVent(id));
+            source.MyPhysics.StopAllCoroutines();
+            source.MyPhysics.StartCoroutine(source.MyPhysics.CoExitVent(id));
         }
     }
     //試合内でアクションがあったら実行するやつ

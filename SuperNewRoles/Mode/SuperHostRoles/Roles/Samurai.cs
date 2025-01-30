@@ -3,10 +3,10 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
-class Samurai
+internal class Samurai
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new System.Type[] { typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
-    class SetHudActivePatch
+    private class SetHudActivePatch
     {
         public static void Postfix(HudManager __instance)
         {

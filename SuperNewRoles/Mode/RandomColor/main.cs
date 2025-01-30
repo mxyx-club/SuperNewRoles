@@ -2,7 +2,7 @@ using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.RandomColor;
 
-class Main
+internal class Main
 {
     public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
     {

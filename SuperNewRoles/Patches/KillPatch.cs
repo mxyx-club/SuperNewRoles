@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -129,7 +125,7 @@ public static class KillButtonDoClickPatch
 #region CheckMurderPatch
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
-static class CheckMurderPatch
+internal static class CheckMurderPatch
 {
     public static bool isKill = false;
 
@@ -637,7 +633,7 @@ public static class MurderPlayerPatch
 
         //ダークキラーがキルできるか判定
         if (__instance.IsRole(RoleId.DarkKiller) && !IsBlackout()) return false;
-        
+
         if (!AmongUsClient.Instance.AmHost ||
             __instance.PlayerId == target.PlayerId)
             return true;

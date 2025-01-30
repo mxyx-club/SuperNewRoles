@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics;
 
-class ShareNamePlate
+internal class ShareNamePlate
 {
     public static Dictionary<int, Sprite> NamePlateSprites;
 }
-class SharePatch
+
+internal class SharePatch
 {
     public static Dictionary<int, string> PlayerUrl;
     public static Dictionary<int, string> PlayerData;

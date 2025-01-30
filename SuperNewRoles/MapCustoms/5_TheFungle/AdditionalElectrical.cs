@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
 using UnityEngine;
 
@@ -38,7 +35,7 @@ public static class FungleAdditionalElectrical
         ShipStatus.Instance.AllConsoles = Consoles.ToArray();
     }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Awake))]
-    class MapBehaviourAwakePatch
+    private class MapBehaviourAwakePatch
     {
         public static void Postfix(MapBehaviour __instance)
         {

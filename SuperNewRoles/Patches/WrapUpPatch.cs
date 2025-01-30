@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -24,7 +23,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class WrapUpPatch
+internal class WrapUpPatch
 {
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class ExileControllerWrapUpPatch
@@ -293,7 +292,8 @@ class WrapUpPatch
 
         Logger.Info("[追放が発生していた場合のみ 会議終了時に行う処理] 通過", "WrapUp");
     }
-    static void FixAfterMeetingVent()
+
+    private static void FixAfterMeetingVent()
     {
         //ベントがなければ帰れ！！！
         if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out ISystemType vent))

@@ -1,6 +1,6 @@
 namespace SuperNewRoles.Mode.NotImpostorCheck;
 
-class WinCheck
+internal class WinCheck
 {
     public static bool CheckEndGame(ShipStatus __instance)
     {

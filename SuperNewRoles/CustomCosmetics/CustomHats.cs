@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,18 +6,15 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using Innersloth.Assets;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SuperNewRoles.CustomCosmetics;
 
@@ -139,7 +135,8 @@ public class CustomHats
     {
         return HatSprites.ContainsKey(path) ? HatSprites[path] : null;
     }
-    static readonly Dictionary<string, Sprite> HatSprites = new();
+
+    private static readonly Dictionary<string, Sprite> HatSprites = new();
     private static CustomHatData CreateHatData(CustomHat ch, bool fromDisk = false, bool testOnly = false)
     {
         if (hatShader == null && DestroyableSingleton<HatManager>.InstanceExists)
@@ -221,7 +218,7 @@ public class CustomHats
         public static bool IsLoadingnow = false;
         public static List<HatData> hatdata = new();
 
-        static void Prefix(HatManager __instance)
+        private static void Prefix(HatManager __instance)
         {
             if (!IsEnd) return;
             if (RUNNING) return;
@@ -266,7 +263,7 @@ public class CustomHats
 
         public static readonly List<CustomHatData> addHatData = new();
 
-        static IEnumerator LoadHatSprite()
+        private static IEnumerator LoadHatSprite()
         {
             IsLoadingnow = true;
             if (!LOADED)
@@ -355,7 +352,7 @@ public class CustomHats
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
     private static class ShipStatusSetHat
     {
-        static void Postfix(ShipStatus __instance)
+        private static void Postfix(ShipStatus __instance)
         {
             if (DestroyableSingleton<TutorialManager>.InstanceExists)
             {

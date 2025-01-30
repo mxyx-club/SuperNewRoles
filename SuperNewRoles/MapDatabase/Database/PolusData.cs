@@ -1,11 +1,10 @@
-using Agartha;
 using UnityEngine;
 
 namespace SuperNewRoles.MapDatabase.Database;
 
 public class PolusData : MapDatabase
 {
-    static private Vector2[] MapPositions = new Vector2[]
+    private static Vector2[] MapPositions = new Vector2[]
     {
         //ドロップシップ
         new(16.7f, -2.6f),

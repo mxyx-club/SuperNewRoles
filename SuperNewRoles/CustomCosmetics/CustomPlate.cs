@@ -13,10 +13,10 @@ namespace SuperNewRoles.CustomCosmetics;
 public class CustomPlate
 {
     public static bool isAdded = false;
-    static readonly List<NamePlateData> namePlateData = new();
+    private static readonly List<NamePlateData> namePlateData = new();
     public static readonly List<CustomPlateData> customPlateData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
-    class UnlockedNamePlatesPatch
+    private class UnlockedNamePlatesPatch
     {
         public static void Postfix(HatManager __instance)
         {

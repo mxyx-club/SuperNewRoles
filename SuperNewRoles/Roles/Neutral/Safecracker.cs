@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Patches;
 using UnityEngine;
@@ -138,7 +136,7 @@ public class Safecracker
     [HarmonyPatch(typeof(Console), nameof(Console.Use))]
     public static class ConsolsUsePatch
     {
-        static Minigame tempminigame;
+        private static Minigame tempminigame;
         public static void Prefix(Console __instance)
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Safecracker)

@@ -494,7 +494,8 @@ public static class ModHelpers
         MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numLong, list, types, MapUtilities.CachedShipStatus.LongTasks.GetShuffle().ToIl2CppList());
         return list.ToList();
     }
-    static float tien;
+
+    private static float tien;
     public static string GetStringByCount(char txt, int count)
     {
         StringBuilder builder = new();

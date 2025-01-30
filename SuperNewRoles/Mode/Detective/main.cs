@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Detective;
 
-class Main
+internal class Main
 {
     public static bool IsNotDetectiveWin;
     public static bool IsNotDetectiveVote;

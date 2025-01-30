@@ -8,7 +8,7 @@ using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.Zombie;
 
-static class Main
+internal static class Main
 {
     public static Color Zombiecolor = new Color32(143, 188, 143, byte.MaxValue);
     public static Color Policecolor = Color.blue;

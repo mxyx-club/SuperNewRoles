@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AmongUs.GameOptions;
-using Il2CppSystem.IO;
 using SuperNewRoles.Mode;
 using UnityEngine;
 

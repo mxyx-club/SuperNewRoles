@@ -4,7 +4,7 @@ namespace SuperNewRoles.MapDatabase.Database;
 
 public class FungleData : MapDatabase
 {
-    static private Vector2[] MapPositions = new Vector2[]
+    private static Vector2[] MapPositions = new Vector2[]
         { 
         //ドロップシップ
         new(-9.2f,13.4f),

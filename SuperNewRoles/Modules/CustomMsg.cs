@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Modules;
 

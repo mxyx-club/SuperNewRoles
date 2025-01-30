@@ -12,15 +12,14 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
-static class ShipStatus_AwakePatch
+internal static class ShipStatus_AwakePatch
 {
-    static void Postfix(ShipStatus __instance)
+    private static void Postfix(ShipStatus __instance)
     {
         MapCustoms.Airship.SecretRoom.ShipStatusAwake(__instance);
         AddVitals.AddVital();
@@ -39,7 +38,7 @@ public static class ShipStatus_Awake_Patch
 }
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(MessageReader) })]
-class UpdateSystemMessagReaderPatch
+internal class UpdateSystemMessagReaderPatch
 {
     public static bool Prefix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
@@ -51,7 +50,8 @@ class UpdateSystemMessagReaderPatch
         msgReader.Position = position;
         return UpdateSystemPatch.Prefix(__instance, systemType, player, amount);
     }
-    static byte amount;
+
+    private static byte amount;
     public static void Postfix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
         [HarmonyArgument(1)] PlayerControl player,
@@ -62,7 +62,7 @@ class UpdateSystemMessagReaderPatch
 }
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
-class UpdateSystemPatch
+internal class UpdateSystemPatch
 {
     public static bool Prefix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
@@ -146,7 +146,7 @@ public static class ShipStatus_OnDestroy_Patch
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
-class LightPatch
+internal class LightPatch
 {
     public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] NetworkedPlayerInfo player, ref float __result)
     {
@@ -175,7 +175,7 @@ class LightPatch
             : GetNeutralLightRadius(__instance, false);
         return false;
     }
-    
+
     public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor, float? timer = null)
     {
         if (Clergyman.IsLightOutVision()) return shipStatus.MinLightRadius * RoleClass.Clergyman.DownImpoVision;

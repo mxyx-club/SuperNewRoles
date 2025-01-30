@@ -1,9 +1,9 @@
+using System;
+using Agartha;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
-using System;
 using Object = UnityEngine.Object;
-using Agartha;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch;
 
@@ -14,7 +14,7 @@ public static class PlayerCustomizationMenuPatch
 
     [HarmonyPatch(nameof(PlayerCustomizationMenu.Start)), HarmonyPrefix]
     public static void StartPrefix() => IsFirst = true;
-    
+
     [HarmonyPatch(nameof(PlayerCustomizationMenu.Start)), HarmonyPostfix]
     public static void StartPostfix(PlayerCustomizationMenu __instance)
     {

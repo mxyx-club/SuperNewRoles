@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;

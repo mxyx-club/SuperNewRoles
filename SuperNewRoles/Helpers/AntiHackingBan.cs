@@ -1,15 +1,13 @@
-using System;
-using Assets.CoreScripts;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 
 namespace SuperNewRoles.Helpers;
 
-class AntiHackingBan
+internal class AntiHackingBan
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcShapeshift))]
-    class RpcShapeShiftPatch
+    private class RpcShapeShiftPatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
@@ -25,7 +23,7 @@ class AntiHackingBan
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcMurderPlayer))]
-    class RpcMurderPlayer
+    private class RpcMurderPlayer
     {
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {

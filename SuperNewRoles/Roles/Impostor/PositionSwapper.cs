@@ -5,7 +5,7 @@ using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class PositionSwapper
+internal class PositionSwapper
 {
     public static void ResetCooldown()
     {

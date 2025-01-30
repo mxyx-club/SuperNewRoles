@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
@@ -13,7 +11,7 @@ using static MeetingHud;
 namespace SuperNewRoles.Mode.BattleRoyal
 {
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneOnDestroyPatch
+    internal class IntroCutsceneOnDestroyPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
@@ -21,14 +19,15 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
                 SelectRoleSystem.OnEndIntro(); Logger.Info("StartOnEndIntro");
-            } else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            }
+            else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 OneClickShapeshift.OnStartTurn();
             }
         }
     }
     [HarmonyPatch(typeof(NetworkedPlayerInfo), nameof(NetworkedPlayerInfo.Serialize))]
-    class GameDataSerializePatch
+    internal class GameDataSerializePatch
     {
         public static bool Is;
         public static bool Prefix(NetworkedPlayerInfo __instance, ref bool __result)
@@ -48,7 +47,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     __result = true;
                     return true;
                 }
-            } else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            }
+            else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 if (RoleSelectHandler.IsStartingSerialize || HideChat.CanSerializeGameData || !AntiBlackOut.CantSendGameData())
                 {

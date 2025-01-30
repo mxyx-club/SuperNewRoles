@@ -4,7 +4,7 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
-class Nekomata
+internal class Nekomata
 {
     public static void WrapUp(NetworkedPlayerInfo exiled)
     {

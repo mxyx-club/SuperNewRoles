@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 
@@ -114,7 +109,7 @@ public static class HideChat
 public class AliveState
 {
     public bool IsDead { get; }
-    public bool Disconnected { get;}
+    public bool Disconnected { get; }
     public AliveState(NetworkedPlayerInfo player)
     {
         IsDead = player.IsDead;

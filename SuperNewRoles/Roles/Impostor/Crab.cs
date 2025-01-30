@@ -1,5 +1,3 @@
-
-using System;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -74,7 +72,7 @@ public class Crab : RoleBase, IImpostor, ICustomButton, IDeathHandler, IRpcHandl
         IsUsingAbility = active;
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity)), HarmonyPrefix]
-    static bool SetVelocity(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
+    private static bool SetVelocity(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
     {
         bool anyoneUsingAbility = RoleBaseManager.GetRoleBases<Crab>().Any(x => x.IsUsingAbility);
         if (!anyoneUsingAbility) return true;

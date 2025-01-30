@@ -1,7 +1,5 @@
 using System;
-using System.Linq;
 using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -133,7 +131,7 @@ public static class RegionMenuOpenPatch
         foreach (IRegionInfo region in regions)
         {
             if (region == null)
-                Logger.Error("Could not add region","CustomServer");
+                Logger.Error("Could not add region", "CustomServer");
             else
             {
                 if (currentRegion != null && region.Name.Equals(currentRegion.Name, StringComparison.OrdinalIgnoreCase))

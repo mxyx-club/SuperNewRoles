@@ -113,10 +113,11 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
 
     // タスク関係
     [HarmonyPatch(typeof(Console), nameof(Console.Use))]
-    class ConsolePatch
+    private class ConsolePatch
     {
         private static Minigame preMinigame;
-        static void Prefix(Console __instance)
+
+        private static void Prefix(Console __instance)
         {
             if ((!ChangeAllTaskLiftWeights.GetBool() && GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Fungle) || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;
@@ -134,7 +135,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
             task.MinigamePrefab = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights).MinigamePrefab;
         }
 
-        static void Postfix(Console __instance)
+        private static void Postfix(Console __instance)
         {
             if ((!ChangeAllTaskLiftWeights.GetBool() && GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Fungle) || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;

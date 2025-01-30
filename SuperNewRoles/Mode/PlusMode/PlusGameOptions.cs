@@ -1,12 +1,11 @@
 using System;
-using Epic.OnlineServices.Achievements;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Mode.PlusMode;
 
-class PlusGameOptions
+internal class PlusGameOptions
 {
     public static CustomOption PlusGameOptionSetting;
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -19,10 +18,12 @@ public class LateTask
         timer -= deltaTime;
         if (timer <= 0)
         {
-            try {
+            try
+            {
                 action();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Logger.Error("Error in LateTask", "LateTask");
                 Logger.Error(e.ToString(), "LateTask");
                 Logger.Error(e.StackTrace, "LateTask");
@@ -60,7 +61,7 @@ public class LateTask
     }
 }
 [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
-class LateUpdate
+internal class LateUpdate
 {
     public static void Postfix()
     {

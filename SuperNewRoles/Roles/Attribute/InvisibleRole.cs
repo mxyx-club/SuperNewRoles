@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using HarmonyLib;
 using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;

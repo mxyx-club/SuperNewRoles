@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles;
 using SuperNewRoles.Buttons;
@@ -10,12 +9,8 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.WaveCannonObj.AnimationHandlers;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.WaveCannonObj;
 
@@ -92,7 +87,8 @@ public class WaveCannonObject : CustomAnimation
     public bool IsShootNow;
     public bool IsFlipX;
     public int DestroyIndex { get; set; } = 0;
-    static Vector3 OwnerPos;
+
+    private static Vector3 OwnerPos;
     public bool IsShootFirst;
 
     //Santa用の旧仕様

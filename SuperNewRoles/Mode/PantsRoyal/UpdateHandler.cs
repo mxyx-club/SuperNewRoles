@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.PantsRoyal;
@@ -118,7 +115,7 @@ public static class UpdateHandler
                 else
                 {
                     Vector2 up = Vector2.up;
-                    up = up.Rotate((float)(p.PlayerId - 1) * (360f / (float)PlayerControl.AllPlayerControls.Count));
+                    up = up.Rotate((p.PlayerId - 1) * (360f / PlayerControl.AllPlayerControls.Count));
                     up *= ShipStatus.Instance.SpawnRadius;
                     Vector2 position = ShipStatus.Instance.MeetingSpawnCenter + up + new Vector2(0f, 0.3636f);
                     p.RpcSnapTo(position);
@@ -261,7 +258,7 @@ public static class UpdateHandler
                 else
                 {
                     Vector2 up = Vector2.up;
-                    up = up.Rotate((float)(p.PlayerId - 1) * (360f / (float)PlayerControl.AllPlayerControls.Count));
+                    up = up.Rotate((p.PlayerId - 1) * (360f / PlayerControl.AllPlayerControls.Count));
                     up *= ShipStatus.Instance.SpawnRadius;
                     Vector2 position = ShipStatus.Instance.MeetingSpawnCenter + up + new Vector2(0f, 0.3636f);
                     p.RpcSnapTo(position);

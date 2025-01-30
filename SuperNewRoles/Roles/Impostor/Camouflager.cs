@@ -5,7 +5,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
-using static GameData;
 using static SuperNewRoles.Buttons.HudManagerStartPatch;
 using static SuperNewRoles.Mode.ModeHandler;
 

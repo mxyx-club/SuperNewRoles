@@ -59,7 +59,7 @@ public static class AttributeGuesser
 
     public static List<PlayerControl> AttributeGuesserPlayer;
     public static PlayerData<GuesserData> GuesData;
-    
+
     public static void ClearAndReload()
     {
         AttributeGuesserPlayer = new();
@@ -617,7 +617,8 @@ public static class AttributeGuesser
         GuesserSelectRole(TeamRoleType.Crewmate);
         ReloadPage();
     }
-    static void GuesserSelectRole(TeamRoleType Role, bool SetPage = true)
+
+    private static void GuesserSelectRole(TeamRoleType Role, bool SetPage = true)
     {
         currentTeamType = Role;
         if (SetPage) Page = 1;

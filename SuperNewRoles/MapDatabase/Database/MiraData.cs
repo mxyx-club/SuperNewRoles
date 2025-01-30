@@ -1,11 +1,10 @@
-using Agartha;
 using UnityEngine;
 
 namespace SuperNewRoles.MapDatabase.Database;
 
 public class MiraData : MapDatabase
 {
-    static private Vector2[] MapPositions = new Vector2[]
+    private static Vector2[] MapPositions = new Vector2[]
     {
         //ラウンチパッド
         new(-4.4f, 3.3f),

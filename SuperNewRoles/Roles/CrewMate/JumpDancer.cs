@@ -119,7 +119,8 @@ public static class JumpDancer
         writer.EndRPC();
         SetJump(source, players);
     }
-    static bool CheckCan(PlayerControl player)
+
+    private static bool CheckCan(PlayerControl player)
     {
         return !player.CanMove || player.inMovingPlat || player.onLadder || JumpingPlayerIds.ContainsKey(player.PlayerId) || !(
                     player.MyPhysics.Animations.IsPlayingRunAnimation() ||

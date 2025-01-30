@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
-using InnerNet;
 using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
@@ -103,7 +99,8 @@ namespace SuperNewRoles.Replay
                 Logger.Info("AAAA");
             }
         }
-        static int CompareLastWriteTime(FileInfo fileX, FileInfo fileY)
+
+        private static int CompareLastWriteTime(FileInfo fileX, FileInfo fileY)
         {
             return DateTime.Compare(fileY.LastWriteTimeUtc, fileX.LastWriteTimeUtc);
         }
@@ -208,7 +205,7 @@ namespace SuperNewRoles.Replay
             public static Transform prefabparent;
             public const int MaxPageCount = 4;
             [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.ExitGame))]
-            class EndGameNavigationExitPatch
+            private class EndGameNavigationExitPatch
             {
                 public static void Postfix(AmongUsClient __instance)
                 {
@@ -218,7 +215,7 @@ namespace SuperNewRoles.Replay
                 }
             }
             [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.NextGame))]
-            class EndGameNavigationNextGamePatch
+            private class EndGameNavigationNextGamePatch
             {
                 public static void Postfix(AmongUsClient __instance)
                 {

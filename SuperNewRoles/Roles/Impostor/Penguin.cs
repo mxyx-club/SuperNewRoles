@@ -3,12 +3,10 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace SuperNewRoles.Roles.Impostor;
 

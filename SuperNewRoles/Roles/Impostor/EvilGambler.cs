@@ -3,7 +3,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Roles;
 
-class EvilGambler
+internal class EvilGambler
 {
     public static void MurderPlayerPrefix(PlayerControl __instance, PlayerControl target)
     {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class WallHack
+internal class WallHack
 {
     public static void WallHackUpdate()
     {

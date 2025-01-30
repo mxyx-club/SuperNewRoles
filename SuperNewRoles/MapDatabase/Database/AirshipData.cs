@@ -1,11 +1,10 @@
-using Agartha;
 using UnityEngine;
 
 namespace SuperNewRoles.MapDatabase.Database;
 
 public class AirshipData : MapDatabase
 {
-    static private Vector2[] MapPositions = new Vector2[]
+    private static Vector2[] MapPositions = new Vector2[]
         { 
         //金庫
         new(-9f, 12.8f), new(-8.7f, 4.9f), new(-12.8f, 8.7f), new(-4.8f, 8.7f), new(-7.1f, 6.8f), new(-10.4f, 6.9f), new(-7f, 10.2f),

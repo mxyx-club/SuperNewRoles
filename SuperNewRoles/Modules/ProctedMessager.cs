@@ -3,7 +3,7 @@ using TMPro;
 namespace SuperNewRoles.Modules;
 
 //守護天使メッセージの改変
-class ProctedMessager
+internal class ProctedMessager
 {
     private static string ProctedMessages;  //守護メッセージたち
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -19,10 +18,10 @@ public class CustomVisor
     public static Material VisorShader;
 
     public static bool isAdded = false;
-    static readonly List<VisorData> visorData = new();
+    private static readonly List<VisorData> visorData = new();
     public static readonly Dictionary<string, CustomVisorData> customVisorData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetVisorById))]
-    class UnlockedVisorPatch
+    private class UnlockedVisorPatch
     {
         private static bool LOADED;
         private static bool SPRITELOADED = false;
@@ -30,7 +29,7 @@ public class CustomVisor
         public static bool IsLoadingnow = false;
         public static List<VisorData> visordata = new();
 
-        static void Prefix(HatManager __instance)
+        private static void Prefix(HatManager __instance)
         {
             if (RUNNING) return;
             if (IsLoadingnow) return;
@@ -73,7 +72,7 @@ public class CustomVisor
             }
         }
 
-        static IEnumerator LoadVisorSprite()
+        private static IEnumerator LoadVisorSprite()
         {
             IsLoadingnow = true;
             if (!LOADED)
@@ -167,7 +166,7 @@ public class CustomVisor
         return null;
     }
 
-    static readonly Dictionary<string, Sprite> VisorSprites = new();
+    private static readonly Dictionary<string, Sprite> VisorSprites = new();
 
     private static CustomVisorData CreateVisorData(CustomVisors.CustomVisor cv, bool fromDisk = false, bool testOnly = false)
     {

@@ -7,7 +7,6 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
@@ -1660,7 +1659,7 @@ public static class RoleHelpers
             {
                 HudOverrideSystemType host = obj.TryCast<HudOverrideSystemType>();
                 if (host != null) return host.IsActive;
-                
+
                 HqHudSystemType host2 = obj.TryCast<HqHudSystemType>();
                 if (host2 != null) return host2.IsActive;
             }

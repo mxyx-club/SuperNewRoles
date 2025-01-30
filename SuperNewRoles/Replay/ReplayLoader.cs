@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using Il2CppSystem.Dynamic.Utils;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Replay.ReplayActions;
-using SuperNewRoles.Roles.Impostor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using static NetworkedPlayerInfo;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Replay;
 public static class ReplayLoader
@@ -405,7 +401,7 @@ public static class ReplayLoader
         return itemrender;
     }
     public static GameObject GUIObject;
-    static bool IsStarted;
+    private static bool IsStarted;
     public static void AllRoleSet()
     {
         if (ReplayManager.IsReplayMode)
@@ -437,8 +433,8 @@ public static class ReplayLoader
         {
             PlayerNameColor.Set(pc);
         }));
-        ((MonoBehaviour)PlayerControl.LocalPlayer).StopAllCoroutines();
-        ((MonoBehaviour)DestroyableSingleton<HudManager>.Instance).StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoShowIntro());
+        PlayerControl.LocalPlayer.StopAllCoroutines();
+        DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoShowIntro());
         FastDestroyableSingleton<HudManager>.Instance.HideGameLoader();
     }
     public static void SetOptions()
@@ -571,12 +567,12 @@ public static class ReplayLoader
         return true;
     }
     public static List<ReplayTurn> ReplayTurns;
-    static float postime;
-    static float actiontime;
+    private static float postime;
+    private static float actiontime;
     public static int CurrentTurn;
     public static int posindex;
-    static int actionindex;
-    static int currentwrapupposindex;
+    private static int actionindex;
+    private static int currentwrapupposindex;
     public static void OnWrapUp()
     {
         currentwrapupposindex = posindex;
@@ -815,7 +811,7 @@ public static class ReplayLoader
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateButtons))]
-class MeetingHudPopulateButtons
+internal class MeetingHudPopulateButtons
 {
     public static void Postfix(MeetingHud __instance, byte reporter)
     {

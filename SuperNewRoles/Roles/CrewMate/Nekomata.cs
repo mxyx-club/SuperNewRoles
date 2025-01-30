@@ -6,7 +6,7 @@ using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles;
 
-class Nekomata
+internal class Nekomata
 {
     public static void NekomataEnd(NetworkedPlayerInfo __instance)
     {

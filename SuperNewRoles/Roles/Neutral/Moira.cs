@@ -29,7 +29,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
     );
     public static new OptionInfo Optioninfo = new(RoleId.Moira, 303300, true, optionCreator: CreateOption, MaxPlayer: 1);
     public static new IntroInfo Introinfo = new(RoleId.Moira, 1, RoleTypes.Shapeshifter);
-    
+
     public static CustomOption AbilityLimit;
     public static CustomOption ChangeVote;
     private static void CreateOption()
@@ -140,7 +140,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
 
                 if (target1.IsAlive()) SHRSwapTo(sender, target1, target2, player2_role_type);
                 if ((bool)target1.Data.RoleWhenAlive?.HasValue) target1.Data.RoleWhenAlive.value = player2_role_type;
-                
+
                 if (target2.IsAlive()) SHRSwapTo(sender, target2, target1, player1_role_type);
                 if ((bool)target2.Data.RoleWhenAlive?.HasValue) target2.Data.RoleWhenAlive.value = player1_role_type;
 
@@ -165,7 +165,7 @@ public class Moira : RoleBase, INeutral, IMeetingHandler, IWrapUpHandler, INameH
                 if (targetRoleTypes.IsImpostorRole())
                 {
                     sender.RpcSetRole(player1, targetRoleTypes, true);
-                    foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player.PlayerId == player1.PlayerId)
                             continue;

@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.MapOption;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class BlockTool
+internal class BlockTool
 {
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
-    class UpdateSystemPatch
+    private class UpdateSystemPatch
     {
         public static void Prefix(
             [HarmonyArgument(0)] SystemTypes systemType,

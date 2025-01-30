@@ -9,7 +9,6 @@ using SuperNewRoles.Patches;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -47,11 +46,12 @@ public static class Balancer
     public static SpriteRenderer BackPictureObject;
     public static List<(SpriteRenderer, float, int)> ChainObjects;
     public static Sprite BackSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Balancer.MeetingBack.png", 115f);
-    static SpriteRenderer eyebackrender;
-    static SpriteRenderer eyerender;
-    static TextMeshPro textuseability;
-    static TextMeshPro textpleasevote;
-    static float textpleasetimer;
+
+    private static SpriteRenderer eyebackrender;
+    private static SpriteRenderer eyerender;
+    private static TextMeshPro textuseability;
+    private static TextMeshPro textpleasevote;
+    private static float textpleasetimer;
     public enum BalancerState
     {
         NotBalance,
@@ -61,11 +61,11 @@ public static class Balancer
         WaitVote
     }
     public static BalancerState CurrentState = BalancerState.NotBalance;
-    static List<Sprite> chainsprites = new();
-    static int animIndex;
-    static int pleasevoteanimIndex;
-    static float rotate;
-    static float openMADENOtimer;
+    private static List<Sprite> chainsprites = new();
+    private static int animIndex;
+    private static int pleasevoteanimIndex;
+    private static float rotate;
+    private static float openMADENOtimer;
     public static void Update()
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -227,14 +227,14 @@ public static class Balancer
         }
     }
     public static PlayerControl targetplayerleft;
-    static PlayerVoteArea leftplayerarea;
-    static readonly Vector3 leftpos = new(-2.9f, 0, -0.9f);
+    private static PlayerVoteArea leftplayerarea;
+    private static readonly Vector3 leftpos = new(-2.9f, 0, -0.9f);
     public static PlayerControl targetplayerright;
-    static PlayerVoteArea rightplayerarea;
-    static readonly Vector3 rightpos = new(2.3f, 0, -0.9f);
+    private static PlayerVoteArea rightplayerarea;
+    private static readonly Vector3 rightpos = new(2.3f, 0, -0.9f);
     public static bool IsDoubleExile;
-    static PlayerControl currentTarget;
-    static string[] titletexts =
+    private static PlayerControl currentTarget;
+    private static string[] titletexts =
         new string[] {
             "BalancerTitleTextEither",
             "BalancerTitleTextAverage",
@@ -242,8 +242,10 @@ public static class Balancer
             "BalancerTitleTextEitherExile",
             "BalancerTitleTextWhoIsImpostor"
         };
-    static string titletext => ModTranslation.GetString(ModHelpers.GetRandom(titletexts));
-    static void SetActiveMeetingHud(bool active)
+
+    private static string titletext => ModTranslation.GetString(ModHelpers.GetRandom(titletexts));
+
+    private static void SetActiveMeetingHud(bool active)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         MeetingHud.Instance.TitleText.gameObject.SetActive(active);
@@ -354,7 +356,8 @@ public static class Balancer
         textpleasetimer = 0.35f;
         SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Balancer.chain.raw"), false);
     }
-    static TextMeshPro createtext(Vector3 pos, string text, float fontsize)
+
+    private static TextMeshPro createtext(Vector3 pos, string text, float fontsize)
     {
         TextMeshPro tmp = GameObject.Instantiate(MeetingHud.Instance.TitleText, MeetingHud.Instance.transform);
         tmp.text = text;
@@ -369,7 +372,8 @@ public static class Balancer
         GameObject.Destroy(tmp.GetComponent<TextTranslatorTMP>());
         return tmp;
     }
-    static SpriteRenderer createchain(float pos, float rotate, float zpos = 7f)
+
+    private static SpriteRenderer createchain(float pos, float rotate, float zpos = 7f)
     {
 
         SpriteRenderer obj = new GameObject("Chain").AddComponent<SpriteRenderer>();
@@ -406,7 +410,8 @@ public static class Balancer
     public static class Balancer_Patch
     {
         private static string nameData;
-        static void BalancerOnClick(int Index, MeetingHud __instance)
+
+        private static void BalancerOnClick(int Index, MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (currentAbilityUser != null) return;
@@ -426,7 +431,8 @@ public static class Balancer
             IsAbilityUsed = true;
             __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
         }
-        static void Event(MeetingHud __instance)
+
+        private static void Event(MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (PlayerControl.LocalPlayer.IsAlive() && !IsAbilityUsed)
@@ -471,7 +477,8 @@ public static class Balancer
             public byte target1 = byte.MaxValue;
             public byte target2 = byte.MaxValue;
         }
-        enum SHRBalancerState
+
+        private enum SHRBalancerState
         {
             NotBalance,
             ForBalancerMeeting,

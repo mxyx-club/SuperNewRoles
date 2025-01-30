@@ -5,7 +5,7 @@ using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles.Roles;
 
-class Sheriff
+internal class Sheriff
 {
     public static void ResetKillCooldown()
     {

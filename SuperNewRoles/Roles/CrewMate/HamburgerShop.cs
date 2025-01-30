@@ -10,7 +10,7 @@ public static class HamburgerShop
     [HarmonyPatch(typeof(Console), nameof(Console.Use))]
     public static class ConsolsUsePatch
     {
-        static Minigame tempminigame;
+        private static Minigame tempminigame;
         public static void Prefix(Console __instance)
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)

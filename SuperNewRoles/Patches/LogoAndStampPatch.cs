@@ -25,7 +25,8 @@ public static class CredentialsPatch
     private static class VersionShowerPatch
     {
         public static string modColor = "#a6d289";
-        static void Postfix(VersionShower __instance)
+
+        private static void Postfix(VersionShower __instance)
         {
             if (GameObject.FindObjectOfType<MainMenuManager>() == null)
                 return;
@@ -130,7 +131,8 @@ public static class CredentialsPatch
         // ☆バ☆ナ☆ー☆ス☆プ☆ラ☆イ☆ト
         public static Sprite SuperNakanzinoBannerSprite;
         public static Sprite horseBannerSprite;
-        static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
+
+        private static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
         {
             while (true)
             {
@@ -207,7 +209,8 @@ public static class CredentialsPatch
             return HttpStatusCode.OK;
         }
         public static GameObject CreditsPopup;
-        static void ViewBoosterPatch(MainMenuManager __instance)
+
+        private static void ViewBoosterPatch(MainMenuManager __instance)
         {
             var template = __instance.transform.FindChild("StatsPopup");
             var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
@@ -259,9 +262,11 @@ public static class CredentialsPatch
 
             UnityEngine.Object.Destroy(statsTextTransform.gameObject); // 用済みなオブジェクトを削除
         }
-        static bool Downloaded = false;
+
+        private static bool Downloaded = false;
         public static MainMenuManager instance;
-        static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
+
+        private static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
         {
             while (true)
             {

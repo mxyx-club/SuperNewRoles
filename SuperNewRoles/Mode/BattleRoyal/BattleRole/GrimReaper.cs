@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static MonoMod.RuntimeDetour.DynamicHookGen;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole;
 public class GrimReaper : BattleRoyalRole

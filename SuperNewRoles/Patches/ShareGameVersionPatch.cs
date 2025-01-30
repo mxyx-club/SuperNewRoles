@@ -21,7 +21,8 @@ public static class PlayerCountChange
         __instance.MinPlayers = 1;
     }
 }
-class ShareGameVersion
+
+internal class ShareGameVersion
 {
     public static bool IsVersionOK = false;
     public static bool IsChangeVersion = false;
@@ -72,7 +73,7 @@ class ShareGameVersion
             GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
         }
 
-        static void ClearVersionErrorInfo()
+        private static void ClearVersionErrorInfo()
         {
             VersionErrorInfo = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, FastDestroyableSingleton<HudManager>.Instance.transform);
             VersionErrorInfo.fontSize = VersionErrorInfo.fontSizeMin = VersionErrorInfo.fontSizeMax = 3f;

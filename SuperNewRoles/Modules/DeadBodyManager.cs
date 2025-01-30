@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuperNewRoles.Modules;
 
 [Flags]
 public enum DeadBodyUser
 {
-    None         = 1 << 0,
+    None = 1 << 0,
     Frankenstein = 1 << 1,
-    Matryoshka   = 1 << 2,
+    Matryoshka = 1 << 2,
 }
 
 public static class DeadBodyManager
@@ -54,7 +51,8 @@ public static class DeadBodyManager
         {
             if (!currentUser.HasFlag(newUser))
                 DeadBodyUsers[bodyId] |= newUser;
-        } else
+        }
+        else
             DeadBodyUsers[bodyId] = newUser;
     }
     /// <summary>

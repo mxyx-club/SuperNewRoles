@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Patches;
 using UnityEngine;
@@ -10,7 +8,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
 {
     public static class BattleRoyalWebManager
     {
-        static Dictionary<byte, string> target;
+        private static Dictionary<byte, string> target;
         public static void OnStartMeeting()
         {
             foreach (var data in target)

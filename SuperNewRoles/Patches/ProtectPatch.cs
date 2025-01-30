@@ -5,9 +5,6 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor.MadRole;
-using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
@@ -15,7 +12,7 @@ namespace SuperNewRoles.Patches;
 
 #region PlayerControlCheckProtectPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
-static class CheckProtectPatch
+internal static class CheckProtectPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {

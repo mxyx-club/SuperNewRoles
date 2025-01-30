@@ -1,11 +1,10 @@
-using System.Linq;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class Doorr
+internal class Doorr
 {
     public static void ResetCooldown()
     {

@@ -3,13 +3,14 @@ using SuperNewRoles.Mode.PlusMode;
 
 namespace SuperNewRoles.Mode;
 
-enum PlusModeId
+internal enum PlusModeId
 {
     No,
     NotSabotage,
     NotTaskWin
 }
-class PlusModeHandler
+
+internal class PlusModeHandler
 {
     public static List<PlusModeId> thisPlusModes;
     public static void ClearAndReload()

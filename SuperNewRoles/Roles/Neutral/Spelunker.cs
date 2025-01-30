@@ -22,7 +22,8 @@ public static class Spelunker
         }
         return true;
     }
-    const float VentDistance = 0.35f;
+
+    private const float VentDistance = 0.35f;
     public static void FixedUpdate()
     {
         if (RoleClass.IsMeeting) return;
@@ -87,7 +88,7 @@ public static class Spelunker
     }
     public static Vector2? DeathPosition;
     [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.Use), new Type[] { })]
-    class MovingPlatformUsePatch
+    private class MovingPlatformUsePatch
     {
         public static bool Prefix()
         {
@@ -95,7 +96,7 @@ public static class Spelunker
         }
     }
     [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.UsePlatform))]
-    class MovingPlatformUsePlatformPatch
+    private class MovingPlatformUsePlatformPatch
     {
         public static void Postfix(MovingPlatformBehaviour __instance, PlayerControl target)
         {
@@ -114,7 +115,7 @@ public static class Spelunker
         }
     }
     [HarmonyPatch(typeof(DoorConsole), nameof(DoorConsole.Use))]
-    class DoorConsoleOpenPatch
+    private class DoorConsoleOpenPatch
     {
         public static void Postfix(DoorConsole __instance)
         {

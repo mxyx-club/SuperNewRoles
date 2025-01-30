@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -115,7 +114,7 @@ public static class CustomRoles
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
-    class HandleDisconnectPatch
+    private class HandleDisconnectPatch
     {
         public static void Postfix(GameData __instance, PlayerControl player, DisconnectReasons reason)
         {

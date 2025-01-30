@@ -1,5 +1,4 @@
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 
@@ -26,7 +25,8 @@ public class ZombieOptions
         ZombieCommingLightOption = CustomOption.Create(101506, true, CustomOptionType.Generic, "ZombieCommingLightSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
         ZombieCommingSpeedOption = CustomOption.Create(101507, true, CustomOptionType.Generic, "ZombieCommingSpeedSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
     }
-    static float GetSpeed(float speed) { return speed <= 0 ? 0.001f : speed; }
+
+    private static float GetSpeed(float speed) { return speed <= 0 ? 0.001f : speed; }
     public static void FirstChangeSettings()
     {
         var optdata = SyncSetting.DefaultOption.DeepCopy();

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using AmongUs.GameOptions;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.Helpers;
@@ -14,10 +13,10 @@ namespace SuperNewRoles.Modules;
 
 public static class CustomRegulation
 {
-    static bool Loaded = false;
+    private static bool Loaded = false;
 
     // CustomRegulation.jsonのテストをする時にtrueに変える
-    const bool IsTest = false;
+    private const bool IsTest = false;
     public static IEnumerator FetchRegulation()
     {
         if (Loaded) yield break;

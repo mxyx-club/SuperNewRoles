@@ -27,7 +27,7 @@ public class Footprint
         if (anonymousFootprints)
             this.color = Palette.PlayerColors[6];
         else
-            this.color = Palette.PlayerColors[(int)player.Data.DefaultOutfit.ColorId];
+            this.color = Palette.PlayerColors[player.Data.DefaultOutfit.ColorId];
 
         Vector3 posdata = pos != null ? (Vector3)pos : player.transform.position;
         footprint = new GameObject("Footprint");

@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay
 {
@@ -15,7 +12,7 @@ namespace SuperNewRoles.Replay
             reader = null;
         }
         public static BinaryReader reader;
-        static string filePath;
+        private static string filePath;
         //返り値はちゃんと読み込めたか(フアイルのデータがこわれていないか)
         public static (ReplayData, bool) ReadReplayDataSelector(string filename)
         {

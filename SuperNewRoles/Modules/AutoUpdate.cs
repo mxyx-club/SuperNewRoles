@@ -10,7 +10,7 @@ namespace SuperNewRoles;
 
 public class AutoUpdate
 {
-    static AnnouncementPanel firstpanel;
+    private static AnnouncementPanel firstpanel;
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Update))]
     public static class AnnouncementUpdatePatch
     {

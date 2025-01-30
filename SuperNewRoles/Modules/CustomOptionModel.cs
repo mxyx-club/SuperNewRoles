@@ -574,7 +574,7 @@ public class CustomOptionBlank : CustomOption
 }
 
 [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
-class RoleOptionsDataGetNumPerGamePatch
+internal class RoleOptionsDataGetNumPerGamePatch
 {
     public static void Postfix(ref int __result, ref RoleTypes role)
     {
@@ -598,7 +598,7 @@ public class AmongUsClientOnPlayerJoinedPatch
     }
 }
 
-static class GameOptionsMenuUpdatePatch
+internal static class GameOptionsMenuUpdatePatch
 {
     /// <summary>現在, 封印処理のある設定を有しているか ( 此処をtrueにする事で封印処理が実行される )</summary>
     public const bool HasSealingOption = false;
@@ -628,7 +628,7 @@ static class GameOptionsMenuUpdatePatch
     }
 }
 
-class GameOptionsDataPatch
+internal class GameOptionsDataPatch
 {
     public static string Tl(string key)
     {
@@ -718,7 +718,8 @@ class GameOptionsDataPatch
     public static void UpdateData()
     {
         bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool();
-        if (hideSettings) {
+        if (hideSettings)
+        {
             ResultPages = new()
             {
                 GameOptionsManager.Instance.CurrentGameOptions.ToHudString(PlayerControl.AllPlayerControls.Count)

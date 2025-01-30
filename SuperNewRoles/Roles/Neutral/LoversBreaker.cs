@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,8 +8,8 @@ namespace SuperNewRoles.Roles.Neutral
     public static class LoversBreaker
     {
         //ここにコードを書きこんでください
-        static bool IsViewd = false;
-        static bool IsNotSetted = false;
+        private static bool IsViewd = false;
+        private static bool IsNotSetted = false;
         public static void LateUpdate()
         {
             if (!IsNotSetted && DateTime.UtcNow >= new DateTime(2022, 12, 23, 12, 0, 0))

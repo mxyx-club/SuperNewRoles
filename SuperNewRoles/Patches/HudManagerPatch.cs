@@ -2,11 +2,10 @@ using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
-using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class HudManagerPatch
+internal class HudManagerPatch
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class HudManagerUpdatePatch

@@ -1,7 +1,5 @@
-using System;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.Events;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
@@ -13,7 +11,7 @@ public class MainMenuPatch
     private static bool horseButtonState = HorseModeOption.enableHorseMode;
     private static Sprite horseModeOffSprite = null;
 
-    static void hidebtn(PassiveButton btn)
+    private static void hidebtn(PassiveButton btn)
     {
         GameObject.Destroy(btn.GetComponent<AspectScaledAsset>());
         btn.activeSprites = null;

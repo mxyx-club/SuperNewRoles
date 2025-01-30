@@ -7,7 +7,7 @@ using LogLevel = BepInEx.Logging.LogLevel;
 
 namespace SuperNewRoles;
 
-class Logger
+internal class Logger
 {
     public static bool isEnable;
     public static List<string> disableList = new();

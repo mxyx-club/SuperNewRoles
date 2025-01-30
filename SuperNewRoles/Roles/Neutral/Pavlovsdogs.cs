@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 using AmongUs.GameOptions;
 using Hazel;
@@ -51,7 +50,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     public PavlovsDogs(PlayerControl p) : base(p, Roleinfo, null, Introinfo)
     {
         UpdatedToOwnerDead = false;
-        PavlovsKillButton = new(null,this,KillOnClick,(isAlive) => isAlive,
+        PavlovsKillButton = new(null, this, KillOnClick, (isAlive) => isAlive,
             CustomButtonCouldType.CanMove | CustomButtonCouldType.SetTarget,
             null, FastDestroyableSingleton<HudManager>.Instance.KillButton.graphic.sprite,
             () => OwnerDead ?
@@ -202,7 +201,7 @@ public class PavlovsDogs : RoleBase, INeutral, IVentAvailable, IImpostorVision, 
     }
     public void BuildSetting(IGameOptions gameOptions)
     {
-        Logger.Info("PavlovsDogsRunAwayTime: "+ PavlovsOwner.RunAwayDeathTime.GetFloat());
+        Logger.Info("PavlovsDogsRunAwayTime: " + PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.ShapeshifterCooldown, PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.ShapeshifterDuration, PavlovsOwner.RunAwayDeathTime.GetFloat());
         gameOptions.SetFloat(FloatOptionNames.KillCooldown,

@@ -273,7 +273,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
             writer.Write(p.PlayerId);
             writer.Write((byte)estimatedDeathTime);
             writer.Write((byte)deadReason);
-            writer.Write((byte)ReportDeadBodyPatch.MeetingCount.all);
+            writer.Write(ReportDeadBodyPatch.MeetingCount.all);
             writer.EndRPC();
         }
     }

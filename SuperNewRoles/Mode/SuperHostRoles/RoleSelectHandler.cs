@@ -1,11 +1,8 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
@@ -287,7 +284,7 @@ public static class RoleSelectHandler
 
         // インポスター系の通常設定は一番最初にやる
 
-        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (CrewmateSyncRoles.ContainsKey(player.PlayerId) || DesyncRoles.ContainsKey(player.PlayerId))
                 continue;
@@ -326,7 +323,7 @@ public static class RoleSelectHandler
             SetVanillaRole(player, syncdata.Value.role, syncdata.Value.isNotModOnly);
         }
 
-        foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsImpostor())
                 continue;
@@ -337,7 +334,7 @@ public static class RoleSelectHandler
             break;
         }
 
-        
+
         // 暫定対処、通常は起こり得ないが起こり得た場合にはエラーを出す
         if (NotDesyncTarget == null)
             throw new System.NotImplementedException("Crewmates is all desync role.");

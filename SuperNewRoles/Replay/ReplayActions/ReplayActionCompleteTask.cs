@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using SuperNewRoles.Patches;
 using static NetworkedPlayerInfo;
 
 namespace SuperNewRoles.Replay.ReplayActions;

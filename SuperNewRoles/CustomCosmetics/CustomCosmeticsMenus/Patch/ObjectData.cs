@@ -243,7 +243,8 @@ public static class ObjectData
         PresetAreas = presetplayers.ToArray();
         PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup").gameObject.SetActive(true);
     }
-    static void Set(PassiveButton btn, int index)
+
+    private static void Set(PassiveButton btn, int index)
     {
         btn.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SetPreset(index)));
     }

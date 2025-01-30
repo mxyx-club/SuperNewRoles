@@ -1,23 +1,17 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using BepInEx;
-using BepInEx.IL2CPP;
 using BepInEx.Unity.IL2CPP;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using Il2CppSystem.Data;
 using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
-using static SuperNewRoles.Modules.CustomRegulation;
 
 namespace SuperNewRoles.Modules;
 public static class ModDownloader

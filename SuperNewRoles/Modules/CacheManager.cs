@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SuperNewRoles.Modules;
 
-class CacheManager
+internal class CacheManager
 {
     public static Dictionary<int, RoleId> MyRoleCache;
     public static Dictionary<int, RoleId> MyGhostRoleCache;

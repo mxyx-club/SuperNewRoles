@@ -1,13 +1,5 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patches;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.RoleBases;
-using UnityEngine;
-using static SuperNewRoles.Modules.CustomOption;
 
 namespace SuperNewRoles.Roles;
 

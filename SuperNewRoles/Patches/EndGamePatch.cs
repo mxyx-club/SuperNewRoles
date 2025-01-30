@@ -5,7 +5,6 @@ using System.Text;
 using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Il2CppSystem.CodeDom;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -105,7 +104,8 @@ public enum WinCondition
     FrankensteinWin,
     OwlWin,
 }
-class FinalStatusPatch
+
+internal class FinalStatusPatch
 {
     public static class FinalStatusData
     {
@@ -134,7 +134,8 @@ public static class ShipStatusPatch
         __result = false;
     }
 }
-static class AdditionalTempData
+
+internal static class AdditionalTempData
 {
     // Should be implemented using a proper GameOverReason in the future
     public static List<PlayerRoleInfo> playerRoles = new();
@@ -185,8 +186,8 @@ public class EndGameManagerSetUpPatch
         }
     }
     #region ProcessWinText
-    static Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
-    static Dictionary<WinCondition, (string, Color32)> WinConditionDictionary = new() {
+    private static Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
+    private static Dictionary<WinCondition, (string, Color32)> WinConditionDictionary = new() {
             { WinCondition.HAISON, ("HAISON", HaisonColor) },
             { WinCondition.LoversWin, ("LoversName", RoleClass.Lovers.color) },
             { WinCondition.GodWin, ("GodName", RoleClass.God.color) },
@@ -348,11 +349,11 @@ public class EndGameManagerSetUpPatch
             i++;
             int num2 = (i % 2 == 0) ? -1 : 1;
             int num3 = (i + 1) / 2;
-            float num4 = (float)num3 / (float)num;
+            float num4 = num3 / (float)num;
             float num5 = Mathf.Lerp(1f, 0.75f, num4);
-            float num6 = (float)((i == 0) ? -8 : -1);
+            float num6 = (i == 0) ? -8 : -1;
             PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
-            poolablePlayer.transform.localPosition = new Vector3(1f * (float)num2 * (float)num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + (float)num3 * 0.01f) * 0.9f;
+            poolablePlayer.transform.localPosition = new Vector3(1f * num2 * num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + num3 * 0.01f) * 0.9f;
             float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
             Vector3 vector = new(num7, num7, 1f);
             poolablePlayer.transform.localScale = vector;
@@ -1482,9 +1483,9 @@ public static class OnGameEndPatch
     }
 }
 [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
-class ExileControllerMessagePatch
+internal class ExileControllerMessagePatch
 {
-    static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
+    private static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
     {
         if (id is StringNames.GameDiscussTime && ModeHandler.IsMode(ModeId.Werewolf, false)) __result = ModTranslation.GetString("WerewolfAbilityTimeSetting");
         try
@@ -1508,7 +1509,7 @@ class ExileControllerMessagePatch
     }
 }
 [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
-class ExileControllerReEnableGameplayPatch
+internal class ExileControllerReEnableGameplayPatch
 {
     public static void Postfix(ExileController __instance)
     {

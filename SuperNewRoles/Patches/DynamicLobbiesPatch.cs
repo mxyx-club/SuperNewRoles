@@ -14,7 +14,7 @@ namespace SuperNewRoles.Patches;
 [Harmony]
 public static class DynamicLobbies
 {
-    static int LobbyLimit = 15;
+    private static int LobbyLimit = 15;
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     public static class AmongUsClientOnPlayerJoined
@@ -118,10 +118,10 @@ public static class DynamicLobbies
                         val.EndMessage();
                         __instance.SendOrDisconnect(val);
                         val.Clear(innerNetObject.sendMode);
-                        val.StartMessage((byte)5);
+                        val.StartMessage(5);
                         val.Write(__instance.GameId);
                     }
-                    val.StartMessage((byte)1);
+                    val.StartMessage(1);
                     val.WritePacked(innerNetObject.NetId);
                     try
                     {
@@ -153,7 +153,7 @@ public static class DynamicLobbies
                     val2.EndMessage();
                     __instance.SendOrDisconnect(val2);
                     val2.Clear((SendOption)(byte)j);
-                    val2.StartMessage((byte)5);
+                    val2.StartMessage(5);
                     val2.Write(__instance.GameId);
                 }
             }

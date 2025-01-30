@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -13,14 +12,12 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor.Crab;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -28,7 +25,6 @@ using SuperNewRoles.Sabotage;
 using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
-using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Modules;
 
@@ -824,7 +820,7 @@ public static class RPCProcedure
 
     public static void Camouflage(bool Is, PlayerData<byte> camouflageList = null)
     {
-        if(camouflageList == null) camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
+        if (camouflageList == null) camouflageList = new(defaultvalue: RoleClass.Camouflager.Color);
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
@@ -1484,7 +1480,7 @@ public static class RPCProcedure
         }
     }
     [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
-    class KillAnimationCoPerformKillPatch
+    private class KillAnimationCoPerformKillPatch
     {
         public static bool hideNextAnimation = false;
 
@@ -1635,9 +1631,9 @@ public static class RPCProcedure
     public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
-    class RPCHandlerPatch
+    private class RPCHandlerPatch
     {
-        static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
+        private static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
         {
             switch ((RpcCalls)callId)
             {
@@ -1685,7 +1681,7 @@ public static class RPCProcedure
             { CustomRPC.CustomSnapTo, false },
         };
 
-        static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
+        private static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             CustomRPC rpc = (CustomRPC)callId;
             if (IsWritingRPCLog.TryGetValue(rpc, out bool value) && value)

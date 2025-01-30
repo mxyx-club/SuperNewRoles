@@ -45,7 +45,7 @@ public static class Analytics
                 currentPopup = Popup;
                 return;
             }
-            if (currentPopup == null &&!ConfigRoles.IsViewd20240618ServerInfo.Value)
+            if (currentPopup == null && !ConfigRoles.IsViewd20240618ServerInfo.Value)
             {
                 ConfigRoles.IsViewd20240618ServerInfo.Value = true;
                 GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
@@ -54,7 +54,7 @@ public static class Analytics
                 Popup.transform.FindChild("ExitGame").localPosition = new(0f, -1.5f, -0.5f);
                 GameObject.Destroy(Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextTranslatorTMP>());
                 Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("20240618_25SaverInfo_PopupOK");
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0.04f,0,0);
+                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0.04f, 0, 0);
                 TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
                 Title.text = ModTranslation.GetString("20240618_25SaverInfo_PopupTitle");
                 Title.transform.localPosition = new(0.07f, 1.285f, -0.5f);

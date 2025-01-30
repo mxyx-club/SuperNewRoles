@@ -5,8 +5,6 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static Il2CppSystem.Uri;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.Crewmate;
 

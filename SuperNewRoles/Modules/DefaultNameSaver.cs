@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
 
 namespace SuperNewRoles.Modules;
@@ -12,7 +8,7 @@ public static class DefaultNameSaver
     private static Dictionary<int, string> DefaultNames = new();
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.CoShowIntro))]
-    class CoShowIntroPatch
+    private class CoShowIntroPatch
     {
         public static void Prefix()
         {

@@ -279,7 +279,7 @@ public class CustomOverlays
     public static class CustomOverlayKeybinds
     {
         /// <summary> オーバーレイの開閉をブロックするか </summary>
-        static bool IsOpenBlocked =>
+        private static bool IsOpenBlocked =>
             FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening ||
             (!ModHelpers.IsDebugMode() && (IntroCutscene.Instance || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed));
 

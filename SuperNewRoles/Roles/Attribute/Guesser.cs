@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-using Il2CppInterop.Generator.Passes;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
@@ -68,7 +65,8 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
             return true;
         if (Player.IsDead())
             return true;
-        if (args.Length < 2){
+        if (args.Length < 2)
+        {
             AddChatPatch.SendCommand(Player,
                 ModTranslation.GetString("GuesserCommandUsage"),
                 GuesserInfoTitle
@@ -166,10 +164,10 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
             targetPlayer = Player;
         UseCount();
         targetPlayer.RpcInnerExiled();
-            AddChatPatch.SendCommand(null,
-               ModTranslation.GetString("GuesserPlayerWasDead", targetPlayer.Data.DefaultOutfit.PlayerName) + "\n",
-               ModTranslation.GetString("GuesserBigNewsTitle")
-            );
+        AddChatPatch.SendCommand(null,
+           ModTranslation.GetString("GuesserPlayerWasDead", targetPlayer.Data.DefaultOutfit.PlayerName) + "\n",
+           ModTranslation.GetString("GuesserBigNewsTitle")
+        );
         Mode.SuperHostRoles.Helpers.ShowReactorFlash(0.75f);
 
         // Shoot player and send chat info if activated
@@ -182,7 +180,7 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
         RPCProcedure.GuesserShoot(Player.PlayerId, targetPlayer.PlayerId, targetPlayer.PlayerId, (byte)role);
         return true;
     }
-    private string GuesserInfoTitle => "<size=160%>"+CustomOptionHolder.Cs(Roleinfo.RoleColor, Roleinfo.NameKey + "Name")+"</size>";
+    private string GuesserInfoTitle => "<size=160%>" + CustomOptionHolder.Cs(Roleinfo.RoleColor, Roleinfo.NameKey + "Name") + "</size>";
     private static string GetErrorText(string ErrorId)
     {
         return ModTranslation.GetString("GuesserError" + ErrorId) + "\n" +
@@ -193,7 +191,8 @@ public class GuesserBase : RoleBase, ISupportSHR, ISHRChatCommand, IMeetingHandl
     {
     }
 }
-class Guesser
+
+internal class Guesser
 {
     public const int MaxOneScreenRole = 40;
     public static int Page;
@@ -203,7 +202,8 @@ class Guesser
     private static Dictionary<TeamRoleType, SpriteRenderer> RoleSelectButtons;
     private static List<SpriteRenderer> PageButtons;
     public static TeamRoleType currentTeamType;
-    static void guesserSelectRole(TeamRoleType Role, bool SetPage = true)
+
+    private static void guesserSelectRole(TeamRoleType Role, bool SetPage = true)
     {
         currentTeamType = Role;
         if (SetPage) Page = 1;
@@ -225,7 +225,8 @@ class Guesser
             RoleButton.Value.color = new(0, 0, 0, RoleButton.Key == Role ? 1 : 0.25f);
         }
     }
-    static void guesserOnClick(int buttonTarget, MeetingHud __instance)
+
+    private static void guesserOnClick(int buttonTarget, MeetingHud __instance)
     {
         GuesserBase guesserBaseMe = PlayerControl.LocalPlayer.GetRoleBase<GuesserBase>();
         if (guesserUI != null || !(__instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted or MeetingHud.VoteStates.Discussion)) return;
@@ -515,9 +516,9 @@ class Guesser
     }
 
     [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.Select))]
-    class PlayerVoteAreaSelectPatch
+    private class PlayerVoteAreaSelectPatch
     {
-        static bool Prefix(MeetingHud __instance)
+        private static bool Prefix(MeetingHud __instance)
         {
             return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser, RoleId.EvilGuesser) && guesserUI != null);
         }

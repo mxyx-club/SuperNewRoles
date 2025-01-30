@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -15,7 +12,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using static System.String;
 using static SuperNewRoles.Patches.AddChatPatch;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 

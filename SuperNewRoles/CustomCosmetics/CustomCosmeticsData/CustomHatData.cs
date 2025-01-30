@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
-using Innersloth.Assets;
 using PowerTools;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using static SuperNewRoles.CustomCosmetics.CustomHats;
-using static SuperNewRoles.Modules.Blacklist;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomHatData : HatData
@@ -42,8 +36,10 @@ public class CustomHatData : HatData
             }
         }
     }
-    static Dictionary<string, HatViewData> cache = new();
-    static HatViewData getbycache(string id)
+
+    private static Dictionary<string, HatViewData> cache = new();
+
+    private static HatViewData getbycache(string id)
     {
         if (!cache.ContainsKey(id) || cache[id] == null)
         {
@@ -52,7 +48,7 @@ public class CustomHatData : HatData
         return cache[id];
     }
     [HarmonyPatch(typeof(CosmeticsCache), nameof(CosmeticsCache.GetHat))]
-    class CosmeticsCacheGetHatPatch
+    private class CosmeticsCacheGetHatPatch
     {
         public static bool Prefix(CosmeticsCache __instance, string id, ref HatViewData __result)
         {
@@ -65,7 +61,7 @@ public class CustomHatData : HatData
     }
 
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.UpdateMaterial))]
-    class HatParentUpdateMaterialPatch
+    private class HatParentUpdateMaterialPatch
     {
         public static bool Prefix(HatParent __instance)
         {
@@ -136,11 +132,11 @@ public class CustomHatData : HatData
                 default:
                     if (__instance.FrontLayer)
                     {
-                        __instance.FrontLayer.maskInteraction = (SpriteMaskInteraction)0;
+                        __instance.FrontLayer.maskInteraction = 0;
                     }
                     if (__instance.BackLayer)
                     {
-                        __instance.BackLayer.maskInteraction = (SpriteMaskInteraction)0;
+                        __instance.BackLayer.maskInteraction = 0;
                     }
                     break;
             }
@@ -156,7 +152,7 @@ public class CustomHatData : HatData
         }
     }
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetFloorAnim))]
-    class HatParentSetFloorAnimPatch
+    private class HatParentSetFloorAnimPatch
     {
         public static bool Prefix(HatParent __instance)
         {
@@ -168,7 +164,7 @@ public class CustomHatData : HatData
         }
     }
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetClimbAnim))]
-    class HatParentSetClimbAnimPatch
+    private class HatParentSetClimbAnimPatch
     {
         public static bool Prefix(HatParent __instance)
         {
@@ -185,7 +181,7 @@ public class CustomHatData : HatData
         }
     }
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.LateUpdate))]
-    class HatParentLateUpdatePatch
+    private class HatParentLateUpdatePatch
     {
         public static bool Prefix(HatParent __instance)
         {
@@ -223,7 +219,7 @@ public class CustomHatData : HatData
     }
 
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.PopulateFromViewData))]
-    class HatParentPopulateFromHatViewDataPatch
+    private class HatParentPopulateFromHatViewDataPatch
     {
         public static bool Prefix(HatParent __instance)
         {
@@ -266,7 +262,7 @@ public class CustomHatData : HatData
         }
     }
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetIdleAnim), new Type[] { typeof(int) })]
-    class HatParentSetIdleAnimPatch
+    private class HatParentSetIdleAnimPatch
     {
         public static bool Prefix(HatParent __instance, int colorId)
         {
@@ -282,7 +278,7 @@ public class CustomHatData : HatData
     }
 
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetHat), new Type[] { typeof(int) })]
-    class HatParentSetHatPatch
+    private class HatParentSetHatPatch
     {
         public static bool Prefix(HatParent __instance, int color)
         {

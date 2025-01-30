@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SuperNewRoles.Mode.NotImpostorCheck;
 
-class Main
+internal class Main
 {
     public static List<int> Impostors;
     public static void ClearAndReload()

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace SuperNewRoles.Roles;
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
-class MeetingUpdatePatch
+internal class MeetingUpdatePatch
 {
     public static void Postfix(MeetingHud __instance)
     {
@@ -46,7 +46,8 @@ class MeetingUpdatePatch
         }
     }
 }
-class Meetingsheriff_updatepatch
+
+internal class Meetingsheriff_updatepatch
 {
     internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
@@ -88,9 +89,9 @@ class Meetingsheriff_updatepatch
         };
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-class MeetingSheriff_Patch
+internal class MeetingSheriff_Patch
 {
-    static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
+    private static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
         (var killResult, var suicideResult) = Sheriff.SheriffKillResult(CachedPlayer.LocalPlayer, Target);
@@ -115,7 +116,8 @@ class MeetingSheriff_Patch
             __instance.playerStates.ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
         }
     }
-    static void Event(MeetingHud __instance)
+
+    private static void Event(MeetingHud __instance)
     {
         if (!PlayerControl.LocalPlayer.IsRole(RoleId.MeetingSheriff) || PlayerControl.LocalPlayer.IsAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
             return;
@@ -138,7 +140,7 @@ class MeetingSheriff_Patch
         }
     }
 
-    static void Postfix(MeetingHud __instance)
+    private static void Postfix(MeetingHud __instance)
     {
         new LateTask(() => PlayerAnimation.PlayerAnimations.Values.All(x => { x.HandleAnim(RpcAnimationType.Stop); return false; }), 0.5f);
         LadderDead.Reset();
@@ -233,7 +235,8 @@ class MeetingSheriff_Patch
     }
     public static GameObject Right;
     public static GameObject Left;
-    static void CreateAreaButton(MeetingHud __instance)
+
+    private static void CreateAreaButton(MeetingHud __instance)
     {
         GameObject template = __instance.SkipVoteButton.gameObject;
         GameObject targetBox = Object.Instantiate(template, __instance.transform);

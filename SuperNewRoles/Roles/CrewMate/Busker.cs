@@ -1,5 +1,4 @@
 using System.Collections;
-using Agartha.CustomAnimation;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Hazel;

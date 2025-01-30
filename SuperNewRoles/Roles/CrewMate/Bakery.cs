@@ -131,7 +131,8 @@ public class Bakery
         }
         return false;
     }
-    static bool IsSec;
+
+    private static bool IsSec;
     // 生存判定
     public static bool BakeryAlive()
     {
@@ -155,7 +156,7 @@ public class Bakery
         return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
     }
 
-    static void Postfix(ExileController __instance)
+    private static void Postfix(ExileController __instance)
     {
         // 文字定義
         confirmImpostorSecondText = Object.Instantiate(
@@ -209,7 +210,7 @@ public class Bakery
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
     public class BakeryChatDisable
     {
-        static void Postfix()
+        private static void Postfix()
         {
             confirmImpostorSecondText.gameObject.SetActive(false);
         }

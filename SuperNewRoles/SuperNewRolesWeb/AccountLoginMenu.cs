@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HarmonyLib;
-using Sentry.Unity.NativeUtils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,28 +10,25 @@ namespace SuperNewRoles.SuperNewRolesWeb
 {
     public static class AccountLoginMenu
     {
-        static PassiveButton LoginButton;
-        static TextMeshPro LoginButtonText;
-        static PassiveButton SignupButton;
-        static TextMeshPro SignupButtonText;
-        static TextMeshPro SuperNewRolesWebText;
-        static TextMeshPro UserIdText;
-
-        static EditName LoginPopup;
-        static TextMeshPro LoginPopupTitle;
-        static TextMeshPro LoginPopupCurrentTitle;
-        static PassiveButton LoginPopupSubmitButton;
-        static PassiveButton LoginPopupBackButton;
-
-        static EditName SignupPopup;
-        static TextMeshPro SignupPopupTitle;
-        static TextMeshPro SignupPopupCurrentTitle;
-        static PassiveButton SignupPopupBackButton;
-
-        static string CurrentUserId;
-        static bool IsUserIdInputNow;
+        private static PassiveButton LoginButton;
+        private static TextMeshPro LoginButtonText;
+        private static PassiveButton SignupButton;
+        private static TextMeshPro SignupButtonText;
+        private static TextMeshPro SuperNewRolesWebText;
+        private static TextMeshPro UserIdText;
+        private static EditName LoginPopup;
+        private static TextMeshPro LoginPopupTitle;
+        private static TextMeshPro LoginPopupCurrentTitle;
+        private static PassiveButton LoginPopupSubmitButton;
+        private static PassiveButton LoginPopupBackButton;
+        private static EditName SignupPopup;
+        private static TextMeshPro SignupPopupTitle;
+        private static TextMeshPro SignupPopupCurrentTitle;
+        private static PassiveButton SignupPopupBackButton;
+        private static string CurrentUserId;
+        private static bool IsUserIdInputNow;
         [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.SetText))]
-        class TextBoxTMPSetTextPatch
+        private class TextBoxTMPSetTextPatch
         {
             public static bool Prefix(TextBoxTMP __instance, ref string input, string inputCompo)
             {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.NotImpostorCheck;
 
-class NameSet
+internal class NameSet
 {
     public static void Postfix()
     {

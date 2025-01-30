@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
 
 namespace SuperNewRoles.Buttons;
 

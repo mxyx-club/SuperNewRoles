@@ -1,12 +1,11 @@
 
+using System.Linq;
 using AmongUs.GameOptions;
-using MS.Internal.Xml.XPath;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using System.Linq;
 namespace SuperNewRoles.Roles.Crewmate.NiceRedRidingHood;
 
 public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler, IHaveHauntAbility, ISupportSHR

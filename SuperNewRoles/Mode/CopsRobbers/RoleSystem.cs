@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -9,7 +8,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers;
 
-class RoleSystem
+internal class RoleSystem
 {
     public static void RoleSetName()
     {

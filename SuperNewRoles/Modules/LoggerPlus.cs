@@ -5,7 +5,7 @@ using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Modules;
 
-class LoggerPlus
+internal class LoggerPlus
 {
     /// <summary> ログ出力先(推定)のファイル名(起動時の既存起動数に依存) </summary>
     private static string LogName;
@@ -88,7 +88,7 @@ class LoggerPlus
         }
     }
 
-    enum UserType
+    private enum UserType
     {
         Client, // ゲーム外
         Host,
@@ -96,7 +96,7 @@ class LoggerPlus
         Guest,
     }
 
-    static UserType GetUserType() =>
+    private static UserType GetUserType() =>
         AmongUsClient.Instance.GameState is not AmongUsClient.GameStates.Started and not InnerNet.InnerNetClient.GameStates.Ended
             ? UserType.Client
             : AmongUsClient.Instance.AmHost

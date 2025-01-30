@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using UnityEngine;
 
@@ -11,7 +6,7 @@ namespace SuperNewRoles.Patches;
 public static class TrickOrTreat
 {
     [HarmonyPatch(typeof(PlayerParticles), nameof(PlayerParticles.Start))]
-    class PlayerParticlesStartPatch
+    private class PlayerParticlesStartPatch
     {
         public static bool Prefix(PlayerParticles __instance)
         {

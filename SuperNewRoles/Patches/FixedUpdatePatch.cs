@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using Il2CppSystem.Runtime.Remoting.Lifetime;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -15,7 +14,6 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -45,7 +43,7 @@ public class AbilityUpdate
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
 public class FixedUpdate
 {
-    static void SetBasePlayerOutlines()
+    private static void SetBasePlayerOutlines()
     {
         foreach (PlayerControl target in CachedPlayer.AllPlayers)
         {
@@ -56,7 +54,7 @@ public class FixedUpdate
         }
     }
 
-    static void SetBaseVentMaterial()
+    private static void SetBaseVentMaterial()
     {
         if (PlayerControl.LocalPlayer.IsUseVent() || PlayerControl.LocalPlayer.IsRole(RoleTypes.Engineer)) return;
         if (!ShipStatus.Instance) return;
@@ -68,7 +66,7 @@ public class FixedUpdate
         }
     }
 
-    static void ReduceKillCooldown(PlayerControl __instance)
+    private static void ReduceKillCooldown(PlayerControl __instance)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
         {

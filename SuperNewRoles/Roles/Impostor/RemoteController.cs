@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using AmongUs.Data;
 using HarmonyLib;
 using Hazel;
-using Il2CppSystem;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patches;
@@ -13,7 +9,6 @@ using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using UnityEngine.Audio;
 using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Roles.Impostor;
@@ -232,7 +227,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
             writer.Write((byte)RpcType.SetUnderOperation);
             writer.Write(true);
             SendRpc(writer);
-            
+
             if (Constants.ShouldPlaySfx())
             {
                 SoundManager.Instance.PlaySound(
@@ -264,7 +259,7 @@ public class RemoteController : RoleBase, IImpostor, IVanillaButtonEvents, ICust
         writer.Write((byte)RpcType.SetUnderOperation);
         writer.Write(false);
         SendRpc(writer);
-        
+
         writer = RpcWriter;
         writer.Write((byte)RpcType.SetTarget);
         writer.Write(byte.MaxValue);

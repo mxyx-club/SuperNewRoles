@@ -22,7 +22,7 @@ public static class AirShipRandomSpawn
     }
 
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Begin)), HarmonyPostfix]
-    static void BeginPrefix(SpawnInMinigame __instance)
+    private static void BeginPrefix(SpawnInMinigame __instance)
     {
         if (!(MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool()) ||
             ModeHandler.GetMode(false) is ModeId.CopsRobbers or ModeId.PantsRoyal)
@@ -49,7 +49,7 @@ public static class AirShipRandomSpawn
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update)), HarmonyPostfix]
-    static void UpdatePostfix()
+    private static void UpdatePostfix()
     {
         if (!AmongUsClient.Instance.AmHost ||
             !IsLoading ||

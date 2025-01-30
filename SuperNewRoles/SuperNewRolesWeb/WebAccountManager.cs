@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
-using UnityEngine.Networking;
 
 namespace SuperNewRoles.SuperNewRolesWeb
 {
@@ -17,8 +15,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
         public static string MyUserId = "";
 
         public static bool CanOtherPlayerSendData = false;
-
-        static string tokenfilepath = "";
+        private static string tokenfilepath = "";
         public static void SetToken(string token, Action<bool> OnEnd = null)
         {
             Token = token;
@@ -77,7 +74,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             }
         }
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
-        class AmongUsClientAwakePatch
+        private class AmongUsClientAwakePatch
         {
             public static void Postfix(AmongUsClient __instance)
             {

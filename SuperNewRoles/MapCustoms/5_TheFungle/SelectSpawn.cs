@@ -1,16 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using PowerTools;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using static Minigame;
-using static Rewired.UI.ControlMapper.ControlMapper;
 
 namespace SuperNewRoles.MapCustoms;
 [HarmonyPatch]
@@ -42,7 +37,8 @@ public static class FungleSelectSpawn
             __result = SelectSpawn().WrapToIl2Cpp();
             return false;
         }
-        static Tuple<StringNames, Vector3, string, Func<AudioClip>>[] Locations =
+
+        private static Tuple<StringNames, Vector3, string, Func<AudioClip>>[] Locations =
             new Tuple<StringNames, Vector3, string, Func<AudioClip>>[]
             {
                 Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
@@ -60,8 +56,9 @@ public static class FungleSelectSpawn
                 Tuple.Create<StringNames, Vector3, string, Func<AudioClip>>
                 (StringNames.Comms, new Vector3(21.65f, 13.75f), "Comms", null)
             };
-        static Dictionary<SystemTypes, AudioClip> _cachedSounds = new();
-        static AudioClip GetGreenHouseSound()
+        private static Dictionary<SystemTypes, AudioClip> _cachedSounds = new();
+
+        private static AudioClip GetGreenHouseSound()
         {
             return null;
             if (_cachedSounds.TryGetValue(SystemTypes.Greenhouse, out AudioClip clip))
@@ -75,7 +72,8 @@ public static class FungleSelectSpawn
             clip.hideFlags |= HideFlags.DontUnloadUnusedAsset;
             return _cachedSounds[SystemTypes.Greenhouse] = clip;
         }
-        static SpawnInMinigame.SpawnLocation Create(SpawnInMinigame miniGame, Tuple<StringNames, Vector3, string, Func<AudioClip>> obj)
+
+        private static SpawnInMinigame.SpawnLocation Create(SpawnInMinigame miniGame, Tuple<StringNames, Vector3, string, Func<AudioClip>> obj)
         {
             SpawnInMinigame.SpawnLocation baseL = miniGame.Locations.FirstOrDefault();
             return new()

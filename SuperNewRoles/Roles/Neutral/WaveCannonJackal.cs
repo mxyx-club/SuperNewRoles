@@ -4,16 +4,12 @@ using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
-using static SuperNewRoles.Modules.CustomOptionHolder;
-using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 using static SuperNewRoles.WaveCannonObj.WaveCannonObject;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -51,7 +47,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
     public static CustomOption ChargeTime;
     public static CustomOption KillCooldown;
     public static CustomOption IsSyncKillCoolTime;
-    
+
     // サイドキック系の設定
     public static CustomOption CanCreateSidekick;
     public static CustomOption CanCreateSidekickNewByNewJackal;
@@ -92,7 +88,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
 
         BulletLoadBulletCooltime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalLoadBulletCoolTime", 30f, 2.5f, 60f, 2.5f, CreateSidekickType, openSelection: 3, format: "unitSeconds"); Optioninfo.OptionId++;
         BulletLoadedChargeTime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "WaveCannonJackalBulletLoadedChargeTime", 10f, 1f, 30f, 1f, CreateSidekickType, openSelection: 3); Optioninfo.OptionId++;
-        
+
         // AnimTypes
         List<string> AnimTypeTexts = [];
         foreach (string TypeName in WCCreateAnimHandlers.Keys)

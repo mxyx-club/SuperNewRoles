@@ -3,7 +3,7 @@ using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class Lighter
+internal class Lighter
 {
     public static void ResetCooldown()
     {

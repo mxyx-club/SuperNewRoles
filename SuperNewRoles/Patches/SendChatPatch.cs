@@ -1,8 +1,6 @@
 using System;
-using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using Hazel;
 using InnerNet;
 using SuperNewRoles.Helpers;
 using static System.Int32;
@@ -12,7 +10,7 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
 public static class SendChatPatch
 {
-    static bool Prefix(ChatController __instance)
+    private static bool Prefix(ChatController __instance)
     {
         string text = __instance.freeChatField.textArea.text;
         bool handled = false;

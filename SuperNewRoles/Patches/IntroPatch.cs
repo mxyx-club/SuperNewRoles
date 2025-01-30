@@ -40,9 +40,9 @@ public class IntroPatch
     public static int GameCount { get; private set; }
 
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
-    class IntroCutsceneCoBeginPatch
+    private class IntroCutsceneCoBeginPatch
     {
-        static void Postfix()
+        private static void Postfix()
         {
             Logger.Info($"=================Game Info (Count : {++GameCount})=================", "Intro Begin");
             {
@@ -85,7 +85,7 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneOnDestroyReplayPatch
+    private class IntroCutsceneOnDestroyReplayPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
@@ -93,7 +93,7 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneOnDestroyPatch
+    private class IntroCutsceneOnDestroyPatch
     {
         public static PoolablePlayer playerPrefab;
         public static void Prefix(IntroCutscene __instance)
@@ -485,7 +485,7 @@ public class IntroPatch
     }
 
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowTeam))]
-    class ShowTeam
+    private class ShowTeam
     {
         public static void Postfix()
         {
@@ -493,7 +493,7 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneDestroyPatch
+    private class IntroCutsceneDestroyPatch
     {
         public static void Prefix()
         {
@@ -536,14 +536,15 @@ public class IntroPatch
     }
 
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
-    class SetUpRoleTextPatch
+    private class SetUpRoleTextPatch
     {
         private static byte ToByteIntro(float f)
         {
             f = Mathf.Clamp01(f);
             return (byte)(f * 255);
         }
-        static IEnumerator settask()
+
+        private static IEnumerator settask()
         {
             while (true)
             {
@@ -553,7 +554,8 @@ public class IntroPatch
                 yield return null;
             }
         }
-        static bool Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.IEnumerator __result)
+
+        private static bool Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.IEnumerator __result)
         {
             __result = SetupRole(__instance).WrapToIl2Cpp();
             return false;
@@ -630,7 +632,7 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-    class BeginCrewmatePatch
+    private class BeginCrewmatePatch
     {
         public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
         {
@@ -643,7 +645,7 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-    class BeginImpostorPatch
+    private class BeginImpostorPatch
     {
         public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {

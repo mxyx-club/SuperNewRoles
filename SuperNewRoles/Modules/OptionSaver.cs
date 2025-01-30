@@ -1,15 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SuperNewRoles.Modules.CustomRegulation;
 
 namespace SuperNewRoles.Modules;
 public static class OptionSaver
 {
-    static readonly DirectoryInfo directory = new("./SuperNewRoles/SaveData/");
+    private static readonly DirectoryInfo directory = new("./SuperNewRoles/SaveData/");
     public static readonly string OptionSaverFileName = $"{directory.FullName}/Options.{Extension}";
     public const string Extension = "data";
     public static readonly string PresetFileNameBase = $"{directory.FullName}/PresetOptions_";

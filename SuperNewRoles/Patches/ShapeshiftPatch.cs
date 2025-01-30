@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patches;
 
 #region CheckShapeshiftPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckShapeshift))]
-class CheckShapeshiftPatch
+internal class CheckShapeshiftPatch
 {
     public static bool Prefix(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
     {
@@ -59,7 +59,8 @@ class CheckShapeshiftPatch
         __instance.RpcShapeshift(target, shouldAnimate);
         return false;
     }
-    static bool HandleSHRShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate, out bool reject)
+
+    private static bool HandleSHRShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate, out bool reject)
     {
         reject = false;
         //以下解除ならワンクリックボタンor処理しない
@@ -171,7 +172,8 @@ class CheckShapeshiftPatch
         }
         return true;
     }
-    static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate, out bool reject)
+
+    private static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate, out bool reject)
     {
         reject = false;
         if (RoleClass.Assassin.TriggerPlayer != null)
@@ -205,7 +207,7 @@ class CheckShapeshiftPatch
 #endregion
 #region ShapeshiftPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
-class RpcShapeshiftPatch
+internal class RpcShapeshiftPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
@@ -317,7 +319,7 @@ class RpcShapeshiftPatch
 
 #region ShapeshiftMinigameBeginPatch
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
-class ShapeshifterMinigameBeginPatch
+internal class ShapeshifterMinigameBeginPatch
 {
     private static void NewTask(ShapeshifterMinigame __instance)
     {
@@ -356,7 +358,7 @@ class ShapeshifterMinigameBeginPatch
             int num = index % 3;
             int num2 = index / 3;
             ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
-            panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
+            panel.transform.localPosition = new Vector3(__instance.XStart + num * __instance.XOffset, __instance.YStart + num2 * __instance.YOffset, -1f);
 
             Create(panel, index, Data.Value);
             panel.PlayerIcon.gameObject.SetActive(false);
@@ -381,7 +383,7 @@ class ShapeshifterMinigameBeginPatch
 
 #region ShapeshiftMinigameShapeshiftPatch
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Shapeshift))]
-class ShapeshifterMinigameShapeshiftPatch
+internal class ShapeshifterMinigameShapeshiftPatch
 {
     public static bool Prefix(ShapeshifterMinigame __instance, [HarmonyArgument(0)] PlayerControl player)
     {

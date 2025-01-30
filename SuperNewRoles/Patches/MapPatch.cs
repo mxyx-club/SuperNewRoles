@@ -22,7 +22,7 @@ public static class MapBehaviourPatch
         if (PlayerControl.LocalPlayer.GetRoleBase() is IMapEvent map)
             map.MapShowPrefix(__instance, opts, ref __state);
     }
-    
+
     [HarmonyPatch(nameof(MapBehaviour.Show)), HarmonyPostfix]
     public static void ShowPostfix(MapBehaviour __instance, MapOptions opts, bool __state)
     {

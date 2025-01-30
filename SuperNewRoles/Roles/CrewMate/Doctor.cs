@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class Doctor
+internal class Doctor
 {
     public static void FixedUpdate()
     {
@@ -26,7 +25,7 @@ class Doctor
     public class VitalsPatch
     {
         //static float vitalsTimer = 0f;
-        static TMPro.TextMeshPro TimeRemaining;
+        private static TMPro.TextMeshPro TimeRemaining;
         private static List<TMPro.TextMeshPro> hackerTexts = new();
 
         public static void ResetData()
@@ -40,9 +39,9 @@ class Doctor
         }
 
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
-        class VitalsMinigameStartPatch
+        private class VitalsMinigameStartPatch
         {
-            static void Postfix(VitalsMinigame __instance)
+            private static void Postfix(VitalsMinigame __instance)
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
                 {
@@ -61,7 +60,7 @@ class Doctor
             }
         }
         [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })]
-        class VitalsMinigameClosePatch
+        private class VitalsMinigameClosePatch
         {
             public static void Prefix(Minigame __instance)
             {
@@ -72,9 +71,9 @@ class Doctor
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
-        class VitalsMinigameUpdatePatch
+        private class VitalsMinigameUpdatePatch
         {
-            static void Postfix(VitalsMinigame __instance)
+            private static void Postfix(VitalsMinigame __instance)
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
                 {

@@ -42,7 +42,7 @@ public class MapCustomHandler
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
-class IntroCutsceneOnDestroyPatch
+internal class IntroCutsceneOnDestroyPatch
 {
     public static void Postfix(ShipStatus __instance)
     {
@@ -148,9 +148,9 @@ public static class Extensions
     }
 }
 [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-class AirshipExileControllerWrapUpAndSpawnPatch
+internal class AirshipExileControllerWrapUpAndSpawnPatch
 {
-    static void Prefix()
+    private static void Prefix()
     { // エアーシップ電気室のドアをシャッフルする
         if (MapCustoms.MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship)
             && MapCustom.ShuffleElectricalDoors.GetBool()

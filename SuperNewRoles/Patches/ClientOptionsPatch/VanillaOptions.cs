@@ -37,7 +37,7 @@ public static class VanillaOptionsPatch
     public static Vector3? origin;
     public static float xOffset = 1.75f;
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Update))]
-    class OptionsUpdate
+    private class OptionsUpdate
     {
         public static void Postfix(OptionsMenuBehaviour __instance)
         {

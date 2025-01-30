@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
-using Agartha;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
@@ -9,15 +7,13 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(GameManager), nameof(GameManager.Serialize))]
-class GameManagerSerializeFix
+internal class GameManagerSerializeFix
 {
     public static bool Prefix(GameManager __instance, [HarmonyArgument(0)] MessageWriter writer, [HarmonyArgument(1)] bool initialState, ref bool __result)
     {
@@ -43,15 +39,14 @@ class GameManagerSerializeFix
 }
 
 [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-class ControllerManagerUpdatePatch
+internal class ControllerManagerUpdatePatch
 {
-    static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
-    static int resolutionIndex = 0;
-    static AudioSource source;
-
-    static KeyCode[] HaisonKeyCodes = [KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift];
-    static KeyCode[] ForceEndMeetingKeyCodes = [KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift];
-    static KeyCode[] LogKeyCodes = [KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift];
+    private static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
+    private static int resolutionIndex = 0;
+    private static AudioSource source;
+    private static KeyCode[] HaisonKeyCodes = [KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift];
+    private static KeyCode[] ForceEndMeetingKeyCodes = [KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift];
+    private static KeyCode[] LogKeyCodes = [KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift];
 
 
     public static void Postfix()
@@ -128,7 +123,7 @@ class ControllerManagerUpdatePatch
             {
                 Vector2 center = ShipStatus.Instance.MapPrefab.HerePoint.transform.parent.localPosition * -1f * ShipStatus.Instance.MapScale;
                 File.WriteAllBytes("SpawnableMap.png", MapDatabase.MapDatabase.GetCurrentMapData().OutputMap(center, new Vector2(10f, 7f) * ShipStatus.Instance.MapScale, 40f).EncodeToPNG());
-               return;
+                return;
             }
             if (Input.GetKeyDown(KeyCode.P))
             {

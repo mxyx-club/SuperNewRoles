@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AmongUs.GameOptions;
-using SuperNewRoles.Helpers;
-using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole;
 public class LongKiller : BattleRoyalRole

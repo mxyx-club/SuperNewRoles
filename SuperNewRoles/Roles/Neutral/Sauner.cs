@@ -66,7 +66,7 @@ public static class Sauner
     /// <param name="Down">右下の座標</param>
     /// <param name="pos">今の座標</param>
     /// <returns></returns>
-    static bool CheckPos(Vector2 Up, Vector2 Down, Vector2 pos)
+    private static bool CheckPos(Vector2 Up, Vector2 Down, Vector2 pos)
     {
         return Up.x <= pos.x && pos.x <= Down.x &&
                Up.y >= pos.y && pos.y >= Down.y;

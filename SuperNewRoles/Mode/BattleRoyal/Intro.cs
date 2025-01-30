@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal;
 
-class Intro
+internal class Intro
 {
     public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler()
     {

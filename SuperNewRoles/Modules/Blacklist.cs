@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -58,7 +57,7 @@ public static class Blacklist
         }
     }
     public const string BlacklistServerURL = "https://blacklist.supernewroles.com/api/get_list?hash=true";
-    static bool downloaded = false;
+    private static bool downloaded = false;
     /// <summary>
     /// 起動時などで予め取得しておく
     /// </summary>

@@ -4,7 +4,7 @@ using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class EvilSpeedBooster
+internal class EvilSpeedBooster
 {
     public static void ResetCooldown()
     {

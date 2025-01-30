@@ -1,5 +1,3 @@
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Roles.Crewmate.Phosphorus;
@@ -35,7 +33,7 @@ public class Lantern : MonoBehaviour
         AllLanterns.Add(this);
     }
 
-    void OnDestroy()
+    private void OnDestroy()
         => AllLanterns.Remove(this);
 
     public void Activate()

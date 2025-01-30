@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Il2CppSystem;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -58,7 +55,7 @@ namespace SuperNewRoles.SuperNewRolesWeb
             }
         }
         public static List<MeetingHistory> MeetingHistories;
-        static Dictionary<string, string> SendData;
+        private static Dictionary<string, string> SendData;
 
         /// <summary>
         /// 現在の戦績は, webに送信しないテスト中の物か判別する。

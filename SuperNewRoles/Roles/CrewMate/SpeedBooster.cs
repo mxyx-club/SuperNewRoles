@@ -1,12 +1,10 @@
 using System;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles;
 
-class SpeedBooster
+internal class SpeedBooster
 {
     public static void ResetCooldown()
     {
@@ -45,5 +43,5 @@ class SpeedBooster
             __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
         else if (RoleClass.EvilSpeedBooster.IsBoostPlayers.TryGetValue(__instance.myPlayer.PlayerId, out bool result2) && result2)
             __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
-    }   
+    }
 }

@@ -19,7 +19,7 @@ public static class DeviceClass
     public static bool IsVitalRestrict;
     public static bool IsCameraRestrict;
     public static TextMeshPro TimeRemaining;
-    static HashSet<string> DeviceTypes = new();
+    private static HashSet<string> DeviceTypes = new();
     public static Dictionary<string, HashSet<PlayerControl>> UsePlayers = new();
     public static Dictionary<string, float> DeviceTimers = new();
     public static float SyncTimer;
@@ -106,7 +106,7 @@ public static class DeviceClass
         }
     }
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
-    class MapCountOverlayAwakePatch
+    private class MapCountOverlayAwakePatch
     {
         public static void Postfix(MapCountOverlay __instance)
         {
@@ -131,7 +131,7 @@ public static class DeviceClass
     }
     public static bool IsChanging = false;
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
-    class MapCountOverlayUpdatePatch
+    private class MapCountOverlayUpdatePatch
     {
         public static bool Prefix(MapCountOverlay __instance)
         {
@@ -301,7 +301,7 @@ public static class DeviceClass
         }
     }
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnDisable))]
-    class MapCountOverlayOnDisablePatch
+    private class MapCountOverlayOnDisablePatch
     {
         public static void Postfix()
         {
@@ -345,9 +345,9 @@ public static class DeviceClass
         }
     }
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
-    class CoVitalsOpen
+    private class CoVitalsOpen
     {
-        static void Postfix(VitalsMinigame __instance)
+        private static void Postfix(VitalsMinigame __instance)
         {
             Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
             if (!IsVitalRestrict)
@@ -364,9 +364,9 @@ public static class DeviceClass
         }
     }
     [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })]
-    class VitalCloseOpen
+    private class VitalCloseOpen
     {
-        static void Postfix(Minigame __instance)
+        private static void Postfix(Minigame __instance)
         {
             BlackHatHacker.IsMyVutals = false;
             if (!IsVitalRestrict)
@@ -401,9 +401,9 @@ public static class DeviceClass
         SyncTimer = 0f;
     }
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
-    class VitalsDevice
+    private class VitalsDevice
     {
-        static void Postfix(VitalsMinigame __instance)
+        private static void Postfix(VitalsMinigame __instance)
         {
             if ((!MapOption.CanUseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) && !BlackHatHacker.IsMyVutals)
             {
@@ -471,7 +471,7 @@ public static class DeviceClass
         }
     }
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Update))]
-    class SurveillanceMinigameUpdatePatch
+    private class SurveillanceMinigameUpdatePatch
     {
         public static void Postfix(SurveillanceMinigame __instance)
         {
@@ -482,8 +482,10 @@ public static class DeviceClass
             CameraUpdate(__instance);
         }
     }
-    static bool IsCameraCloseNow;
-    static void CameraClose()
+
+    private static bool IsCameraCloseNow;
+
+    private static void CameraClose()
     {
         if (!IsCameraRestrict)
             return;
@@ -494,7 +496,8 @@ public static class DeviceClass
         writer.EndRPC();
         RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, false);
     }
-    static void CameraUpdate(Minigame __instance)
+
+    private static void CameraUpdate(Minigame __instance)
     {
         if (!IsCameraRestrict) return;
         if (CachedPlayer.LocalPlayer.IsDead())
@@ -525,7 +528,8 @@ public static class DeviceClass
         TimeRemaining.text = TimeSpan.FromSeconds(DeviceTimers[DeviceType.Camera.ToString()]).ToString(@"mm\:ss\.ff");
         TimeRemaining.gameObject.SetActive(true);
     }
-    static void CameraOpen()
+
+    private static void CameraOpen()
     {
         IsCameraCloseNow = false;
         if (!IsCameraRestrict)
@@ -538,27 +542,27 @@ public static class DeviceClass
         RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, true);
     }
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Close))]
-    class PlanetSurveillanceMinigameClosePatch
+    private class PlanetSurveillanceMinigameClosePatch
     {
         public static void Postfix() => CameraClose();
     }
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Close))]
-    class SurveillanceMinigameClosePatch
+    private class SurveillanceMinigameClosePatch
     {
         public static void Postfix() => CameraClose();
     }
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Begin))]
-    class PlanetSurveillanceMinigameBeginPatch
+    private class PlanetSurveillanceMinigameBeginPatch
     {
         public static void Postfix() => CameraOpen();
     }
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
-    class SurveillanceMinigameBeginPatch
+    private class SurveillanceMinigameBeginPatch
     {
         public static void Postfix() => CameraOpen();
     }
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Begin))]
-    class FungleSurveillanceMinigameBeginPatch
+    private class FungleSurveillanceMinigameBeginPatch
     {
         public static void Prefix()
         {
@@ -584,13 +588,13 @@ public static class DeviceClass
         }
     }
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Close))]
-    class FungleSurveillanceMinigameClosePatch
+    private class FungleSurveillanceMinigameClosePatch
     {
         public static void Postfix() => CameraClose();
     }
 
     [HarmonyPatch(typeof(FungleSurveillanceMinigame), nameof(FungleSurveillanceMinigame.Update))]
-    class FungleSurveillanceMinigameUpdatePatch
+    private class FungleSurveillanceMinigameUpdatePatch
     {
         public static void Prefix(FungleSurveillanceMinigame __instance)
         {
@@ -605,7 +609,7 @@ public static class DeviceClass
         }
     }
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Update))]
-    class PlanetSurveillanceMinigameUpdatePatch
+    private class PlanetSurveillanceMinigameUpdatePatch
     {
         public static void Postfix(PlanetSurveillanceMinigame __instance)
         {
@@ -618,7 +622,7 @@ public static class DeviceClass
     }
 
     [HarmonyPatch(typeof(SecurityLogGame), nameof(SecurityLogGame.Update))]
-    class SecurityLogGameUpdatePatch
+    private class SecurityLogGameUpdatePatch
     {
         public static void Postfix(SecurityLogGame __instance)
         {

@@ -4,7 +4,7 @@ using static SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch.ObjectData
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch;
 
-class SelectPatch
+internal class SelectPatch
 {
     [HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.Color), MethodType.Setter)]
     public static class SelectColor

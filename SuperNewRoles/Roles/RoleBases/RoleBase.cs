@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -66,7 +65,7 @@ public abstract class RoleBase : IDisposable
         {
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RoleRpcHandler);
             // 自身のPlayerIdを送信
-            writer.Write(Player?.PlayerId ?? (byte)255);
+            writer.Write(Player?.PlayerId ?? 255);
             LastPosition = writer.Length;
             return writer;
         }

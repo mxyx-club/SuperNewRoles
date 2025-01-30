@@ -1,13 +1,12 @@
-using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Replay;
 
 namespace SuperNewRoles.Patches;
 
-class Chat
+internal class Chat
 {
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChatNote))]
-    class ChatControllerAddChatNote
+    private class ChatControllerAddChatNote
     {
         public static void Postfix(ChatController __instance, NetworkedPlayerInfo srcPlayer, ChatNoteTypes noteType)
         {
@@ -23,7 +22,7 @@ class Chat
                 return;
             //チャット欄でImpostor陣営から見たSpyがばれないように
             PlayerControl sourcePlayer = PlayerControl.AllPlayerControls.FirstOrDefault(x => x.Data.PlayerName == playerName);
-            if (sourcePlayer != null &&  sourcePlayer.IsRole(RoleId.Egoist, RoleId.Spy))
+            if (sourcePlayer != null && sourcePlayer.IsRole(RoleId.Egoist, RoleId.Spy))
             {
                 __instance.NameText.color = Palette.ImpostorRed;
             }

@@ -1,16 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using UnityEngine;
 using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class WrapUpClass
+internal class WrapUpClass
 {
     public static void WrapUp(NetworkedPlayerInfo exiled)
     {
