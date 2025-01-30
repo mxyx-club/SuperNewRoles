@@ -14,7 +14,6 @@ using SuperNewRoles.CustomModOption;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
@@ -30,8 +29,6 @@ namespace SuperNewRoles;
 public partial class SuperNewRolesPlugin : BasePlugin
 {
     public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
-
-    public const bool IsBeta = ThisAssembly.Git.Branch != MasterBranch && !IsHideText;
 
     public const bool IsSecretBranch = false; // プルリク時にtrueなら指摘してください
     public const bool IsHideText = false; // プルリク時にtrueなら指摘してください
@@ -104,16 +101,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
         OptionSaver.Load();
         ConfigRoles.Load();
         UpdateCPUProcessorAffinity();
-        WebAccountManager.Load();
         ContentManager.Load();
         //WebAccountManager.SetToken("XvSwpZ8CsQgEksBg");
         CacheManager.Load();
-        WebConstants.Load();
         CustomCosmetics.CustomColors.Load();
-        ModDownloader.Load();
         CustomOptionHolder.Load();
         LegacyOptionDataMigration.Load();
-        AccountLoginMenu.Initialize();
         // All Load() End
 
 
@@ -134,15 +127,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         LoggerPlus.SetLogName();
 
-        SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
-        SuperNewRoles.Logger.Info(VersionString, "VersionString");
-        SuperNewRoles.Logger.Info(Version, nameof(Version));
-        SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
         try
         {
             var directoryPath = Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins";

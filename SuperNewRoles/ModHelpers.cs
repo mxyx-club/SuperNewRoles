@@ -228,6 +228,16 @@ public static class ModHelpers
             }
         }
     }
+
+    /// <summary>
+    /// Destroys the <paramref name="obj"/>.
+    /// </summary>
+    /// <param name="obj">The object to destroy.</param>
+    public static void Destroy(this UnityEngine.Object obj)
+    {
+        UnityEngine.Object.Destroy(obj);
+    }
+
     public static void SetSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
     {
         /*
@@ -624,7 +634,7 @@ public static class ModHelpers
                 writer.Write(target.PlayerId);
                 writer.Write(showAnimation ? byte.MaxValue : 0);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+                RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? byte.MaxValue : (byte)0);
             }
             else
             {
@@ -635,7 +645,7 @@ public static class ModHelpers
                     writer.Write(target.PlayerId);
                     writer.Write(showAnimation ? byte.MaxValue : 0);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+                    RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? byte.MaxValue : (byte)0);
                 }, tien, "CheckMuderAttemptAndKill");
             }
         }
@@ -648,7 +658,7 @@ public static class ModHelpers
         writer.Write(target.PlayerId);
         writer.Write(showAnimation ? byte.MaxValue : 0);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
-        RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+        RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? byte.MaxValue : (byte)0);
     }
     public static void SetPrivateRole(this CachedPlayer player, RoleTypes role, CachedPlayer seer = null)
     {
@@ -945,7 +955,7 @@ public static class ModHelpers
         }
         catch
         {
-            System.Console.WriteLine("Error loading texture from resources: " + path);
+            //System.Console.WriteLine("Error loading texture from resources: " + path);
         }
         return null;
     }

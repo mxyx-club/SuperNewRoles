@@ -15,7 +15,6 @@ using SuperNewRoles.Roles.Crewmate.BodyBuilder;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
@@ -352,7 +351,7 @@ public class EndGameManagerSetUpPatch
             float num4 = num3 / (float)num;
             float num5 = Mathf.Lerp(1f, 0.75f, num4);
             float num6 = (i == 0) ? -8 : -1;
-            PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
+            PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate(__instance.PlayerPrefab, __instance.transform);
             poolablePlayer.transform.localPosition = new Vector3(1f * num2 * num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + num3 * 0.01f) * 0.9f;
             float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
             Vector3 vector = new(num7, num7, 1f);
@@ -497,7 +496,6 @@ public class EndGameManagerSetUpPatch
         AdditionalTempData.Clear();
         OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, text);
         IsHaison = false;
-        GameHistoryManager.Send(textRenderer.text, RoleColor);
 
         LoggerPlus.EndGameAutoSave();
     }
@@ -561,19 +559,6 @@ public static class OnGameEndPatch
                 p.resetChange();
             }
             catch { }
-        }
-        if (!ReplayManager.IsReplayMode && ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !DebugModeManager.IsDebugMode)
-        {
-            try
-            {
-                if (AmongUsClient.Instance.AmHost)
-                    Analytics.PostSendData();
-                Analytics.PostSendClientData();
-            }
-            catch (Exception e)
-            {
-                Logger.Info(e.ToString(), "解析エラー");
-            }
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
 
@@ -1478,8 +1463,6 @@ public static class OnGameEndPatch
             };
             PlayerData.Add(data);
         }
-        GameHistoryManager.OnGameEndSet(FinalStatusPatch.FinalStatusData.FinalStatuses);
-        BattleRoyalWebManager.EndGame();
     }
 }
 [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
@@ -1996,7 +1979,7 @@ public static class CheckGameEndPatch
                                 numOwlAlive++;
                             }
                         }
-                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.TryGetRoleBase<Cupid>(out Cupid cupid) && cupid.Created)) numLoversAlive++;
+                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.TryGetRoleBase(out Cupid cupid) && cupid.Created)) numLoversAlive++;
                     }
                 }
             }

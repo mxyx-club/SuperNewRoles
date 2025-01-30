@@ -28,13 +28,12 @@ internal class LoggerPlus
     {
         // ファイル名に使用する変数作成
         string date = DateTime.Now.ToString("yyMMdd_HHmmss");
-        string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
         string version = SuperNewRolesPlugin.VersionString.Replace(".", "");
         version = ReplaceUnusableStringsAsFileNames(version);
         string splicingMemo = ReplaceUnusableStringsAsFileNames(memo);
 
         // ファイル名 & パス作成
-        string fileName = $"{date}_SNR_v{version}_{GetUserType()}_{splicingBranch}_{splicingMemo}.log";
+        string fileName = $"{date}_SNR_v{version}_{GetUserType()}_{splicingMemo}.log";
         string filePath = GetFilePathAndCheckDirectory("SaveLogFolder", fileName);
 
         // 出力
@@ -65,11 +64,9 @@ internal class LoggerPlus
         // ファイル名に使用する変数作成
         string date = DateTime.Now.ToString("yyyyMMdd_HHmm");
         string version = ReplaceUnusableStringsAsFileNames(SuperNewRolesPlugin.VersionString.Replace(".", ""));
-        string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
-
 
         // ファイル名 & パス作成
-        string fileName = $"{date}_SNR_v{version}_{GetUserType()}_GameCount_{IntroPatch.GameCount}_{splicingBranch}_{LogName}";
+        string fileName = $"{date}_SNR_v{version}_{GetUserType()}_GameCount_{IntroPatch.GameCount}_{LogName}";
         string filePath = GetFilePathAndCheckDirectory("AutoSaveLogFolder", fileName);
 
         // 出力

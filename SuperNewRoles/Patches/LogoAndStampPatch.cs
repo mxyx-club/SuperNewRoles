@@ -30,22 +30,17 @@ public static class CredentialsPatch
         {
             if (GameObject.FindObjectOfType<MainMenuManager>() == null)
                 return;
-            var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
+            var credentials = UnityEngine.Object.Instantiate(__instance.text);
             credentials.transform.position = new Vector3(2, -0.15f, 0);
             credentials.transform.localScale = Vector3.one * 2;
             //ブランチ名表示
             string credentialsText = "";
-            if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
-            {
-                //色+ブランチ名+コミット番号
-                credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
-            }
             credentialsText += ModTranslation.GetString("creditsMain");
             credentials.SetText(credentialsText);
 
             credentials.alignment = TMPro.TextAlignmentOptions.Center;
             credentials.fontSize *= 0.9f;
-            _ = AutoUpdate.checkForUpdate(credentials);
+            //_ = AutoUpdate.checkForUpdate(credentials);
 
             var version = UnityEngine.Object.Instantiate(credentials);
             version.transform.position = new Vector3(2, -0.5f, 0);
@@ -57,68 +52,39 @@ public static class CredentialsPatch
         }
     }
 
-    [HarmonyPatch(typeof(HudManager))]
+    [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
     public static class HudManagerPatch
     {
-        public static GameObject TextObject;
-        public static AspectPosition TextAspectPositionObject;
-        public static TextMeshPro TextTMPObject;
-
-        [HarmonyPatch(nameof(HudManager.Start)), HarmonyPostfix]
-        public static void StartPostfix(HudManager __instance)
+        public static void Postfix(PingTracker __instance)
         {
-            TextObject = GameObject.Instantiate(__instance.roomTracker.gameObject, __instance.transform);
-            TextObject.name = "Version Text";
-            TextObject.layer = 5;
-            GameObject.Destroy(TextObject.GetComponent<RoomTracker>());
-            TextAspectPositionObject = TextObject.AddComponent<AspectPosition>();
-            TextAspectPositionObject.Alignment = AspectPosition.EdgeAlignments.LeftTop;
-            TextAspectPositionObject.DistanceFromEdge = new(1.85f, 0.35f);
-            TextAspectPositionObject.parentCam = Camera.main;
-            TextAspectPositionObject.updateAlways = true;
-            TextAspectPositionObject.useGUILayout = true;
-            TextTMPObject = TextObject.GetComponent<TextMeshPro>();
-            TextTMPObject.fontSizeMax = 2;
-            TextTMPObject.fontSizeMin = 2;
-            TextTMPObject.alignment = TextAlignmentOptions.TopLeft;
-            TextTMPObject.autoSizeTextContainer = true;
-            TextTMPObject.enableWordWrapping = false;
-        }
-
-        [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
-        public static void UpdatePostfix()
-        {
-            AspectPosition position = TextAspectPositionObject;
-            TextMeshPro text = TextTMPObject;
+            var position = __instance.GetComponent<AspectPosition>();
+            __instance.text.SetOutlineThickness(0.01f);
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
-                text.text = $"{baseCredentials}";
+                var text = $"{baseCredentials}";
                 try
                 {
-                    if (ModHelpers.IsDebugMode()) text.text += $"\n{ModTranslation.GetString("DebugModeOn")}";
+                    if (ModHelpers.IsDebugMode()) text += $"\n{ModTranslation.GetString("DebugModeOn")}";
                     if (!ModeHandler.IsMode(ModeId.Default, ModeId.HideAndSeek))
-                        text.text += $"\n{ModTranslation.GetString("SettingMode")}:{ModeHandler.GetThisModeIntro()}";
+                        text += $"\n{ModTranslation.GetString("SettingMode")}:{ModeHandler.GetThisModeIntro()}";
                 }
                 catch { }
-                //ブランチ名表示
-                if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
-                {
-                    //改行+Branch名+コミット番号
-                    text.text += $"\n{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})";
-                }
-
+                __instance.text.text = $"{text}\n<size=80%><color=#FFB793>Sunday Edition</color></size>";
+                __instance.text.alignment = TextAlignmentOptions.TopRight;
                 position.Alignment = AspectPosition.EdgeAlignments.RightTop;
-                position.DistanceFromEdge = new(4.2f, 0.35f);
-                text.alignment = TextAlignmentOptions.TopRight;
+                position.DistanceFromEdge = new Vector3(2.7f, 0.1f, 0);
             }
             else
             {
-                text.text = $"{baseCredentials}\n{ModTranslation.GetString("creditsFull")}";
-
+                __instance.text.text = $@"{baseCredentials}
+{ModTranslation.GetString("creditsFull")}
+<size=80%><color=#FFB793>Sunday Edition</color>
+by mxyx-club</size>";
                 position.Alignment = AspectPosition.EdgeAlignments.LeftTop;
-                position.DistanceFromEdge = new(1.85f, 0.35f);
-                text.alignment = TextAlignmentOptions.TopLeft;
+                __instance.text.alignment = TextAlignmentOptions.TopLeft;
+                position.DistanceFromEdge = new(0.4f, 0.06f);
             }
+            position.AdjustPosition();
         }
     }
 
@@ -266,24 +232,6 @@ public static class CredentialsPatch
         private static bool Downloaded = false;
         public static MainMenuManager instance;
 
-        private static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
-        {
-            while (true)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo(AutoUpdate.announcement);
-                if (AutoUpdate.announcement == "None")
-                    yield return null;
-                else
-                    break;
-            }
-            var AnnouncementPopup = __instance.transform.FindChild("Announcement").GetComponent<AnnouncementPopUp>();
-            if (AnnouncementPopup != null)
-            {
-                AnnouncementPopup.Show();
-                AnnouncementPopup.AnnouncementBodyText.text = AutoUpdate.announcement;
-            }
-            ConfigRoles.IsUpdated = false;
-        }
         public static void Postfix(MainMenuManager __instance)
         {
             DownLoadCustomCosmetics.CosmeticsLoad();
@@ -297,15 +245,14 @@ public static class CredentialsPatch
 
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
-            if (ConfigRoles.IsUpdated)
+            /*if (ConfigRoles.IsUpdated)
             {
                 __instance.StartCoroutine(ShowAnnouncementPopUp(__instance).WrapToIl2Cpp());
-            }
+            }*/
 
 
             instance = __instance;
 
-            AmongUsClient.Instance.StartCoroutine(ModDownloader.DownloadModData(__instance).WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance).WrapToIl2Cpp());
 
             //ViewBoosterPatch(__instance);

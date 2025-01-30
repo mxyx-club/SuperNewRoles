@@ -68,13 +68,13 @@ internal class Logger
     }
     public static void Info(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
         SendToFile(text, callerMember, LogLevel.Info, tag, lineNumber, fileName);
-    public static void Warn(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+    public static void Warn(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
         SendToFile(text, callerMember, LogLevel.Warning, tag, lineNumber, fileName);
-    public static void Error(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+    public static void Error(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
         SendToFile(text, callerMember, LogLevel.Error, tag, lineNumber, fileName);
-    public static void Fatal(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+    public static void Fatal(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
         SendToFile(text, callerMember, LogLevel.Fatal, tag, lineNumber, fileName);
-    public static void Msg(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+    public static void Msg(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
         SendToFile(text, callerMember, LogLevel.Message, tag, lineNumber, fileName);
     public static void CurrentMethod([CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "")
     {

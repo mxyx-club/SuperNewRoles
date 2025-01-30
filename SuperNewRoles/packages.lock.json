@@ -37,12 +37,6 @@
           "Samboy063.Cpp2IL.Core": "2022.1.0-development.866"
         }
       },
-      "GitInfo": {
-        "type": "Direct",
-        "requested": "[2.0.20, )",
-        "resolved": "2.0.20",
-        "contentHash": "mCzyI02VtCPy/O/GGa7y9iiCVRkwklU6hhyjbDPF1nPM8+sIjLe84iZA5jRKZzhu0u5kLC0SMvPQztcr/I28DQ=="
-      },
       "AsmResolver": {
         "type": "Transitive",
         "resolved": "5.1.0",

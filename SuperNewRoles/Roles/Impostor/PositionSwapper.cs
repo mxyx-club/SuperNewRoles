@@ -29,7 +29,7 @@ internal class PositionSwapper
             }
             SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.IsAlive());
         }
-        var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
+        var RandomPlayer = ModHelpers.GetRandom(AlivePlayer);
         var PushSwapper = PlayerControl.LocalPlayer;
         RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
 

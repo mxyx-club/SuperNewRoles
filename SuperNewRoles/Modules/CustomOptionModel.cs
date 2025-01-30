@@ -44,7 +44,7 @@ public class CustomOption
     public CustomOptionType type;
     public string name;
     public string format;
-    public System.Object[] selections;
+    public object[] selections;
 
     public int defaultSelection;
     public int HostSelection;
@@ -131,7 +131,7 @@ public class CustomOption
         return optionids.TryGetValue(id, out CustomOption opt) ? opt : null;
     }
 
-    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null, bool isToggle = false, bool withHeader = false, string headerText = null)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, object[] selections, object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, int openSelection = -1, RoleId? roleId = null, Func<bool> canShow = null, bool isToggle = false, bool withHeader = false, string headerText = null)
     {
         this.id = Id;
         this.isSHROn = IsSHROn;
@@ -854,7 +854,7 @@ internal class GameOptionsDataPatch
         }
 
         string lastpage = page.ToString().Trim('\r', '\n');
-        if (lastpage != String.Empty)
+        if (lastpage != string.Empty)
         {
             pages.Add(lastpage);
         }
@@ -875,7 +875,7 @@ internal class GameOptionsDataPatch
     public static string getHudString(int pagenum)
     {
         if (ResultPages == null) UpdateData();
-        if (pagenum >= ResultPages.Count) return String.Empty;
+        if (pagenum >= ResultPages.Count) return string.Empty;
         return ResultPages[pagenum];
     }
 }
@@ -936,25 +936,27 @@ public static class GameSettingMenuPatch
     private static int LastOpenedTab = 1;
     private static bool init;
 
-    [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPrefix]
-    public static void StartPrefix(GameSettingMenu __instance) => __instance.GameSettingsTab.HideForOnline = new Transform[] { };
+    //[HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPrefix]
+    //public static void StartPrefix(GameSettingMenu __instance) => __instance.GameSettingsTab.HideForOnline = new Transform[] { };
 
     [HarmonyPatch(nameof(GameSettingMenu.Start)), HarmonyPostfix]
     public static void Postfix(GameSettingMenu __instance)
     {
+        GameObject.Find("GamePresetButton")?.Destroy();
+        GameObject.Find("RoleSettingsButton")?.Destroy();
         __instance.MenuDescriptionText.transform.parent.gameObject.SetActive(false);
-        __instance.GamePresetsButton.transform.position += new Vector3(0, 0.637f);
-        __instance.GameSettingsButton.transform.position += new Vector3(0, 0.637f);
-        __instance.RoleSettingsButton.transform.position += new Vector3(0, 0.637f);
-        __instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5f;
+        //__instance.GamePresetsButton.transform.position += new Vector3(0, 0.637f);
+        //__instance.GameSettingsButton.transform.position += new Vector3(0, 0.637f);
+        //__instance.RoleSettingsButton.transform.position += new Vector3(0, 0.637f);
+        //__instance.GameSettingsTab.scrollBar.ContentYBounds.max += 0.5f;
 
         ModSettingsMenu = new GameObject("MOD TAB").AddComponent<ModSettingsMenu>();
-        ModSettingsMenu.transform.SetParent(__instance.RoleSettingsTab.transform.parent);
+        ModSettingsMenu.transform.SetParent(__instance.GameSettingsTab.transform.parent);
         ModSettingsMenu.transform.localPosition = new(0f, 0.16f, -4f);
         ModSettingsMenu.gameObject.layer = 5;
         ModSettingsMenu.gameObject.SetActive(false);
 
-        GameObject mod_settings_button = Object.Instantiate(__instance.RoleSettingsButton.gameObject, __instance.RoleSettingsButton.transform.parent);
+        GameObject mod_settings_button = Object.Instantiate(__instance.GameSettingsButton.gameObject, __instance.GameSettingsButton.transform.parent);
         mod_settings_button.name = "ModSettingsButton";
         mod_settings_button.transform.position -= new Vector3(0, 0.637f);
         new LateTask(() => mod_settings_button.transform.Find("FontPlacer/Text_TMP").GetComponent<TextMeshPro>().text = ModTranslation.GetString("ModSettingsButtonText"), 0f, "GameSettingMenu");
@@ -984,6 +986,41 @@ public static class GameSettingMenuPatch
         }
     }
 
+    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Initialize))]
+    [HarmonyPostfix]
+    public static void GameOptionsMenu_Initialize_Postfix(GameOptionsMenu __instance)
+    {
+        var numberOptions = __instance.GetComponentsInChildren<NumberOption>();
+
+        var impostorsOption = numberOptions.FirstOrDefault(o => o.Title == StringNames.GameNumImpostors);
+        if (impostorsOption != null)
+        {
+            impostorsOption.ValidRange = new FloatRange(0, 15);
+        }
+    }
+
+    [HarmonyPatch(typeof(RoleOptionsCollectionV08), nameof(RoleOptionsCollectionV08.GetNumPerGame))]
+    internal class RoleOptionsDataGetNumPerGamePatch
+    {
+        public static void Postfix(ref int __result)
+        {
+            // Deactivate Vanilla Roles if the mod roles are active
+            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal) __result = 0;
+        }
+    }
+
+    [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+    internal class GameOptionsDataGetAdjustedNumImpostorsPatch
+    {
+        public static void Postfix(ref int __result)
+        {
+            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal)
+            {
+                // Ignore Vanilla impostor limits in TOR Games.
+                __result = Mathf.Clamp(GameOptionsManager.Instance.CurrentGameOptions.NumImpostors, 0, 15);
+            }
+        }
+    }
     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.ChangeTab)), HarmonyPrefix]
     public static bool ChangeTabPrefix(GameSettingMenu __instance, int tabNum, bool previewOnly)
     {
@@ -992,11 +1029,20 @@ public static class GameSettingMenuPatch
             __instance.PresetsTab?.gameObject.SetActive(false);
             __instance.GameSettingsTab?.gameObject.SetActive(false);
             __instance.RoleSettingsTab?.gameObject.SetActive(false);
-            ModSettingsMenu?.gameObject.SetActive(false);
+
+            if (ModSettingsMenu != null)
+            {
+                ModSettingsMenu.gameObject.SetActive(false);
+            }
+
             __instance.GamePresetsButton.SelectButton(false);
             __instance.GameSettingsButton.SelectButton(false);
             __instance.RoleSettingsButton.SelectButton(false);
-            ModSettingsButton?.SelectButton(false);
+
+            if (ModSettingsButton != null)
+            {
+                ModSettingsButton.SelectButton(false);
+            }
 
             switch (tabNum)
             {
@@ -1010,9 +1056,9 @@ public static class GameSettingMenuPatch
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameNumImpostors).Cast<NumberOption>().ValidRange = new(0f, 15f);
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameKillCooldown).Cast<NumberOption>().ValidRange = new(2.5f, 60f);
                     __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GamePlayerSpeed).Cast<NumberOption>().ValidRange = new(-5f, 5f);
-                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameCommonTasks).Cast<NumberOption>().ValidRange = new(0f, 12f);
-                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameLongTasks).Cast<NumberOption>().ValidRange = new(0f, 69f);
-                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameShortTasks).Cast<NumberOption>().ValidRange = new(0f, 45f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameCommonTasks).Cast<NumberOption>().ValidRange = new(0f, 10f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameLongTasks).Cast<NumberOption>().ValidRange = new(0f, 10f);
+                    __instance.GameSettingsTab.Children.Find(x => x.Title == StringNames.GameShortTasks).Cast<NumberOption>().ValidRange = new(0f, 10f);
                     break;
                 case 2:
                     __instance.RoleSettingsTab?.gameObject.SetActive(true);
@@ -1048,8 +1094,14 @@ public static class GameSettingMenuPatch
                     __instance.RoleSettingsTab.OpenMenu();
                     break;
                 case 3:
-                    ModSettingsButton.SelectButton(true);
-                    ModSettingsMenu.OpenMenu();
+                    if (ModSettingsButton != null)
+                    {
+                        ModSettingsButton.SelectButton(true);
+                    }
+                    if (ModSettingsMenu != null)
+                    {
+                        ModSettingsMenu.OpenMenu();
+                    }
                     break;
             }
         }

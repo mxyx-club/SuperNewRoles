@@ -429,7 +429,7 @@ internal class AllRoleSetClass
                 List<PlayerControl> listData = new();
                 for (int i2 = 0; i2 < 2; i2++)
                 {
-                    var player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
+                    var player = ModHelpers.GetRandomIndex(SelectPlayers);
                     listData.Add(SelectPlayers[player]);
                     SelectPlayers.RemoveAt(player);
                 }

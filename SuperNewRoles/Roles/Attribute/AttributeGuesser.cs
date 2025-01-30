@@ -359,7 +359,7 @@ public static class AttributeGuesser
         exitButtonParent.transform.localPosition = new Vector3(2.725f, 2.1f, -200f);
         exitButtonParent.transform.localScale = new Vector3(0.25f, 0.9f, 1f);
         exitButtonParent.transform.SetAsFirstSibling();
-        (exitButton.GetComponent<PassiveButton>().OnClick = new()).AddListener((System.Action)(() =>
+        (exitButton.GetComponent<PassiveButton>().OnClick = new()).AddListener((Action)(() =>
         {
             __instance.playerStates.ForEach(x => x.gameObject.SetActive(true));
             UnityEngine.Object.Destroy(container.gameObject);
@@ -561,7 +561,7 @@ public static class AttributeGuesser
             int copiedIndex = i[(int)team];
 
             button.GetComponent<PassiveButton>().OnClick = new();
-            if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
+            if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
             {
                 if (selectedButton != button)
                 {

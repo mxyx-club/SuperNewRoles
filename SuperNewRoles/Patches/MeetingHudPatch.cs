@@ -20,7 +20,6 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
 
@@ -116,14 +115,7 @@ internal class VotingComplete
         CustomRoles.OnMeetingClose();
     }
 }
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
-internal class VotingComplatePatch
-{
-    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, NetworkedPlayerInfo exiled, bool tie)
-    {
-        new GameHistoryManager.MeetingHistory(states, exiled);
-    }
-}
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
 internal class CheckForEndVotingPatch
 {
@@ -210,7 +202,7 @@ internal class CheckForEndVotingPatch
                 if (isVoteEnd)
                 {
                     //NetworkedPlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
-                    Il2CppStructArray<MeetingHud.VoterState> array =
+                    Il2CppStructArray<VoterState> array =
                         new(
                             __instance.playerStates.Length);
 
@@ -286,7 +278,7 @@ internal class CheckForEndVotingPatch
                 if (isVoteEnd)
                 {
                     //NetworkedPlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
-                    Il2CppStructArray<MeetingHud.VoterState> array =
+                    Il2CppStructArray<VoterState> array =
                         new(
                             __instance.playerStates.Length);
 

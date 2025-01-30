@@ -71,7 +71,7 @@ public class IntroData
     public bool IsGhostRole;
     public RoleTypes IntroSound;
 
-    private IntroData(string NameKey, Color color, Int16 TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate, QuoteMod quoteMod = QuoteMod.SuperNewRoles, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
+    private IntroData(string NameKey, Color color, short TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate, QuoteMod quoteMod = QuoteMod.SuperNewRoles, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
     {
         this.color = color;
         this.NameKey = NameKey;
@@ -124,7 +124,7 @@ public class IntroData
         CustomRoleOption.RoleOptions.TryGetValue(roleId, out CustomRoleOption opt);
         return opt;
     }
-    public static string GetTitle(string name, Int16 num, RoleId RoleId = RoleId.DefaultRole)
+    public static string GetTitle(string name, short num, RoleId RoleId = RoleId.DefaultRole)
     {
         if (RoleId is not RoleId.DefaultRole)
         {

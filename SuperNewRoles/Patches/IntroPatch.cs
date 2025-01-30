@@ -2,6 +2,7 @@ using System.Collections;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
@@ -51,9 +52,7 @@ public class IntroPatch
                 Logger.Info($"Mode : {ModeHandler.GetMode()}", "Game Info");
                 var serverText = !ModHelpers.IsCustomServer()
                     ? $"CurrentRegion : {FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName.ToString()}"
-                    : FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name != null && FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.Name == RegionMenuOpenPatch.SNRServerName
-                        ? "Server : SuperNewRolesTokyo"
-                        : "Server : Custom";
+                    : "Server : Custom";
                 Logger.Info(serverText, "Game Info");
 
             }
@@ -188,6 +187,20 @@ public class IntroPatch
                     }
                     Logger.Info($"生成完了:{p.Data.PlayerName}");
                 }
+            }
+
+
+            if (AmongUsClient.Instance.AmHost && CustomOptionHolder.GameStartSyncCooldown.GetBool())
+            {
+                var Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+                    (byte)CustomRPC.SyncCooldown, SendOption.Reliable);
+                Writer.Write(CustomOptionHolder.GameStartCooldown.GetFloat());
+                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                CustomButton.ResetAllCooldowns(CustomOptionHolder.GameStartCooldown.GetFloat());
+            }
+            else
+            {
+                CustomButton.ResetAllCooldowns(CustomOptionHolder.GameStartCooldown.GetFloat());
             }
 
             if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))

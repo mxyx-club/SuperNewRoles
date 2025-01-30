@@ -158,7 +158,6 @@ public static class CustomRegulation
                 Logger.Info(option.Key + "がnullでした");
             }
         }
-        CustomOptionHolder.DisconnectNotPCOption.selection = 0;
 
         RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
     }

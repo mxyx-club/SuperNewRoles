@@ -257,7 +257,7 @@ internal class Guesser
         exitButtonParent.transform.localScale = new Vector3(0.25f, 0.9f, 1f);
         exitButtonParent.transform.SetAsFirstSibling();
         exitButton.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
-        exitButton.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
+        exitButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
         {
             __instance.playerStates.ForEach(x => x.gameObject.SetActive(true));
             UnityEngine.Object.Destroy(container.gameObject);
@@ -458,7 +458,7 @@ internal class Guesser
             int copiedIndex = i[(int)team];
 
             button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
-            if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
+            if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
             {
                 if (selectedButton != button)
                 {

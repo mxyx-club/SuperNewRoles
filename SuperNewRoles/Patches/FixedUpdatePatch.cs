@@ -25,7 +25,6 @@ public class StartGame
     public static void Postfix()
     {
         MapOption.RandomMap.Prefix();
-        FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
     }
 }
 [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]

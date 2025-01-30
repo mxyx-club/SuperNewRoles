@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -319,4 +320,28 @@ public class CustomButton
         // Trigger OnClickEvent if the hotkey is being pressed down
         if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
     }
+
+
+    public static void ResetAllCooldowns(float Time = -1)
+    {
+        bool isAlive = PlayerControl.LocalPlayer.IsAlive();
+        RoleId role = PlayerControl.LocalPlayer.GetRole();
+        var time = Time == -1 ? GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown : Time;
+        PlayerControl.LocalPlayer.killTimer = time - 0.6f;
+        foreach (var t in buttons.Where(x => x.HasButton(isAlive, role)))
+        {
+            var maxTime = Time == -1 ? t.MaxTimer : Time;
+            Logger.Info("Reset All Button Cooldown", "CustomButton");
+            try
+            {
+                t.Timer = t.MaxTimer == 0 ? 0 : maxTime;
+                t.Update(isAlive, role);
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"NullReferenceException from MeetingEndedUpdate().HasButton(), if theres only one warning its fine\n{e}", "CustomButton");
+            }
+        }
+    }
+
 }

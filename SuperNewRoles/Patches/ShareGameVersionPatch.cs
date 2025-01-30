@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
@@ -125,30 +124,6 @@ internal class ShareGameVersion
             string message = "";
             bool blockStart = false;
             bool hostModeInVanilla = false;
-            if (AmongUsClient.Instance.AmHost)
-            {
-                if (CustomOptionHolder.DisconnectNotPCOption.GetBool())
-                {
-                    foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients)
-                    {
-                        if (p.PlatformData.Platform is not Platforms.StandaloneEpicPC and not Platforms.StandaloneSteamPC)
-                        {
-                            AmongUsClient.Instance.KickPlayer(p.Id, false);
-                        }
-                    }
-                }
-                // アガルタ反映関係の警告文制御
-                if ((CustomMapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
-                    CustomOptionHolder.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
-                    !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
-                    !CustomOptionHolder.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
-                    !DebugModeManager.IsDebugMode) //Debugモードでない時
-                {
-                    // 警告を表示する
-                    message += $"\n{ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff")}\n";
-                    blockStart = true;
-                }
-            }
             if (!AmongUsClient.Instance.AmHost)
             {
                 if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
@@ -188,7 +163,7 @@ internal class ShareGameVersion
                         SceneChanger.ChangeScene("MainMenu");
                     }
 
-                    message += $"\n{String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
+                    message += $"\n{string.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
                 }
             }
             if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)

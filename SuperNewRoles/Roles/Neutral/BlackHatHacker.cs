@@ -385,7 +385,7 @@ public class BlackHatHacker
             if (TaskTab) return;
 
             if (RoleTaskTMP == null)
-                RoleTaskTMP = PlayerControl.LocalPlayer.transform?.Find("RoleTask").GetComponent<ImportantTextTask>();
+                RoleTaskTMP = PlayerControl.LocalPlayer?.transform?.Find("RoleTask")?.GetComponent<ImportantTextTask>();
 
             StringBuilder text = new(RoleTaskTMP.Text);
             text.AppendLine();

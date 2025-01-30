@@ -31,7 +31,7 @@ GameShortTasks,Short Tasks,ショートタスク,长任务,長任務
 GameLongTasks,Long Tasks,ロングタスク,短任务,短任務
 Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>帽,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>帽
 Visor_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Visors,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Visors,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>脸部装饰,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>臉飾
-creditsMain,Create By ykundesu,Create By ykundesu,模组作者：ykundesu,模組作者：ykundesu
+creditsMain,Create By ykundesu,Create By ykundesu,模组作者：ykundesu\n<size=80%><color=#FFB793>Sunday Edition</color></size>,模組作者：ykundesu
 creditsFull,Create By ykundesu,Create By ykundesu,模组作者：ykundesu,模組作者：ykundesu
 creditsVersion,SuperNewRoles v{0},SuperNewRoles v{0},SuperNewRoles v{0},SuperNewRoles v{0}
 vanillaOptionsText,VanillaOptions,バニラの設定,原版设置,原版設定
@@ -262,6 +262,8 @@ TheFungleHideSporeMask,Can see the player in the spore,胞子の中にいるプ�
 TheFungleHideSporeMaskOnlyImpostor,Can see only Impostor,インポスターだけ見れる,仅可看到内鬼玩家,只能看到內鬼
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更,更改勝利條件
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
+GameStartCooldown,,游戏开局重置冷却,游戏开局重置冷却,
+GameStartSyncCooldown,,开局同步房主冷却,游戏开局重置冷却,
 DisconnectDontHaveFriendCode,Ban people who do not have a friend code (enable is recommended),フレンドコードを持っていない人をBANする(有効を推奨),踢出未持有好友码的玩家（推荐）,踢出未持有好友碼的玩家（推薦）
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点,隨機分配配線任務位置
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数,配線任務總數
@@ -271,7 +273,7 @@ RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使�
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制,監視器時間限制
 CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない,死亡玩家不能确认其他玩家的职业,死亡時不顯示其他玩家的職業
 OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する,只有死亡的内鬼玩家可以确认其他玩家的职业,只有內鬼死亡時才顯示其他玩家的職業
-CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
+CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的投票,死亡玩家能確認所有玩家的投票
 CanSeeImpostorRole,Imposters can check each other's rolls.,インポスターが互いに役職を確認できる,内鬼阵营玩家互相确认职业,內鬼可以查看其他內鬼的職業
 CanSeeImpostorRoleTurn,Number of turns to confirm,わかるようになる会議数,确认彼此职业所需回合数,查看所需回合數
 CanNotGhostHaveHaunt,After death，can not have Hount ability.,死亡者が憑依能力を持たない,玩家死亡后不再受到灵咒影响,死者不具有憑依能力
@@ -1969,16 +1971,16 @@ RemoteControllerOperationButtonName,Operation!,操作!,操纵！,控制！
 RemoteControllerTarget,Objects of Interference,干渉対象,操纵对象：,控制對象：
 Permanence,Permanence,永続,持续,持續
 
-AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー,,賭怪屬性
-AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター),,屬性賦予最大數量(內鬼)
-AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター),,賦予機率(內鬼)
-AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営),,屬性賦予最大數量(中立)
-AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営),,賦予機率(中立)
-AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー),,屬性賦予最大數量(船員)
-AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー),,賦予機率(船員)
-MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する,,排除叛徒系職業
-MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する,,叛徒系職業必定自爆
-AttributeGuesserIntro,And guess what.,そして、推察せよ。,,這次，你也帶上了狙擊槍。
+AttributeGuesserOption,Attribute Guesser,モディファイアゲッサー,赌怪,賭怪屬性
+AttributeGuesserMaximumAllocationImpostor,Maximum allocations (Imposter),最大割当数(インポスター),内鬼阵营最大赌怪数量,屬性賦予最大數量(內鬼)
+AttributeGuesserEmissionProbabilityImpostor,Emission probability (Imposter),排出確率(インポスター),附加几率(內鬼),賦予機率(內鬼)
+AttributeGuesserMaximumAllocationNeutral,Maximum allocations (Neutral),最大割当数(第三陣営),独立阵营最大赌怪数量,屬性賦予最大數量(中立)
+AttributeGuesserEmissionProbabilityNeutral,Emission probability (Neutral),排出確率(第三陣営),附加几率(中立),賦予機率(中立)
+AttributeGuesserMaximumAllocationCrew,Maximum allocations (Crewmate),最大割当数(クルー),船员阵营最大赌怪数量,屬性賦予最大數量(船員)
+AttributeGuesserEmissionProbabilityCrew,Emission probability (Crewmate),排出確率(クルー),附加几率(船员),賦予機率(船員)
+MadmateCannotAttributeGuesser,Exclude Madmate-type positions from distribution,配布先からマッドメイト系役職を除外する,排除叛徒系职业,排除叛徒系職業
+MadmateSelfDestructive,Madmate-type role always self-destruct.,マッドメイト系役職は必ず自爆する,叛徒系职业必定自爆,叛徒系職業必定自爆
+AttributeGuesserIntro,And guess what.,そして、推察せよ。,艺术就是刺杀！,這次，你也帶上了狙擊槍。
 
 #NewRoleTranslation
 

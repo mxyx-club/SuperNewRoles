@@ -14,7 +14,6 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
-using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.WaveCannonObj;
 using TMPro;
 using UnityEngine;
@@ -64,7 +63,6 @@ public static class RoleClass
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         RoleinformationText.RoleInfo.ClearAndReload();
-        GameHistoryManager.ClearAndReloads();
         Agartha.MapData.ClearAndReloads();
         Mode.SuperHostRoles.SuperHostRolesOptions.SettingClass.ClearAndReload();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
@@ -756,7 +754,7 @@ public static class RoleClass
             {
                 a.Add("No");
             }
-            return ModHelpers.GetRandom<string>(a) == "Suc";
+            return ModHelpers.GetRandom(a) == "Suc";
         }
     }
     public static class Researcher

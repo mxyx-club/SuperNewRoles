@@ -10,7 +10,6 @@
 		<DebugType>embedded</DebugType>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<AmongUs>F:\AmongUs\v2024.10.29-SNR</AmongUs>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,13 +20,12 @@
 		<PackageReference Include="AmongUs.GameLibs.Steam" Version="2024.10.29" />
 		<PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.1.0-rc.1" />
 		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.669" />
-		<Reference Include="$(AmongUs)\BepInEx\plugins\Agartha.dll" />
-		<PackageReference Include="GitInfo" Version="2.0.20" />
+		<Reference Include="..\.lib\Agartha.dll" />
 		<PackageReference Include="BepInEx.AutoPlugin" Version="1.0.1" PrivateAssets="all" />
 	</ItemGroup>
 
 	<Target Name="CopyCustomContent" AfterTargets="AfterBuild">
 		<Message Text="Second occurrence" />
-		<Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
+		<Copy Condition=" '$(CI)' != 'true'" SourceFiles="$(ProjectDir)bin\$(Configuration)\net6.0\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
 	</Target>
 </Project>

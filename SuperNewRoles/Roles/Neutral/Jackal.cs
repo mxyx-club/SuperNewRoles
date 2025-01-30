@@ -210,7 +210,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             player.SetRole(RoleId.Sidekick);
-            if (player.TryGetRoleBase<Sidekick>(out Sidekick sidekick))
+            if (player.TryGetRoleBase(out Sidekick sidekick))
             {
                 sidekick.SetParent(Player);
                 CreatedSidekick = sidekick;

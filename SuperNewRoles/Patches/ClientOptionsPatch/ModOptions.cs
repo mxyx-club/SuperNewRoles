@@ -14,12 +14,10 @@ public static class ClientModOptionsPatch
 {
     private static readonly SelectionBehaviour[] AllOptions = {
             new("CustomStremerMode", () => ConfigRoles.StreamerMode.Value = !ConfigRoles.StreamerMode.Value, ConfigRoles.StreamerMode.Value),
-            new("CustomAutoUpdate", () => ConfigRoles.AutoUpdate.Value = !ConfigRoles.AutoUpdate.Value, ConfigRoles.AutoUpdate.Value),
             new("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
             new("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new("IsModCosmeticsAreNotLoaded", () => ConfigRoles.IsModCosmeticsAreNotLoaded.Value = !ConfigRoles.IsModCosmeticsAreNotLoaded.Value, ConfigRoles.IsModCosmeticsAreNotLoaded.Value),
             new("IsNotUsingBlood", () => ConfigRoles.IsNotUsingBlood.Value = !ConfigRoles.IsNotUsingBlood.Value, ConfigRoles.IsNotUsingBlood.Value),
-            new("IsSendAnalytics", () => ConfigRoles.IsSendAnalytics.Value = !ConfigRoles.IsSendAnalytics.Value, ConfigRoles.IsSendAnalytics.Value),
             new("IsLightAndDarker", () => ConfigRoles.IsLightAndDarker.Value = !ConfigRoles.IsLightAndDarker.Value, ConfigRoles.IsLightAndDarker.Value),
             // new("ReplayOptions", OpenReplayWindow, true),
             new("IsMuteLobbyBGM", () => ConfigRoles.IsMuteLobbyBGM.Value = !ConfigRoles.IsMuteLobbyBGM.Value, ConfigRoles.IsMuteLobbyBGM.Value),

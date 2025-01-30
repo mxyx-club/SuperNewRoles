@@ -314,6 +314,7 @@ public class ModSettingsMenu : MonoBehaviour
             CreateRoleOnlyOptions(ModifierSettings.transform, CustomOptionType.Modifier, new(255, 140, 197, byte.MaxValue));
             OptionGeneratedTabs.Add(OptionTabId.Modifier);
         };
+
         MatchTagSettings = new("Match Tag Tab");
         MatchTagSettings.transform.SetParent(ScrollBar.Inner);
         MatchTagSettings.transform.localPosition = new(0f, 0f, -5f);
@@ -703,15 +704,15 @@ public class ModSettingsMenu : MonoBehaviour
                 CategoryHeader.Title.text = ModTranslation.GetString("ModifierSettings");
                 ControllerSelectable.AddRange(ModifierTabSelectables);
                 break;
-            case OptionTabId.MatchTag:
-                MatchTagSettings.SetActive(true);
-                CategoryHeader.Title.text = ModTranslation.GetString("SettingRegulation");
-                ControllerSelectable.AddRange(MatchTagTabSelectables);
-                break;
             case OptionTabId.RoleDetails:
                 RoleDetailsSettings.SetActive(true);
                 details?.Invoke();
                 ControllerSelectable.AddRange(RoleDetailsTabSelectables);
+                break;
+            case OptionTabId.MatchTag:
+                MatchTagSettings.SetActive(true);
+                CategoryHeader.Title.text = ModTranslation.GetString("SettingRegulation");
+                ControllerSelectable.AddRange(MatchTagTabSelectables);
                 break;
         }
         if (OnlySelectedRoleToggle.gameObject.active)
@@ -733,7 +734,6 @@ public class ModSettingsMenu : MonoBehaviour
         NeutralSettings.SetActive(false);
         CrewmateSettings.SetActive(false);
         ModifierSettings.SetActive(false);
-        MatchTagSettings.SetActive(false);
         RoleDetailsSettings.SetActive(false);
         OnlySelectedRoleToggle.gameObject.SetActive(false);
         foreach (GameObject obj in RoleDetailsSettings.GetChildren())

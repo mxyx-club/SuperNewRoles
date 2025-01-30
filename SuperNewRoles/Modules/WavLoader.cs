@@ -90,7 +90,7 @@ public static class WavLoader
         memoryStream.Dispose();
         return CreateAudioClip(data, channels, sampleRate, bitPerSample, audioClipName);
     }
-    private static AudioClip CreateAudioClip(byte[] data, int channels, int sampleRate, UInt16 bitPerSample, string audioClipName)
+    private static AudioClip CreateAudioClip(byte[] data, int channels, int sampleRate, ushort bitPerSample, string audioClipName)
     {
         Logger.Info(bitPerSample.ToString(), "BITPAR");
         var audioClipData = bitPerSample switch

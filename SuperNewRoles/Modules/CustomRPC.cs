@@ -286,16 +286,17 @@ public enum CustomRPC
     SetWinCond,
     SetHaison,
     UncheckedUsePlatform,
+    SyncCooldown,
 
     // Mod feature RPC
-    AutoCreateRoom = 91,
+    AutoCreateRoom = 92,
     SetBot,
     UncheckedSetColor,
-    SetDeviceTime = 100,
+    SetDeviceTime,
     ShowFlash,
 
     // Mod Roles RPC
-    RPCClergymanLightOut,
+    RPCClergymanLightOut = 100,
     SheriffKill,
     MeetingSheriffKill,
     UncheckedMeeting,
@@ -1877,6 +1878,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.UncheckedUsePlatform:
                         UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.SyncCooldown:
+                        CustomButton.ResetAllCooldowns(reader.ReadSingle());
                         break;
                     case CustomRPC.BlockReportDeadBody:
                         BlockReportDeadBody(reader.ReadByte(), reader.ReadBoolean());

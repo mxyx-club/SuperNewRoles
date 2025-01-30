@@ -114,11 +114,6 @@ public static class Blacklist
                 AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
                 AmongUsClient.Instance.LastCustomDisconnect = "<size=0%>MOD</size><size=0%>NoFriend</size>" + "<size=225%>フレンドコードがありません</size>\n\nおうちのひとにみせてください。\n\n【保護者の方へ】\nフレンドコードが設定されていないため、\nこのMODをプレイできません。\nフレンド機能を有効にしてください。\nフレンド機能を有効にする：<link=\"https://parents.innersloth.com/ja/login\">https://parents.innersloth.com/ja/login</link>";
             }
-            //フレコ持ってないクライアントをキックするやつ。もとから実装してるなら下のコメントのところまで消して
-            else if (CustomOptionHolder.DisconnectDontHaveFriendCodeOption.GetBool() && !ModHelpers.IsCustomServer())
-            {
-                AmongUsClient.Instance.KickPlayer(clientData.Id, ban: true);
-            }
             // 実装してるなら消す所ここまで
         }
         foreach (var player in BlackPlayer.Players)

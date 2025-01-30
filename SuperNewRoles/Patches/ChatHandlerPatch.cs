@@ -31,17 +31,6 @@ public class AmongUsClientOnPlayerJoinedPatch
                 AddChatPatch.SelfSend(GetChatCommands.WelcomeToSuperNewRoles, GetChatCommands.GetWelcomeMessage());
             else if (isOtherSend)
                 AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetWelcomeMessage(), GetChatCommands.WelcomeToSuperNewRoles);
-
-            if (SuperNewRolesPlugin.IsBeta)
-            {
-                new LateTask(() =>
-                {
-                    if (isSelfSend)
-                        AddChatPatch.SelfSend(GetChatCommands.SNRCommander, GetChatCommands.GetVersionMessage());
-                    else if (isOtherSend)
-                        AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetVersionMessage());
-                }, 1f, "Welcome Beta Message");
-            }
         }, 1f, "Welcome Message");
 
     }

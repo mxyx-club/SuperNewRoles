@@ -117,6 +117,7 @@ internal static class HudManagerStartPatch
     {
         return PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: Crewmateonly);
     }
+
     public static Vent SetTargetVent(List<Vent> untarget = null, bool forceout = false)
     {
         return ModHelpers.SetTargetVent(untargetablePlayers: untarget, forceout: forceout);
@@ -378,7 +379,7 @@ internal static class HudManagerStartPatch
                         bool IsAliveLovers = false;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.TryGetRoleBase<Cupid>(out Cupid cupid) && cupid.Created)))
+                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.TryGetRoleBase(out Cupid cupid) && cupid.Created)))
                             {
                                 IsAliveLovers = true;
                                 break;

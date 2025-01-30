@@ -7,8 +7,8 @@ namespace SuperNewRoles.Patches;
 
 internal class GameStartPatch
 {
-    public static bool lastPublic = false;
-    public static float lastTimer;
+    //public static bool lastPublic = false;
+    //public static float lastTimer;
 
     /// <summary>公開部屋を封印するか</summary>
     private const bool PublicSeal = false;
@@ -40,10 +40,10 @@ internal class GameStartPatch
     {
         public static void Postfix()
         {
-            if (lastPublic && AmongUsClient.Instance.AmHost)
+            /*if (lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.EndInviting();
-            }
+            }*/
             if (CustomOption.IsValuesUpdated)
             {
                 OptionSaver.WriteNowOptions();
@@ -51,7 +51,7 @@ internal class GameStartPatch
             }
         }
     }
-    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+    /*[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     private class StartPatch
     {
         public static void Postfix(GameStartManager __instance)
@@ -114,7 +114,7 @@ internal class GameStartPatch
                 }
             }
         }
-    }
+    }*/
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public static class LobbyCountDownTimer
     {
@@ -132,12 +132,12 @@ internal class GameStartPatch
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.F7))
+            if (Input.GetKeyDown(KeyCode.LeftControl))
             {
                 FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
             }
 
-            if (Input.GetKeyDown(KeyCode.F8))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
             }

@@ -48,10 +48,10 @@ public class CustomOptionHolder
     public static CustomOption DebugModeFastStart;
     public static CustomOption IsMurderPlayerAnnounce;
 
-    public static CustomOption DisconnectNotPCOption;
-    public static CustomOption DisconnectDontHaveFriendCodeOption;
+    public static CustomOption GameStartCooldown;
+    public static CustomOption GameStartSyncCooldown;
 
-    public static CustomOption SNRWebSendConditionHostDependency;
+    public static CustomOption DisconnectNotPCOption;
 
     public static CustomOption ProhibitModColor;
 
@@ -942,10 +942,11 @@ public class CustomOptionHolder
         }
 
         Color roomSetting = new(238f / 187f, 204f / 255f, 203f / 255f, 1f);
-        DisconnectNotPCOption = Create(100900, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectNotPC"), true, null, isHeader: true);
-        DisconnectDontHaveFriendCodeOption = Create(100901, true, CustomOptionType.Generic, Cs(roomSetting, "DisconnectDontHaveFriendCode"), true, null);
 
-        SNRWebSendConditionHostDependency = Create(104901, true, CustomOptionType.Generic, Cs(roomSetting, "SNRWebTransmissionConditionHostDependency"), true, null, isHeader: true);
+        GameStartCooldown = Create(100301, true, CustomOptionType.Generic, Cs(roomSetting, "GameStartCooldown"), 20f, 2.5f, 30f, 2.5f, null, isHeader: true);
+
+        GameStartSyncCooldown = Create(100302, true, CustomOptionType.Generic, Cs(roomSetting, "GameStartSyncCooldown"), true, GameStartCooldown);
+
 
         ProhibitModColor = Create(104600, false, CustomOptionType.Generic, Cs(roomSetting, "ProhibitModColor"), false, null, isHeader: true);
 
