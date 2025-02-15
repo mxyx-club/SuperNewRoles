@@ -149,7 +149,7 @@ public static class ReplayLoader
         SpriteRenderer MTNM = CreateItem("Play", 2, (UnityAction)MoveToNextMeeting, "MoveToNextMeeting");
         MTNM.transform.localScale = new(1.95f, 4.7f, 4.7f);
         MTNM.transform.localPosition = new(1.5f, 0, 0);
-        SpriteRenderer SubMTNMRender = GameObject.Instantiate(MTNM, MTNM.transform.parent);
+        SpriteRenderer SubMTNMRender = UnityEngine.Object.Instantiate(MTNM, MTNM.transform.parent);
         SubMTNMRender.transform.localScale = new(0.6f, 1.2f, 1);
         SubMTNMRender.transform.localPosition = new(-1.5f, 0, 0);
         SubMTNMRender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIButton.png", 110f);
@@ -170,7 +170,7 @@ public static class ReplayLoader
             case ReplayState.Pause:
                 if (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.Pause)
                 {
-                    mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    mpb = UnityEngine.Object.FindObjectOfType<MovingPlatformBehaviour>();
                     if (mpb != null && mpb.Target != null)
                     {
                         mpb.Target.MyPhysics.body.velocity = Vector2.zero;
@@ -191,7 +191,7 @@ public static class ReplayLoader
             case ReplayState.Play:
                 if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause)
                 {
-                    mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    mpb = UnityEngine.Object.FindObjectOfType<MovingPlatformBehaviour>();
                     if (mpb != null && mpb.Target != null)
                     {
                         mpb.IsLeft = !mpb.IsLeft;
@@ -217,7 +217,7 @@ public static class ReplayLoader
             }
             if (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.PlayRewind && state == ReplayState.PlayRewind)
             {
-                mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                mpb = UnityEngine.Object.FindObjectOfType<MovingPlatformBehaviour>();
                 if (mpb != null && mpb.Target != null)
                 {
                     mpb.Target.MyPhysics.body.velocity = Vector2.zero;
@@ -244,7 +244,7 @@ public static class ReplayLoader
             }
             else
             {
-                mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                mpb = UnityEngine.Object.FindObjectOfType<MovingPlatformBehaviour>();
                 if (mpb != null && mpb.Target != null)
                 {
                     ReplayManager.CurrentReplay.MovingPlatformFrameCount = ((int)(mpb.Target.MyPhysics.Speed * 60)) - ReplayManager.CurrentReplay.MovingPlatformFrameCount;
@@ -585,9 +585,9 @@ public static class ReplayLoader
         static void Createbtn(string name, string text, Vector3 pos, Action action)
         {
             GameObject btntemplate = DiscordManager.Instance.discordPopup.transform.FindChild("ExitGame").gameObject;
-            GameObject RewindTurnBtn = GameObject.Instantiate(btntemplate, HudManager.Instance.transform.FindChild("GenericDialogue"));
+            GameObject RewindTurnBtn = UnityEngine.Object.Instantiate(btntemplate, HudManager.Instance.transform.FindChild("GenericDialogue"));
             TextMeshPro RewindTurnTex = RewindTurnBtn.GetComponentInChildren<TextMeshPro>();
-            GameObject.Destroy(RewindTurnTex.GetComponent<TextTranslatorTMP>());
+            UnityEngine.Object.Destroy(RewindTurnTex.GetComponent<TextTranslatorTMP>());
             RewindTurnTex.text = text;
             RewindTurnBtn.transform.localPosition = pos;
             RewindTurnBtn.name = name;
@@ -597,8 +597,8 @@ public static class ReplayLoader
         }
         static void Reset()
         {
-            GameObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/ThisPosStartButton").gameObject);
-            GameObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/RewindTurnButton").gameObject);
+            UnityEngine.Object.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/ThisPosStartButton").gameObject);
+            UnityEngine.Object.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/RewindTurnButton").gameObject);
             HudManager.Instance.transform.FindChild("GenericDialogue/Background/FullScreen").GetComponent<BoxCollider2D>().enabled = true;
             HudManager.Instance.transform.FindChild("GenericDialogue/CloseButton").gameObject.SetActive(true);
             HudManager.Instance.transform.FindChild("GenericDialogue").GetComponent<DialogueBox>().enabled = true;
@@ -616,7 +616,7 @@ public static class ReplayLoader
             UpdateButton();
             if (MeetingHud.Instance != null)
             {
-                GameObject.Destroy(MeetingHud.Instance.gameObject);
+                UnityEngine.Object.Destroy(MeetingHud.Instance.gameObject);
                 MeetingHud.Instance = null;
             }
             Reset();
@@ -719,7 +719,7 @@ public static class ReplayLoader
                 if (moving != null)
                 {
                     ReplayActionMovingPlatform ramp = moving as ReplayActionMovingPlatform;
-                    MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    MovingPlatformBehaviour mpb = UnityEngine.Object.FindObjectOfType<MovingPlatformBehaviour>();
                     PlayerControl movingtarget = ModHelpers.PlayerById(ramp.sourcePlayer);
                     movingtarget.MyPhysics.body.velocity = Vector2.zero;
                     mpb.StopAllCoroutines();
@@ -820,7 +820,7 @@ internal class MeetingHudPopulateButtons
         {
             Logger.Info("Commed popRep:" + __instance.playerStates.Count.ToString());
             var states = __instance.playerStates.ToList();
-            GameObject.Destroy(states.FirstOrDefault(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId)?.gameObject);
+            UnityEngine.Object.Destroy(states.FirstOrDefault(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId)?.gameObject);
             states.RemoveAll(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId);
             __instance.playerStates = states.ToArray();
             Logger.Info("Commed popRepens:" + __instance.playerStates.Count.ToString());

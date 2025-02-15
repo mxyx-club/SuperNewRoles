@@ -34,18 +34,18 @@ namespace SuperNewRoles.Replay
                 if (ReplayManager.IsReplayMode)
                     return;
                 SignInScreen screen = FastDestroyableSingleton<AccountManager>.Instance.signInScreen;
-                SignInScreen popup = GameObject.Instantiate(screen);
+                SignInScreen popup = UnityEngine.Object.Instantiate(screen);
                 SceneManager.MoveGameObjectToScene(popup.gameObject, SceneManager.GetActiveScene());
                 popup.transform.FindChild("Fill").gameObject.SetActive(false);
                 popup.GetComponent<TransitionOpen>().enabled = false;
                 popup.transform.localScale = Vector3.one * 0.4f;
                 popup.transform.localPosition = new(3.5f, 2, -5);
                 TextMeshPro TitleTMP = popup.transform.FindChild("TitleText_TMP").GetComponent<TextMeshPro>();
-                GameObject.Destroy(TitleTMP.GetComponent<TextTranslatorTMP>());
+                UnityEngine.Object.Destroy(TitleTMP.GetComponent<TextTranslatorTMP>());
                 TitleTMP.text = ModTranslation.GetString("ReplayReplaySaved");
                 TitleTMP.transform.localScale = Vector3.one * 1.5f;
                 TextMeshPro InfoTMP = popup.transform.FindChild("InfoText_TMP").GetComponent<TextMeshPro>();
-                GameObject.Destroy(InfoTMP.GetComponent<PlatformTextTranslationTMP>());
+                UnityEngine.Object.Destroy(InfoTMP.GetComponent<PlatformTextTranslationTMP>());
                 InfoTMP.text = Path.GetFileNameWithoutExtension(ReplayManager.LastSavedName);
                 InfoTMP.transform.localScale = Vector3.one * 1.9f;
                 InfoTMP.transform.localPosition = new(0, 0, -0.1f);
@@ -55,15 +55,15 @@ namespace SuperNewRoles.Replay
                 popup.signInButton.OnClick = new();
                 popup.signInButton.OnClick.AddListener((UnityAction)(() =>
                 {
-                    SignInScreen popup = GameObject.Instantiate(screen);
+                    SignInScreen popup = UnityEngine.Object.Instantiate(screen);
                     popup.gameObject.SetActive(false);
                     SceneManager.MoveGameObjectToScene(popup.gameObject, SceneManager.GetActiveScene());
                     TextMeshPro TitleTMP = popup.transform.FindChild("TitleText_TMP").GetComponent<TextMeshPro>();
-                    GameObject.Destroy(TitleTMP.GetComponent<TextTranslatorTMP>());
+                    UnityEngine.Object.Destroy(TitleTMP.GetComponent<TextTranslatorTMP>());
                     TitleTMP.text = ModTranslation.GetString("ReplayChangeName");
                     TitleTMP.transform.localScale = Vector3.one * 1.5f;
                     TextMeshPro InfoTMP = popup.transform.FindChild("InfoText_TMP").GetComponent<TextMeshPro>();
-                    GameObject.Destroy(InfoTMP.GetComponent<PlatformTextTranslationTMP>());
+                    UnityEngine.Object.Destroy(InfoTMP.GetComponent<PlatformTextTranslationTMP>());
                     InfoTMP.text = ModTranslation.GetString("ReplayFileName");
                     InfoTMP.transform.localScale = Vector3.one * 1.3f;
                     InfoTMP.transform.localPosition = new(-2.3f, 0.5f, -0.1f);
@@ -75,7 +75,7 @@ namespace SuperNewRoles.Replay
                     popup.signInButton.OnClick.AddListener((UnityAction)(() =>
                     {
                     }));
-                    NameTextBehaviour ntb = GameObject.Instantiate(FastDestroyableSingleton<AccountManager>.Instance.accountTab.editNameScreen.nameText, popup.transform);
+                    NameTextBehaviour ntb = UnityEngine.Object.Instantiate(FastDestroyableSingleton<AccountManager>.Instance.accountTab.editNameScreen.nameText, popup.transform);
                     ntb.name = "ReplayFileSelectorChangeFileName";
                     ntb.transform.FindChild("Text_TMP/Pipe").localScale = new(1, 1.3f, 1);
                     ntb.transform.localPosition = new(0, -0.1f, 0);
@@ -87,13 +87,13 @@ namespace SuperNewRoles.Replay
                     textBox.outputText.fontSize = 4f;
 
                     TextMeshPro ButtonText = popup.signInButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-                    GameObject.Destroy(ButtonText.GetComponent<TextTranslatorTMP>());
+                    UnityEngine.Object.Destroy(ButtonText.GetComponent<TextTranslatorTMP>());
                     ButtonText.text = ModTranslation.GetString("ReplayChangeName");
 
-                    PassiveButton cancelbtn = GameObject.Instantiate(popup.signInButton, popup.signInButton.transform);
+                    PassiveButton cancelbtn = UnityEngine.Object.Instantiate(popup.signInButton, popup.signInButton.transform);
                 }));
                 TextMeshPro ButtonText = popup.signInButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-                GameObject.Destroy(ButtonText.GetComponent<TextTranslatorTMP>());
+                UnityEngine.Object.Destroy(ButtonText.GetComponent<TextTranslatorTMP>());
                 ButtonText.text = ModTranslation.GetString("ReplayChangeName");
                 popup.gameObject.SetActive(true);
                 Logger.Info("AAAA");
@@ -132,22 +132,22 @@ namespace SuperNewRoles.Replay
                 Buttons = new();
                 Replays = new();
                 FileNames = new();
-                VersionShower vs = GameObject.FindObjectOfType<VersionShower>();
-                GameObject.Destroy(vs.GetComponent<AspectPosition>());
+                VersionShower vs = UnityEngine.Object.FindObjectOfType<VersionShower>();
+                UnityEngine.Object.Destroy(vs.GetComponent<AspectPosition>());
                 vs.transform.localPosition -= new Vector3(0, 0.065f);
-                HostLocalGameButton hostlocalgamebutton = GameObject.FindObjectOfType<HostLocalGameButton>();
+                HostLocalGameButton hostlocalgamebutton = UnityEngine.Object.FindObjectOfType<HostLocalGameButton>();
                 hostlocalgamebutton.GetComponent<SpriteRenderer>().enabled = false;
                 hostlocalgamebutton.transform.FindChild("menuHostBanner").GetComponent<SpriteRenderer>().enabled = false;
                 hostlocalgamebutton.transform.FindChild("CreateHnSGameButton").gameObject.SetActive(false);
                 hostlocalgamebutton.transform.FindChild("CreateGameButton").gameObject.SetActive(false);
                 hostlocalgamebutton.transform.FindChild("CreateText").gameObject.SetActive(false);
                 TextMeshPro titletext = hostlocalgamebutton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-                GameObject.Destroy(titletext.GetComponent<TextTranslatorTMP>());
+                UnityEngine.Object.Destroy(titletext.GetComponent<TextTranslatorTMP>());
                 titletext.text = ModTranslation.GetString("ReplayName");
                 titletext.alignment = TextAlignmentOptions.Center;
                 titletext.transform.localPosition = new(0, 0.7f, -1);
                 titletext.transform.localScale = Vector3.one * 0.9f;
-                GameDiscovery gamediscovery = GameObject.FindObjectOfType<GameDiscovery>();
+                GameDiscovery gamediscovery = UnityEngine.Object.FindObjectOfType<GameDiscovery>();
                 gamediscovery.transform.FindChild("Text_TMP").gameObject.SetActive(false);
                 gamediscovery.transform.FindChild("Background").transform.localPosition = new(0, 0.38f, 0);
                 gamediscovery.transform.FindChild("Background").transform.localScale = new(1.4f, 1.65f, 1.55f);
@@ -164,9 +164,9 @@ namespace SuperNewRoles.Replay
                     FileNames.Add(info.Name);
                 }
                 PassiveButton Button = GameObject.Find("HelpButton").GetComponent<PassiveButton>();
-                Button = GameObject.Instantiate(Button);
-                GameObject.Destroy(Button.GetComponent<BoxCollider2D>());
-                GameObject.Destroy(Button.GetComponent<AspectPosition>());
+                Button = UnityEngine.Object.Instantiate(Button);
+                UnityEngine.Object.Destroy(Button.GetComponent<BoxCollider2D>());
+                UnityEngine.Object.Destroy(Button.GetComponent<AspectPosition>());
                 Button.GetComponent<SpriteRenderer>().sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
                 PolygonCollider2D collider = Button.gameObject.AddComponent<PolygonCollider2D>();
                 Button.Colliders = new[] { collider };
@@ -182,7 +182,7 @@ namespace SuperNewRoles.Replay
                 Button.transform.localPosition = new(4.6f, 0, 0);
                 Button.transform.localScale = Vector3.one * 0.11f;
                 RightButton = Button;
-                Button = GameObject.Instantiate(Button);
+                Button = UnityEngine.Object.Instantiate(Button);
                 Button.GetComponent<SpriteRenderer>().sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
                 Button.OnClick = new();
                 Button.OnClick.AddListener((UnityAction)(() =>
@@ -230,7 +230,7 @@ namespace SuperNewRoles.Replay
             {
                 for (int i = page * MaxPageCount; (i < FileNames.Count && (i - (page * MaxPageCount)) < MaxPageCount); i++)
                 {
-                    JoinGameButton button = GameObject.Instantiate(prefab, prefabparent);
+                    JoinGameButton button = UnityEngine.Object.Instantiate(prefab, prefabparent);
                     Buttons.Add(button);
                     button.transform.localPosition = new(0, 2f - ((i - (page * MaxPageCount)) * 1.1f), -1);
                     button.transform.localScale = new(1.6f, 2, 1.8f);
@@ -244,22 +244,22 @@ namespace SuperNewRoles.Replay
                     button.gameNameText.transform.localPosition = new(0, 0.05f, 0);
                     button.gameNameText.alignment = TextAlignmentOptions.Left;
                     //日時
-                    TextMeshPro tmp = GameObject.Instantiate(button.gameNameText, button.transform);
+                    TextMeshPro tmp = UnityEngine.Object.Instantiate(button.gameNameText, button.transform);
                     tmp.text = replay.RecordTime.ToString("yyyy/MM/dd/ hh-mm-ss");
                     tmp.transform.localScale *= 0.8f;
                     tmp.transform.localPosition = new(0.125f, -0.13f, 0);
                     //モード
-                    tmp = GameObject.Instantiate(button.gameNameText, button.transform);
+                    tmp = UnityEngine.Object.Instantiate(button.gameNameText, button.transform);
                     tmp.text = ModTranslation.GetString(replay.CustomMode.ToString() + "ModeName");
                     tmp.transform.localScale *= 0.5f;
                     tmp.transform.localPosition = new(2.5f, 0.1f, 0);
                     //人数
-                    tmp = GameObject.Instantiate(button.gameNameText, button.transform);
+                    tmp = UnityEngine.Object.Instantiate(button.gameNameText, button.transform);
                     tmp.text = (replay.AllPlayersCount - replay.AllBotsCount).ToString() + "人";
                     tmp.transform.localScale *= 0.5f;
                     tmp.transform.localPosition = new(2.5f, 0f, 0);
                     //バージョン
-                    tmp = GameObject.Instantiate(button.gameNameText, button.transform);
+                    tmp = UnityEngine.Object.Instantiate(button.gameNameText, button.transform);
                     if (replay.RecordVersion != null)
                         tmp.text = "v" + replay.RecordVersion.ToString();
                     else
@@ -311,12 +311,12 @@ namespace SuperNewRoles.Replay
                         GameObject.Find("HelpButton").GetComponent<PassiveButton>().OnClick.Invoke();
                         HelpMenu = GameObject.Find("HelpMenu");
                     }
-                    GameObject alert = GameObject.Instantiate(HelpMenu);
+                    GameObject alert = UnityEngine.Object.Instantiate(HelpMenu);
                     HelpMenu.gameObject.SetActive(false);
                     alert.transform.FindChild("Discord-Logo-Color").gameObject.SetActive(false);
                     AlertTmp = alert.GetComponentInChildren<TextMeshPro>();
                     AlertTmp.alignment = TextAlignmentOptions.Center;
-                    GameObject.Destroy(AlertTmp.GetComponent<TextTranslatorTMP>());
+                    UnityEngine.Object.Destroy(AlertTmp.GetComponent<TextTranslatorTMP>());
                     alert.GetComponent<SpriteRenderer>().size = new(4.5f, 2);
                     alert.transform.FindChild("CloseButton").localPosition = new(-2.2f, 0.95f, -1);
                 }
@@ -336,10 +336,10 @@ namespace SuperNewRoles.Replay
                 if (tmp.text != "")
                     tmp.text += "\n";
                 tmp.text += ModTranslation.GetString("ReplayCheckStart");
-                HostLocalGameButton game = GameObject.FindObjectOfType<HostLocalGameButton>();
+                HostLocalGameButton game = UnityEngine.Object.FindObjectOfType<HostLocalGameButton>();
                 if (okbtn == null)
                 {
-                    okbtn = GameObject.Instantiate(game.transform.FindChild("CreateGameButton").GetComponent<PassiveButton>(), alert.transform);
+                    okbtn = UnityEngine.Object.Instantiate(game.transform.FindChild("CreateGameButton").GetComponent<PassiveButton>(), alert.transform);
                     okbtn.OnClick = new();
                     okbtn.OnClick.AddListener((UnityAction)(() =>
                     {
@@ -348,7 +348,7 @@ namespace SuperNewRoles.Replay
                 }
                 okbtn.gameObject.SetActive(true);
                 okbtn.transform.localPosition = new(0, -0.6f, -14);
-                GameObject.Destroy(okbtn.GetComponentInChildren<TextTranslatorTMP>());
+                UnityEngine.Object.Destroy(okbtn.GetComponentInChildren<TextTranslatorTMP>());
                 okbtn.GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("ReplayPlay");
             }
             public static PassiveButton okbtn;
@@ -359,7 +359,7 @@ namespace SuperNewRoles.Replay
                 (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(FileName);
                 ReplayManager.IsReplayMode = true;
                 Logger.Info((replay == null).ToString() + ":" + (ReplayManager.CurrentReplay == null).ToString() + ":" + (ReplayManager.CurrentReplay.binaryReader == null).ToString());
-                HostLocalGameButton game = GameObject.FindObjectOfType<HostLocalGameButton>();
+                HostLocalGameButton game = UnityEngine.Object.FindObjectOfType<HostLocalGameButton>();
                 if (IsNormal)
                     game.transform.FindChild("CreateGameButton").GetComponent<PassiveButton>().OnClick.Invoke();
                 else

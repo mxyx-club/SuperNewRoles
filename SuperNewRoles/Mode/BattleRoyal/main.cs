@@ -473,7 +473,7 @@ internal class Main
                 RPCHelper.RpcSyncAllNetworkedPlayer();
                 new LateTask(() =>
                 {
-                    if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+                    if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                     {
                         foreach (var pc in CachedPlayer.AllPlayers)
                         {

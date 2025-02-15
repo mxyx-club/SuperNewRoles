@@ -439,7 +439,7 @@ public static class RoleHelpers
                 var obj = RoleClass.SeeThroughPerson.Objects.Find(data => data.name == "Door-SeeThroughPersonCollider-" + door.transform.position.x + "." + door.transform.position.y + "." + door.Id);
                 if (obj == null) continue;
                 door.myCollider.isTrigger = false;
-                GameObject.Destroy(obj.gameObject);
+                UnityEngine.Object.Destroy(obj.gameObject);
             }
         }
         else if (player.IsRole(RoleId.Camouflager) && role != RoleId.Camouflager && RoleClass.Camouflager.IsCamouflage)
@@ -1545,7 +1545,7 @@ public static class RoleHelpers
     /// <param name="player">判断対象</param>
     /// <returns>true => タスクトリガー能力を有する / false => タスクトリガー能力を有さない</returns>
     internal static bool IsUseTaskTrigger(this PlayerControl player)
-        => !player.IsClearTask() || Patches.SelectTask.GetHaveTaskManageAbility(player.GetRole());
+        => !player.IsClearTask() || SelectTask.GetHaveTaskManageAbility(player.GetRole());
 
     public static void ClearTaskUpdate()
     {

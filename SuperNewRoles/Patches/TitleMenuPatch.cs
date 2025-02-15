@@ -30,8 +30,8 @@ public class MainMenuStartPatch
         var template = GameObject.Find("ExitGameButton");
         if (template == null) return;
 
-        var buttonTwitter = GameObject.Instantiate(template, null);
-        GameObject.Destroy(buttonTwitter.GetComponent<AspectPosition>());
+        var buttonTwitter = UnityEngine.Object.Instantiate(template, null);
+        UnityEngine.Object.Destroy(buttonTwitter.GetComponent<AspectPosition>());
         buttonTwitter.transform.localPosition = new(4.3f, -2, 0);
         buttonTwitter.GetComponent<BoxCollider2D>().offset = new(0, 0.0377f);
 
@@ -53,14 +53,14 @@ public class MainMenuStartPatch
             buttonSpriteTwitter.color = textTwitter.color = TwitterColor;
         });
 
-        var buttonTwitterSNRDevs = GameObject.Instantiate(template, null);
-        GameObject.Destroy(buttonTwitterSNRDevs.GetComponent<AspectPosition>());
+        var buttonTwitterSNRDevs = UnityEngine.Object.Instantiate(template, null);
+        UnityEngine.Object.Destroy(buttonTwitterSNRDevs.GetComponent<AspectPosition>());
         buttonTwitterSNRDevs.transform.localPosition = new(4.3f, -1.5f, 0);
         buttonTwitterSNRDevs.SetActive(false);
         buttonTwitterSNRDevs.GetComponent<BoxCollider2D>().offset = new(0, 0.0377f);
 
-        var buttonTwitterSuperNewRoles = GameObject.Instantiate(template, null);
-        GameObject.Destroy(buttonTwitterSuperNewRoles.GetComponent<AspectPosition>());
+        var buttonTwitterSuperNewRoles = UnityEngine.Object.Instantiate(template, null);
+        UnityEngine.Object.Destroy(buttonTwitterSuperNewRoles.GetComponent<AspectPosition>());
         buttonTwitterSuperNewRoles.transform.localPosition = new(4.3f, -1.1f, 0);
         buttonTwitterSuperNewRoles.SetActive(false);
         buttonTwitterSuperNewRoles.GetComponent<BoxCollider2D>().offset = new(0, 0.0377f);

@@ -51,12 +51,12 @@ public class HandleGhostRole
             if (!ModeHandler.IsMode(ModeId.Default, ModeId.Werewolf, ModeId.SuperHostRoles)) return;
 
             if (player.IsAlive() || !player.IsGhostRole(RoleId.DefaultRole)) return; // 生存者と割り当て済みの人は弾く
-            if (player.IsRole(AmongUs.GameOptions.RoleTypes.GuardianAngel)) return; // 守護天使がアサインされていたら, Mod幽霊役職をアサインしない
+            if (player.IsRole(RoleTypes.GuardianAngel)) return; // 守護天使がアサインされていたら, Mod幽霊役職をアサインしない
 
             bool isAssign = HandleAssign(player);
             if (isAssign && ModeHandler.IsMode(ModeId.SuperHostRoles)) // 幽霊役職が配布された非導入者の役職を守護天使に変更する
             {
-                if (!player.IsMod()) player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel, true);
+                if (!player.IsMod()) player.RpcSetRole(RoleTypes.GuardianAngel, true);
             }
         }
 
@@ -124,7 +124,7 @@ public class HandleGhostRole
 
         player.SetRoleRPC(assignrole);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !player.IsMod())
-            player.RpcSetRole(AmongUs.GameOptions.RoleTypes.GuardianAngel, true);
+            player.RpcSetRole(RoleTypes.GuardianAngel, true);
 
         return true;
     }

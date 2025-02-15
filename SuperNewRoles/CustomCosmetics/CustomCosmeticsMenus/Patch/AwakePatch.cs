@@ -18,9 +18,9 @@ public static class PlayerCustomizationMenuPatch
     [HarmonyPatch(nameof(PlayerCustomizationMenu.Start)), HarmonyPostfix]
     public static void StartPostfix(PlayerCustomizationMenu __instance)
     {
-        if (AgarthaPlugin.IsLevelImposter && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined) return;
+        if (AgarthaPlugin.IsLevelImposter && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.NotJoined) return;
 
-        CustomHats.HatsTabOnEnablePatch.Chips = new();
+        //CustomHats.HatsTabOnEnablePatch.Chips = new();
         VisorTabPatch.VisorsTabOnEnablePatch.Chips = new();
         ObjectData.Presets = Array.Empty<Transform>();
         ObjectData.hats = Array.Empty<HatParent>();

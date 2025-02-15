@@ -13,7 +13,7 @@ public class MainMenuPatch
 
     private static void hidebtn(PassiveButton btn)
     {
-        GameObject.Destroy(btn.GetComponent<AspectScaledAsset>());
+        Object.Destroy(btn.GetComponent<AspectScaledAsset>());
         btn.activeSprites = null;
         btn.inactiveSprites = null;
         btn.HeldButtonSprite = null;

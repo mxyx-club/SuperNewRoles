@@ -24,7 +24,7 @@ public class StartGame
 {
     public static void Postfix()
     {
-        MapOption.RandomMap.Prefix();
+        RandomMap.Prefix();
     }
 }
 [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
@@ -86,7 +86,7 @@ public class FixedUpdate
         PVCreator.FixedUpdate();
 
         // -- 以下ゲーム中のみ --
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
             return;
         }

@@ -89,7 +89,7 @@ public class Bakery
             {
                 IsSec = true;
                 __instance.initData.networkedPlayer = null;
-                ExileController controller = GameObject.Instantiate(__instance, __instance.transform.parent);
+                ExileController controller = Object.Instantiate(__instance, __instance.transform.parent);
                 controller.Begin(ModHelpers.GenerateExileInitProperties(Balancer.targetplayerright.Data, false));
                 IsSec = false;
                 controller.completeString = string.Empty;

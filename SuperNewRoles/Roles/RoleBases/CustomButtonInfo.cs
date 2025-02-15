@@ -152,7 +152,7 @@ public class CustomButtonInfo
                 this.AbilityCountTextFormat = ModTranslation.GetString("AbilityButtonCountTextFormater");
             else
                 this.AbilityCountTextFormat = ModTranslation.GetString(AbilityCountTextFormat);
-            AbilityCountText = GameObject.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
+            AbilityCountText = UnityEngine.Object.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
             AbilityCountText.text = "";
             AbilityCountText.enableWordWrapping = false;
             AbilityCountText.transform.localScale = Vector3.one * 0.5f;
@@ -160,7 +160,7 @@ public class CustomButtonInfo
         }
         if (hasSecondButtonInfo)
         {
-            SecondButtonInfoText = GameObject.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
+            SecondButtonInfoText = UnityEngine.Object.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
             SecondButtonInfoText.text = "";
             SecondButtonInfoText.enableWordWrapping = false;
             SecondButtonInfoText.transform.localScale = Vector3.one * 0.5f;

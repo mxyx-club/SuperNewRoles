@@ -232,7 +232,7 @@ public class Camouflager
                         ResetCamouflage();
                         new LateTask(() =>
                         {
-                            Mode.SuperHostRoles.ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers);
+                            ChangeName.UpdateRoleNames(ChangeNameType.AllPlayers);
                         }, 0.25f);
                     }
                 }

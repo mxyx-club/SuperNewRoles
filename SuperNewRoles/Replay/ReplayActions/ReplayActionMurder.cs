@@ -44,9 +44,9 @@ public class ReplayActionMurder : ReplayAction
             return;
         }
         target.Revive();
-        foreach (DeadBody deadbody in GameObject.FindObjectsOfType<DeadBody>())
+        foreach (DeadBody deadbody in Object.FindObjectsOfType<DeadBody>())
             if (deadbody.ParentId == target.PlayerId)
-                GameObject.Destroy(deadbody);
+                Object.Destroy(deadbody);
     }
 
     //試合内でアクションがあったら実行するやつ

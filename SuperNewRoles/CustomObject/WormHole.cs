@@ -40,11 +40,11 @@ internal class WormHole : CustomAnimation
 
         Owner = owner;
         ActivateTimer = DimensionWalker.ActivateWormHoleTime.GetInt();
-        TimerText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.buttonLabelText, gameObject.transform);
+        TimerText = Instantiate(FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.buttonLabelText, gameObject.transform);
         IsActivating = false;
 
-        var tempVent = UnityEngine.Object.FindObjectOfType<Vent>();
-        _vent = UnityEngine.Object.Instantiate<Vent>(tempVent, gameObject.transform);
+        var tempVent = FindObjectOfType<Vent>();
+        _vent = Instantiate(tempVent, gameObject.transform);
         //_vent.transform.localScale = Vector3.Scale(ShipStatus.Instance.transform.lossyScale, tempVent.transform.lossyScale);
         _vent.gameObject.transform.position = gameObject.transform.position;
         _vent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
@@ -91,7 +91,7 @@ internal class WormHole : CustomAnimation
             return;
 
         if (TimerText != null)
-            TimerText.text = System.Math.Clamp(Mathf.CeilToInt(ActivateTimer), 0, DimensionWalker.ActivateWormHoleTime.GetInt()).ToString();
+            TimerText.text = Math.Clamp(Mathf.CeilToInt(ActivateTimer), 0, DimensionWalker.ActivateWormHoleTime.GetInt()).ToString();
 
         if (ActivateTimer <= 0)
             Activate();

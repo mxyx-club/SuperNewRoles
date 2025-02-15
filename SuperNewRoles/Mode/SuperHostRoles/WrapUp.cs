@@ -61,7 +61,7 @@ internal class WrapUpClass
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(exiled.Object.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+                    Writer = StartRPC(CustomRPC.SetWinCond);
                     Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                     Writer.EndRPC();
                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);

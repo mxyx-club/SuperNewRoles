@@ -36,7 +36,7 @@ public class UsePlatformPlayerControlPatch
                 .EndMessage();
             return false;
         }
-        AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+        AirshipStatus airshipStatus = UnityEngine.Object.FindObjectOfType<AirshipStatus>();
         if (airshipStatus)
             airshipStatus.GapPlatform.Use(__instance);
         return false;
@@ -48,7 +48,7 @@ public static class PlayerPhysicsFixedUpdatePatch
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
             return;
         InvisibleRole.PlayerPhysics_Postfix(__instance);
         if (!ModeHandler.IsMode(ModeId.Default))
@@ -56,7 +56,7 @@ public static class PlayerPhysicsFixedUpdatePatch
         RoleId PlayerRole = __instance.myPlayer.GetRole();
         if (PlayerRole == RoleId.Kunoichi)
             Kunoichi.PlayerPhysicsScientistPostfix(__instance);
-        else if (__instance.AmOwner && GameData.Instance && __instance.myPlayer.CanMove)
+        else if (__instance.AmOwner && Instance && __instance.myPlayer.CanMove)
         {
             if (PlayerRole is RoleId.SpeedBooster or RoleId.EvilSpeedBooster)
                 SpeedBooster.PlayerPhysicsSpeedPatchPostfix(__instance);
@@ -235,7 +235,7 @@ internal class CompleteTask
 {
     public static void Postfix(PlayerControl __instance, uint idx)
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.TaskComplete);
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Painter.Handle(Painter.ActionType.TaskComplete);
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
@@ -521,7 +521,7 @@ public static class PlayerControlFixedUpdatePatch
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
             NetworkedPlayerInfo playerInfo = allPlayers[i];
@@ -561,7 +561,7 @@ public static class PlayerControlFixedUpdatePatch
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo> allPlayers = Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
             NetworkedPlayerInfo playerInfo = allPlayers[i];

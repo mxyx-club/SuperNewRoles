@@ -87,7 +87,7 @@ public static class FungleSelectSpawn
         }
         public static IEnumerator SelectSpawn()
         {
-            SpawnInMinigame spawnInMinigame = GameObject.Instantiate<SpawnInMinigame>(Agartha.MapLoader.Airship.TryCast<AirshipStatus>().SpawnInGame);
+            SpawnInMinigame spawnInMinigame = UnityEngine.Object.Instantiate(Agartha.MapLoader.Airship.TryCast<AirshipStatus>().SpawnInGame);
             spawnInMinigame.transform.SetParent(Camera.main.transform, false);
             spawnInMinigame.transform.localPosition = new Vector3(0f, 0f, -600f);
             List<SpawnInMinigame.SpawnLocation> locations = new(Locations.Length);

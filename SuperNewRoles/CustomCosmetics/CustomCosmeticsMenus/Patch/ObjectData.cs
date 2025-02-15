@@ -75,7 +75,7 @@ public static class ObjectData
         ResetShow();
         IsShow = true;
         PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup").gameObject.SetActive(true);
-        foreach (ColorChip chip in GameObject.FindObjectOfType<PlayerTab>().ColorChips)
+        foreach (ColorChip chip in Object.FindObjectOfType<PlayerTab>().ColorChips)
         {
             chip.gameObject.SetActive(true);
         }
@@ -206,14 +206,14 @@ public static class ObjectData
             {
                 if (trf != null)
                 {
-                    GameObject.Destroy(trf.gameObject);
+                    Object.Destroy(trf.gameObject);
                 }
             }
             foreach (PoolablePlayer pl in PresetAreas)
             {
                 if (pl != null)
                 {
-                    GameObject.Destroy(pl.gameObject);
+                    Object.Destroy(pl.gameObject);
                 }
             }
         }
@@ -221,7 +221,7 @@ public static class ObjectData
         List<PoolablePlayer> presetplayers = new();
         for (float i = 0; i < 10; i++)
         {
-            var obj = GameObject.Instantiate(ColorButton, PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup"));
+            var obj = Object.Instantiate(ColorButton, PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup"));
             Set(obj.Button, (int)i);
             obj.Button.OnMouseOver = new();
             obj.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => obj.GetComponent<SpriteRenderer>().color = Color.yellow));
@@ -229,10 +229,10 @@ public static class ObjectData
             obj.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => obj.GetComponent<SpriteRenderer>().color = Color.white));
             obj.GetComponent<SpriteRenderer>().color = Color.white;
             obj.transform.localScale = new Vector3(4, 6, 1);
-            GameObject.Destroy(obj.GetComponent<BoxCollider2D>());
+            Object.Destroy(obj.GetComponent<BoxCollider2D>());
             obj.Button.Colliders = new List<Collider2D>() { obj.gameObject.AddComponent<PolygonCollider2D>() }.ToArray();
             obj.transform.localPosition = i > 4 ? new Vector3(-1.2f + ((i - 5) * 1.7f), -0.75f, 4) : new Vector3(-1.2f + (i * 1.7f), 1.6f, 4);
-            var player = GameObject.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea, obj.transform);
+            var player = Object.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea, obj.transform);
             player.transform.localScale = new(0.2f, 0.135f, 0.25f);
             player.transform.localPosition = new();
             obj.gameObject.SetActive(true);
@@ -275,14 +275,14 @@ public static class ObjectData
             })
             : ClosetPresetDataDictionary[index];
 
-        AmongUs.Data.DataManager.Player.Customization.Color = data.BodyColor.Value;
-        AmongUs.Data.DataManager.Player.Customization.Hat = data.Hat.Value;
-        AmongUs.Data.DataManager.Player.Customization.Visor = data.Visor.Value;
-        AmongUs.Data.DataManager.Player.Customization.Skin = data.Skin.Value;
-        AmongUs.Data.DataManager.Player.Customization.NamePlate = data.NamePlate.Value;
-        AmongUs.Data.DataManager.Player.Customization.Pet = data.Pet.Value;
+        DataManager.Player.Customization.Color = data.BodyColor.Value;
+        DataManager.Player.Customization.Hat = data.Hat.Value;
+        DataManager.Player.Customization.Visor = data.Visor.Value;
+        DataManager.Player.Customization.Skin = data.Skin.Value;
+        DataManager.Player.Customization.NamePlate = data.NamePlate.Value;
+        DataManager.Player.Customization.Pet = data.Pet.Value;
 
-        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
+        if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined)
         {
             PlayerControl.LocalPlayer.CmdCheckColor(DataManager.Player.Customization.Color);
             PlayerControl.LocalPlayer.RpcSetHat(DataManager.Player.Customization.Hat);

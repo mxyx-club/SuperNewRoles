@@ -245,10 +245,10 @@ internal class MeetingSheriff_Patch
         targetBox.transform.localPosition = new Vector3(4.8f, 0f, -3f);
         targetBox.transform.localScale = new Vector3(0.075f, 0.075f, 0.075f);
         Right = targetBox;
-        GameObject.Destroy(targetBox.transform.FindChild("Text_TMP").gameObject);
+        Object.Destroy(targetBox.transform.FindChild("Text_TMP").gameObject);
         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
         renderer.sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
-        GameObject.Destroy(targetBox.GetComponent<BoxCollider2D>());
+        Object.Destroy(targetBox.GetComponent<BoxCollider2D>());
         PassiveButton button = targetBox.GetComponent<PassiveButton>();
         button.Colliders = new List<Collider2D>() { targetBox.AddComponent<PolygonCollider2D>() }.ToArray();
         button.OnClick.RemoveAllListeners();
@@ -256,16 +256,16 @@ internal class MeetingSheriff_Patch
         button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.green));
         button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.white));
 
-        GameObject targetBoxl = UnityEngine.Object.Instantiate(template, __instance.transform);
+        GameObject targetBoxl = Object.Instantiate(template, __instance.transform);
         targetBoxl.name = "LeftButton";
         targetBoxl.gameObject.SetActive(true);
         targetBoxl.transform.localPosition = new Vector3(-4.75f, 0f, -3f);
         targetBoxl.transform.localScale = new Vector3(-0.075f, 0.075f, 0.075f);
         Left = targetBoxl;
-        GameObject.Destroy(targetBoxl.transform.FindChild("Text_TMP").gameObject);
+        Object.Destroy(targetBoxl.transform.FindChild("Text_TMP").gameObject);
         SpriteRenderer rendererl = targetBoxl.GetComponent<SpriteRenderer>();
         rendererl.sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
-        GameObject.Destroy(targetBoxl.GetComponent<BoxCollider2D>());
+        Object.Destroy(targetBoxl.GetComponent<BoxCollider2D>());
         PassiveButton buttonl = targetBoxl.GetComponent<PassiveButton>();
         buttonl.Colliders = new List<Collider2D>() { targetBoxl.AddComponent<PolygonCollider2D>() }.ToArray();
         buttonl.OnClick.RemoveAllListeners();

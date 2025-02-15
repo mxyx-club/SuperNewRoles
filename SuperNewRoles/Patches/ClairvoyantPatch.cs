@@ -63,7 +63,7 @@ public class Clairvoyant
                 ClairvoyantButton.Timer = CoolTime;
                 IsZoomOn = false;
             },
-            Roles.RoleClass.Hawk.GetButtonSprite(),
+            RoleClass.Hawk.GetButtonSprite(),
             new Vector3(-2.925f, -0.06f, 0),
             __instance,
             __instance.AbilityButton,

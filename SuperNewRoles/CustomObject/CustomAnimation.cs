@@ -133,7 +133,7 @@ public class CustomAnimation : MonoBehaviour
     {
         if (Options.IsMeetingDestroy && RoleClass.IsMeeting)
         {
-            GameObject.Destroy(this.gameObject);
+            Destroy(this.gameObject);
             return;
         }
         if (Playing && Options.Sprites.Length > 1)

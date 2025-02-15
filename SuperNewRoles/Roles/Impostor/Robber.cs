@@ -114,7 +114,7 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
             if (taskInfo != null)
                 taskInfo.Complete = false;
             target.myTasks.Remove(task);
-            GameObject.Destroy(task.gameObject);
+            Object.Destroy(task.gameObject);
             NormalPlayerTask taskById = ShipStatus.Instance.GetTaskById(taskInfo.TypeId);
             NormalPlayerTask normalPlayerTask = Object.Instantiate(taskById, target.transform);
             normalPlayerTask.Id = taskInfo.Id;

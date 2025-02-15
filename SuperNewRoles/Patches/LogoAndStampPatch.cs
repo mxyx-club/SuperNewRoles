@@ -28,7 +28,7 @@ public static class CredentialsPatch
 
         private static void Postfix(VersionShower __instance)
         {
-            if (GameObject.FindObjectOfType<MainMenuManager>() == null)
+            if (UnityEngine.Object.FindObjectOfType<MainMenuManager>() == null)
                 return;
             var credentials = UnityEngine.Object.Instantiate(__instance.text);
             credentials.transform.position = new Vector3(2, -0.15f, 0);
@@ -38,7 +38,7 @@ public static class CredentialsPatch
             credentialsText += ModTranslation.GetString("creditsMain");
             credentials.SetText(credentialsText);
 
-            credentials.alignment = TMPro.TextAlignmentOptions.Center;
+            credentials.alignment = TextAlignmentOptions.Center;
             credentials.fontSize *= 0.9f;
             //_ = AutoUpdate.checkForUpdate(credentials);
 
@@ -179,11 +179,11 @@ by mxyx-club</size>";
         private static void ViewBoosterPatch(MainMenuManager __instance)
         {
             var template = __instance.transform.FindChild("StatsPopup");
-            var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+            var obj = UnityEngine.Object.Instantiate(template, template.transform.parent).gameObject;
             obj.name = "CreditsPopup";
-            obj.GetComponent<StatsPopup>().SelectableButtons.ToList().ForEach(button => GameObject.Destroy(button.gameObject));
+            obj.GetComponent<StatsPopup>().SelectableButtons.ToList().ForEach(button => UnityEngine.Object.Destroy(button.gameObject));
             CreditsPopup = obj;
-            GameObject.Destroy(obj.GetComponent<StatsPopup>());
+            UnityEngine.Object.Destroy(obj.GetComponent<StatsPopup>());
 
             CreditsPopup.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
             CreditsPopup.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);

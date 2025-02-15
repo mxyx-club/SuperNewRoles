@@ -183,7 +183,7 @@ public static class RPCHelper
 
     public static void RpcVotingCompleteDesync(VoterState[] states, NetworkedPlayerInfo exiled, bool tie, PlayerControl seer)
     {
-        if (MeetingHud.Instance == null)
+        if (Instance == null)
             throw new System.Exception("MeetingHud.Instance is null");
         if (seer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             Instance.VotingComplete(states, exiled, tie);
@@ -233,7 +233,7 @@ public static class RPCHelper
     }
     public static void RpcSyncOption()
     {
-        GameManager gm = NormalGameManager.Instance;
+        GameManager gm = GameManager.Instance;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
         writer.StartMessage(5);
         writer.Write(AmongUsClient.Instance.GameId);
@@ -424,7 +424,7 @@ public static class RPCHelper
     }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
     {
-        GameManager gm = NormalGameManager.Instance;
+        GameManager gm = GameManager.Instance;
         MessageWriter writer = MessageWriter.Get(sendOption);
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
@@ -467,9 +467,9 @@ public static class RPCHelper
         {
             writer.StartMessage(1); //0x01 Data
             {
-                writer.WritePacked(NormalGameManager.Instance.NetId);
+                writer.WritePacked(GameManager.Instance.NetId);
                 writer.StartMessage(4);
-                writer.WriteBytesAndSize(NormalGameManager.Instance.LogicOptions.gameOptionsFactory.ToBytes(gameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
+                writer.WriteBytesAndSize(GameManager.Instance.LogicOptions.gameOptionsFactory.ToBytes(gameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
                 writer.EndMessage();
             }
             writer.EndMessage();

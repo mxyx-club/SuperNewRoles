@@ -21,7 +21,7 @@ internal class Vampire
             RoleClass.Vampire.NoActiveTurnWait[data.Key]--;
             if (data.Value - 1 <= 0)
             {
-                foreach (var bloodstain in data.Key) GameObject.Destroy(bloodstain.BloodStainObject);
+                foreach (var bloodstain in data.Key) UnityEngine.Object.Destroy(bloodstain.BloodStainObject);
                 RoleClass.Vampire.NoActiveTurnWait.Remove(data.Key);
             }
         }

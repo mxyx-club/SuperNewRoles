@@ -45,11 +45,11 @@ public static class SoothSayer_Patch
         if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
         {
             RoleClass.SoothSayer.DisplayedPlayer.Add(Target.PlayerId);
-            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
         if (RoleClass.SoothSayer.Count <= 0)
         {
-            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
     }
 

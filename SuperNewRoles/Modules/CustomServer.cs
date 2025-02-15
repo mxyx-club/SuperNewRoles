@@ -15,7 +15,7 @@ public static class RegionMenuOpenPatch
     public static void Postfix(RegionMenu __instance)
     {
         var template = FastDestroyableSingleton<JoinGameButton>.Instance;
-        var joinGameButtons = GameObject.FindObjectsOfType<JoinGameButton>();
+        var joinGameButtons = UnityEngine.Object.FindObjectsOfType<JoinGameButton>();
         foreach (var t in joinGameButtons)
         {  // The correct button has a background, the other 2 dont
             if (t.GameIdText != null && t.GameIdText.Background != null)

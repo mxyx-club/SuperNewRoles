@@ -193,8 +193,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version))
         {
             var CVoriginal = AccessTools.Method(typeof(MainMenuManager), nameof(MainMenuManager.Awake));
-            var CVpostfix = new HarmonyMethod(typeof(SuperNewRolesPlugin), nameof(SuperNewRolesPlugin.MainMenuVersionCheckPatch));
-            SuperNewRolesPlugin.Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
+            var CVpostfix = new HarmonyMethod(typeof(SuperNewRolesPlugin), nameof(MainMenuVersionCheckPatch));
+            Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
         }
     }
     // CPUの割当を変更する
@@ -244,12 +244,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version) && !ViewdNonVersion)
         {
-            GenericPopup popup = GameObject.Instantiate(DestroyableSingleton<DiscordManager>.Instance.discordPopup);
+            GenericPopup popup = UnityEngine.Object.Instantiate(DestroyableSingleton<DiscordManager>.Instance.discordPopup);
             popup.transform.FindChild("Background").transform.localScale = new(3, 2.5f, 1f);
             Transform ExitGame = popup.transform.FindChild("ExitGame");
             ExitGame.transform.localPosition = new(0, -2f, -0.5f);
             TextMeshPro egtmp = ExitGame.GetComponentInChildren<TextMeshPro>();
-            GameObject.Destroy(egtmp.GetComponent<TextTranslatorTMP>());
+            UnityEngine.Object.Destroy(egtmp.GetComponent<TextTranslatorTMP>());
             egtmp.text = "OK";
             StringBuilder builder = new($"<size=200%>やあ、みなさん</size>\n\nこのバージョンでは今のバニラバージョン、「{Application.version}」を\nサポートしていません。\nこのバージョンが対応しているバニラバージョンは、\n<size=150%>");
             int count = 0;

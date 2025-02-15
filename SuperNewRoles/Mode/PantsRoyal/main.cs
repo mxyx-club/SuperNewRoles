@@ -70,7 +70,7 @@ public static class main
     }
     public static void GameEnd()
     {
-        main.CurrentTurnData = null;
+        CurrentTurnData = null;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsAlive())
@@ -119,7 +119,7 @@ public static class main
     }
     public static void OnMurderClick(PlayerControl source, PlayerControl target)
     {
-        if (!IsMove || ShowRoleTime >= 0 || !main.CurrentTurnData.IsStarted) return;
+        if (!IsMove || ShowRoleTime >= 0 || !CurrentTurnData.IsStarted) return;
         if (!IsPantsHaver(source) && IsPantsHaver(target))
         {
             StealPants(target, source);

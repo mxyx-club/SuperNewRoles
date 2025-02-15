@@ -147,10 +147,10 @@ public static class MatchMaker
         }
         string ActiveOptions = "";
         List<string> ActivateOptions = new();
-        foreach (CustomOption option in CustomOption.options)
+        foreach (CustomOption option in options)
         {
             bool enabled = true;
-            if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
+            if (AmongUsClient.Instance?.AmHost == false && hideSettings.GetBool())
             {
                 enabled = false;
             }

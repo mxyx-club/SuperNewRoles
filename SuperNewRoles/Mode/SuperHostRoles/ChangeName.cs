@@ -280,7 +280,7 @@ public static class ChangeName
             }
             if (player.IsHauntedWolf())
             {
-                attributeRoleName.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
+                attributeRoleName.Append($" + {ModHelpers.Cs(HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
                 IsHauntedWolfVIew = true;
             }
             if (player.IsGhostRole(RoleId.GhostMechanic))
@@ -357,7 +357,7 @@ public static class ChangeName
         if (!IsArsonistVIew && Arsonist.IsViewIcon(player))
             DieSuffix.Append(ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
         if (!IsHauntedWolfVIew && player.IsHauntedWolf())
-            DieSuffix.Append($" + {ModHelpers.Cs(SuperNewRoles.Roles.Attribute.HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
+            DieSuffix.Append($" + {ModHelpers.Cs(HauntedWolf.RoleData.color, ModTranslation.GetString("HauntedWolfName"))}");
         if (!IsGhostMechanicVIew && player.IsGhostRole(RoleId.GhostMechanic))
             DieSuffix.Append($" + {ModHelpers.Cs(RoleClass.GhostMechanic.color, ModTranslation.GetString("GhostMechanicName"))}");
         NewName.Append(DieSuffix);

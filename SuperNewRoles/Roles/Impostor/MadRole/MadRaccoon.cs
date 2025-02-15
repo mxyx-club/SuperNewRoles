@@ -51,7 +51,7 @@ public static class MadRaccoon
     internal static class RoleData
     {
         public static List<PlayerControl> Player;
-        public static Color32 color = Roles.RoleClass.ImpostorRed;
+        public static Color32 color = RoleClass.ImpostorRed;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static bool IsImpostorCheck;
@@ -102,7 +102,7 @@ public static class MadRaccoon
                 buttonText = ModTranslation.GetString("MadRaccoonButtonName"),
                 showButtonText = true
             };
-            shapeDurationText = UnityEngine.Object.Instantiate(shapeshiftButton.actionButton.cooldownTimerText, shapeshiftButton.actionButton.cooldownTimerText.transform.parent);
+            shapeDurationText = Object.Instantiate(shapeshiftButton.actionButton.cooldownTimerText, shapeshiftButton.actionButton.cooldownTimerText.transform.parent);
             shapeDurationText.text = "";
             shapeDurationText.enableWordWrapping = false;
             shapeDurationText.transform.localScale = Vector3.one * 0.5f;

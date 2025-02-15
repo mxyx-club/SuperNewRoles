@@ -43,7 +43,7 @@ public class CustomVisor
                     string visorres = $"{assembly.GetName().Name}.Resources.CustomVisors";
                     string[] visors = (from r in assembly.GetManifestResourceNames()
                                        where r.StartsWith(visorres) && r.EndsWith(".png")
-                                       select r).ToArray<string>();
+                                       select r).ToArray();
 
                     List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
                     foreach (CustomVisors.CustomVisor cv in customvisors)
@@ -62,7 +62,7 @@ public class CustomVisor
                 var data = __instance.allVisors.ToList();
                 data.AddRange(customVisorData.Values);
                 visordata = data;
-                __instance.allVisors = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<VisorData>(data.ToArray());
+                __instance.allVisors = new Il2CppReferenceArray<VisorData>(data.ToArray());
                 IsLoadingnow = false;
             }
             else
@@ -81,7 +81,7 @@ public class CustomVisor
                 string visorres = $"{assembly.GetName().Name}.Resources.CustomVisors";
                 string[] visors = (from r in assembly.GetManifestResourceNames()
                                    where r.StartsWith(visorres) && r.EndsWith(".png")
-                                   select r).ToArray<string>();
+                                   select r).ToArray();
 
                 List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
                 foreach (CustomVisors.CustomVisor cv in customvisors)
@@ -249,7 +249,7 @@ public class VisorTabPatch
             float offset = YStart;
             if (textTemplate != null)
             {
-                TMPro.TMP_Text title = UnityEngine.Object.Instantiate<TMPro.TMP_Text>(textTemplate, __instance.scroller.Inner);
+                TMPro.TMP_Text title = Object.Instantiate(textTemplate, __instance.scroller.Inner);
                 title.transform.parent = __instance.scroller.Inner;
                 title.transform.localPosition = new Vector3(headerX, YStart, inventoryZ);
                 title.alignment = TMPro.TextAlignmentOptions.Center;
@@ -273,7 +273,7 @@ public class VisorTabPatch
 
                 float xpos = __instance.XRange.Lerp((i2 % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
                 float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
-                ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
+                ColorChip colorChip = Object.Instantiate(__instance.ColorTabPrefab, __instance.scroller.Inner);
 
                 int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color;
 

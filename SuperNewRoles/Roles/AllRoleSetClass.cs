@@ -306,7 +306,7 @@ internal class RoleManagerSelectRolesPatch
             return;
         new LateTask(() =>
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
                 return;
             foreach (var pc in CachedPlayer.AllPlayers)
             {

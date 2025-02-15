@@ -64,7 +64,7 @@ public static class RoleClass
         IsStart = false;
         RoleinformationText.RoleInfo.ClearAndReload();
         Agartha.MapData.ClearAndReloads();
-        Mode.SuperHostRoles.SuperHostRolesOptions.SettingClass.ClearAndReload();
+        SuperHostRolesOptions.SettingClass.ClearAndReload();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
         //Map.Data.ClearAndReloads();
@@ -337,7 +337,7 @@ public static class RoleClass
     public static class EvilLighter
     {
         public static List<PlayerControl> EvilLighterPlayer;
-        public static Color32 color = RoleClass.ImpostorRed;
+        public static Color32 color = ImpostorRed;
         //public static float CoolTime;
         //public static float DurationTime;
 
@@ -416,7 +416,7 @@ public static class RoleClass
     public static class Teleporter
     {
         public static List<PlayerControl> TeleporterPlayer;
-        public static Color32 color = RoleClass.ImpostorRed;
+        public static Color32 color = ImpostorRed;
         public static float CoolTime;
         public static DateTime ButtonTimer;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
@@ -539,7 +539,7 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.ShielderCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.ShielderDurationTime.GetFloat();
             IsShield = new Dictionary<byte, bool>();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers) RoleClass.Shielder.IsShield[p.PlayerId] = false;
+            foreach (PlayerControl p in CachedPlayer.AllPlayers) IsShield[p.PlayerId] = false;
         }
     }
     public static class Freezer
@@ -921,7 +921,7 @@ public static class RoleClass
             PursuerPlayer = new();
             if (arrow != null)
             {
-                GameObject.Destroy(arrow.arrow);
+                UnityEngine.Object.Destroy(arrow.arrow);
             }
             arrow = new Arrow(color);
             arrow.arrow.SetActive(false);
@@ -2094,15 +2094,15 @@ public static class RoleClass
                 KillCoolTime = 0.001f;
             KillKunai = CustomOptionHolder.KunoichiKillKunai.GetInt();
             HitCount = new();
-            if (Kunai != null) { GameObject.Destroy(Kunai.kunai); }
-            if (SendKunai != null) { GameObject.Destroy(SendKunai.kunai); }
+            if (Kunai != null) { UnityEngine.Object.Destroy(Kunai.kunai); }
+            if (SendKunai != null) { UnityEngine.Object.Destroy(SendKunai.kunai); }
             if (Kunais.Count > 0)
             {
                 foreach (Kunai kunai in Kunais)
                 {
                     if (kunai != null)
                     {
-                        GameObject.Destroy(kunai.kunai);
+                        UnityEngine.Object.Destroy(kunai.kunai);
                     }
                 }
             }

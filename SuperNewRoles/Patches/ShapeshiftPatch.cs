@@ -351,13 +351,13 @@ internal class ShapeshifterMinigameBeginPatch
         if (!PlayerControl.LocalPlayer.IsRole(RoleId.GM)) return;
 
         NewTask(__instance);
-        foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
+        foreach (ShapeshifterPanel panel in UnityEngine.Object.FindObjectsOfType<ShapeshifterPanel>()) UnityEngine.Object.Destroy(panel.gameObject);
         int index = 0;
         foreach (var Data in Roles.Neutral.GM.ActionDictionary)
         {
             int num = index % 3;
             int num2 = index / 3;
-            ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
+            ShapeshifterPanel panel = UnityEngine.Object.Instantiate(__instance.PanelPrefab, __instance.transform);
             panel.transform.localPosition = new Vector3(__instance.XStart + num * __instance.XOffset, __instance.YStart + num2 * __instance.YOffset, -1f);
 
             Create(panel, index, Data.Value);

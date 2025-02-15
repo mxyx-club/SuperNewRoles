@@ -353,9 +353,9 @@ internal static class PostMortemCertificate_Display
             bool canResend = CustomOptionData.CanResend.GetBool();
             foreach (var pl in RoleData.Player)
             {
-                new LateTask(() => Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl), "#89c3eb"), 3f);
+                new LateTask(() => AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl), "#89c3eb"), 3f);
                 if (canResend)
-                    new LateTask(() => Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb"), 3f);
+                    new LateTask(() => AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb"), 3f);
             }
         }
 

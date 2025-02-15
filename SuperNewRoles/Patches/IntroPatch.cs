@@ -156,7 +156,7 @@ public class IntroPatch
                         {
                             button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
                             {
-                                Roles.Neutral.GM.target = target;
+                                GM.target = target;
                                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                                 {
@@ -206,8 +206,8 @@ public class IntroPatch
             if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
             {
                 RoleClass.Hitman.UpdateTime = CustomOptionHolder.HitmanChangeTargetTime.GetFloat();
-                Roles.Neutral.Hitman.SetTarget();
-                Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
+                Hitman.SetTarget();
+                Hitman.DestroyIntroHandle(__instance);
                 if (FastDestroyableSingleton<HudManager>.Instance != null)
                 {
                     Vector3 bottomLeft = new(-4.65f, -2.25f, -9);

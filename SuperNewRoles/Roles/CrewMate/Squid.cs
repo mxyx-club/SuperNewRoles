@@ -56,7 +56,7 @@ public class Squid
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Squid; },
             () =>
             {
-                if (Squid.IsVigilance.ContainsValue(true)) CustomButton.FillUp(SquidButton);
+                if (IsVigilance.ContainsValue(true)) CustomButton.FillUp(SquidButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () =>

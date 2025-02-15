@@ -30,7 +30,7 @@ public class ReplayActionMovingPlatform : ReplayAction
     public override void OnAction()
     {
         //ここに処理書く
-        MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+        MovingPlatformBehaviour mpb = Object.FindObjectOfType<MovingPlatformBehaviour>();
         currentAction = this;
         mpb.StartCoroutine(UseMovingPlatform(mpb, ModHelpers.PlayerById(sourcePlayer), this).WrapToIl2Cpp());
     }

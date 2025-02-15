@@ -132,7 +132,7 @@ public static class ModHelpers
 
     public static Sprite CreateSprite(string path, bool fromDisk = false)
     {
-        Texture2D texture = fromDisk ? ModHelpers.LoadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
+        Texture2D texture = fromDisk ? LoadTextureFromDisk(path) : LoadTextureFromResources(path);
         if (texture == null)
             return null;
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -186,13 +186,23 @@ public static class ModHelpers
         }
         return ChildObject;
     }
+    public static bool IsCN()
+    {
+        return (int)AmongUs.Data.DataManager.Settings.Language.CurrentLanguage == 13;
+    }
+
+    public static string GithubUrl(this string url)
+    {
+        return IsCN() && !url.Contains("ghfast.top") ? "https://ghfast.top/" + url : url;
+    }
+
     public static void DeleteObject(this Transform[] trans, string notdelete)
     {
         foreach (Transform tran in trans)
         {
             if (tran.name != notdelete)
             {
-                GameObject.Destroy(tran);
+                UnityEngine.Object.Destroy(tran);
             }
         }
     }
@@ -202,7 +212,7 @@ public static class ModHelpers
         {
             if (tran.name != notdelete)
             {
-                GameObject.Destroy(tran);
+                UnityEngine.Object.Destroy(tran);
             }
         }
     }

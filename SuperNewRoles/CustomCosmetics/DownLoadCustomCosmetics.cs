@@ -1,16 +1,19 @@
+using SuperNewRoles.CustomCosmetics.CustomHats;
+
 namespace SuperNewRoles.CustomCosmetics;
 
 public static class DownLoadCustomCosmetics
 {
     /// <summary>SuperNewCosmetics mainブランチのURL</summary>
-    internal const string SNCmainURL = "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/main";
+    internal static string SNCmainURL = "https://raw.githubusercontent.com/SuperNewRoles/SuperNewCosmetics/main".GithubUrl();
 
     /// <summary>CustomCosmeticの読み込みを行うか</summary>
     public static bool IsLoad => !(DebugModeManager.IsDebugMode || ConfigRoles.IsModCosmeticsAreNotLoaded.Value) || forceLoad;
 
     public static void CosmeticsLoad()
     {
-        DownLoadCustomhat.Load();
+        //DownLoadCustomhat.Load();
+        CustomHatManager.LoadHats();
         DownLoadClassPlate.Load();
         DownLoadClassVisor.Load();
     }

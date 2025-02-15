@@ -91,7 +91,7 @@ public class GrimReaper : BattleRoyalRole
     }
     public static bool CanUseAbility()
     {
-        foreach (GrimReaper gr in GrimReaper.grimReapers) if (gr.IsAbilityUsingNow) return false;
+        foreach (GrimReaper gr in grimReapers) if (gr.IsAbilityUsingNow) return false;
         return true;
     }
     public override void UseAbility(PlayerControl target)

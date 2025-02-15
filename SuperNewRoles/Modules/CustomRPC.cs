@@ -827,14 +827,14 @@ public static class RPCProcedure
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                if (Is) Roles.Impostor.Camouflager.CamouflageSHR();
-                else Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                if (Is) Camouflager.CamouflageSHR();
+                else Camouflager.ResetCamouflageSHR();
             }
         }
         else
         {
-            if (Is) Roles.Impostor.Camouflager.Camouflage(camouflageList);
-            else Roles.Impostor.Camouflager.ResetCamouflage();
+            if (Is) Camouflager.Camouflage(camouflageList);
+            else Camouflager.ResetCamouflage();
         }
     }
 
@@ -949,7 +949,7 @@ public static class RPCProcedure
         PlayerControl source = ModHelpers.PlayerById(sourceid);
         PlayerControl target = ModHelpers.PlayerById(targetid);
         if (source == null) return;
-        Roles.Impostor.Matryoshka.Set(source, target, Is);
+        Matryoshka.Set(source, target, Is);
     }
     public static void PartTimerSet(byte playerid, byte targetid)
     {
@@ -960,7 +960,7 @@ public static class RPCProcedure
     public static void UncheckedUsePlatform(byte playerid, bool IsMove)
     {
         PlayerControl source = ModHelpers.PlayerById(playerid);
-        AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+        AirshipStatus airshipStatus = UnityEngine.Object.FindObjectOfType<AirshipStatus>();
         if (airshipStatus)
         {
             if (IsMove)
@@ -971,7 +971,7 @@ public static class RPCProcedure
             else
             {
                 airshipStatus.GapPlatform.StopAllCoroutines();
-                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
+                airshipStatus.GapPlatform.StartCoroutine(Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
             }
         }
     }
@@ -1382,7 +1382,7 @@ public static class RPCProcedure
         {
             if (RoleClass.Clergyman.currentMessage?.text != null)
             {
-                GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
+                UnityEngine.Object.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
             }
             RoleClass.Clergyman.IsLightOff = false;
         }
@@ -1540,7 +1540,7 @@ public static class RPCProcedure
         source.ProtectPlayer(target, colorid);
         source.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         source.ProtectPlayer(target, colorid);
-        if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
+        if (targetId == CachedPlayer.LocalPlayer.PlayerId) HudManagerStartPatch.ShielderButton.Timer = 0f;
     }
     public static void SetShielder(byte PlayerId, bool Is)
         => RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
@@ -1641,7 +1641,7 @@ public static class RPCProcedure
                 case RpcCalls.UsePlatform:
                     if (AmongUsClient.Instance.AmHost)
                     {
-                        AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+                        AirshipStatus airshipStatus = UnityEngine.Object.FindObjectOfType<AirshipStatus>();
                         if (airshipStatus)
                         {
                             airshipStatus.GapPlatform.Use(__instance);
@@ -2012,7 +2012,7 @@ public static class RPCProcedure
                         JumpDancerJump(reader);
                         break;
                     case CustomRPC.BatSetDeviceStop:
-                        Roles.Impostor.Bat.BatSetDeviceStop();
+                        Bat.BatSetDeviceStop();
                         break;
                     case CustomRPC.RocketSeize:
                         RocketSeize(reader.ReadByte(), reader.ReadByte());

@@ -44,7 +44,7 @@ internal class WrapUpPatch
                 yield return ShipStatus.Instance.PrespawnStep();
                 __instance.ReEnableGameplay();
             }
-            GameObject.Destroy(__instance.gameObject);
+            Object.Destroy(__instance.gameObject);
         }
         public static bool Prefix(ExileController __instance)
         {
@@ -74,7 +74,7 @@ internal class WrapUpPatch
                     }
                     __instance.initData.networkedPlayer.IsDead = true;
                 }
-                GameObject.Destroy(__instance.gameObject);
+                Object.Destroy(__instance.gameObject);
 
                 // 暗転をごり押しで解決
                 if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())
@@ -160,7 +160,7 @@ internal class WrapUpPatch
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) WrapUpClass.WrapUp(exiled);
         ModeHandler.Wrapup(exiled);
         Pteranodon.WrapUp();
         Revolutionist.WrapUp();
@@ -185,8 +185,8 @@ internal class WrapUpPatch
         RoleClass.IsMeeting = false;
         SeerHandler.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
-        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
-        Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
+        Celebrity.AbilityOverflowingBrilliance.WrapUp();
+        TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
         WellBehaver.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
@@ -259,7 +259,7 @@ internal class WrapUpPatch
             if (Player.IsRole(RoleId.Jester))
             {
 
-                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                 {
                     RPCProcedure.ShareWinner(Player.PlayerId);
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

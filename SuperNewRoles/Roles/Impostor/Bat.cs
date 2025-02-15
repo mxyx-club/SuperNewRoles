@@ -165,7 +165,7 @@ public static class Bat
                 buttonText = ModTranslation.GetString("BatButtonName"),
                 showButtonText = true
             };
-            BatCountText = GameObject.Instantiate(BatButton.actionButton.cooldownTimerText, BatButton.actionButton.cooldownTimerText.transform.parent);
+            BatCountText = Object.Instantiate(BatButton.actionButton.cooldownTimerText, BatButton.actionButton.cooldownTimerText.transform.parent);
             BatCountText.text = "";
             BatCountText.enableWordWrapping = false;
             BatCountText.transform.localScale = Vector3.one * 0.5f;

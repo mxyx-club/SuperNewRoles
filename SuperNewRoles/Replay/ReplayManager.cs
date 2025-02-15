@@ -28,9 +28,9 @@ namespace SuperNewRoles.Replay
         }
         public static void CreateReplayButton(MainMenuManager __instance, PassiveButton FreePlayButton)
         {
-            PassiveButton ReplayButton = GameObject.Instantiate(FreePlayButton, FreePlayButton.transform.parent);
+            PassiveButton ReplayButton = Object.Instantiate(FreePlayButton, FreePlayButton.transform.parent);
             ReplayButton.transform.localPosition = new(2f, -1.75f, 0);
-            GameObject.Destroy(ReplayButton.buttonText.GetComponent<TextTranslatorTMP>());
+            Object.Destroy(ReplayButton.buttonText.GetComponent<TextTranslatorTMP>());
             ReplayButton.buttonText.text = ModTranslation.GetString("ReplayName");
             ReplayButton.buttonText.alignment = TextAlignmentOptions.Center;
             ReplayButton.OnClick = new();

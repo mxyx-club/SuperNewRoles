@@ -24,12 +24,12 @@ namespace SuperNewRoles.Roles.Neutral
             if (DateTime.UtcNow >= new DateTime(2022, 12, 23, 12, 0, 0))
             {
                 IsViewd = true;
-                GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
+                GenericPopup Popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
                 Popup.gameObject.SetActive(true);
                 Popup.transform.FindChild("Background").localScale = new(2, 2.8f, 1);
                 Popup.transform.FindChild("ExitGame").localPosition = new(0f, -2f, -0.5f);
                 Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = "了解！";
-                TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
+                TextMeshPro Title = UnityEngine.Object.Instantiate(Popup.TextAreaTMP, Popup.transform);
                 Title.text = "メリークリスマス！";
                 Title.transform.localPosition = new(0.15f, 2, -0.5f);
                 Title.transform.localScale = Vector3.one * 4.5f;

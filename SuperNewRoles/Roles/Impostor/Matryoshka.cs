@@ -43,7 +43,7 @@ public static class Matryoshka
         else
         {
             DeadBody targetDeadBody = null;
-            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            DeadBody[] array = Object.FindObjectsOfType<DeadBody>();
             foreach (DeadBody deadBody in array)
             {
                 if (deadBody.ParentId != target.PlayerId)

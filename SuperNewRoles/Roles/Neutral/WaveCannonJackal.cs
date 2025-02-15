@@ -76,7 +76,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         CreateSidekickCoolTime = Create(Optioninfo.OptionId, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, CanCreateSidekick, format: "unitSeconds"); Optioninfo.OptionId++;
 
         List<string> SidekickTypeTexts = [];
-        foreach (WCJackalSidekickType type in System.Enum.GetValues(typeof(WCJackalSidekickType)))
+        foreach (WCJackalSidekickType type in Enum.GetValues(typeof(WCJackalSidekickType)))
         {
             SidekickTypeTexts.Add(ModTranslation.GetString("WaveCannonJackalSidekickType" + type));
         }
@@ -124,7 +124,7 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
         WCAnimType AnimationType = IsLoadedBullet ? WCAnimType.Bullet : (WCAnimType)AnimationOptionType.GetSelection();
-        writer.Write((byte)WaveCannonObject.RpcType.Spawn);
+        writer.Write((byte)RpcType.Spawn);
         writer.Write((byte)0);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -132,11 +132,11 @@ public class WaveCannonJackal : RoleBase, INeutral, ICustomButton, ISaboAvailabl
         writer.Write(pos.y);
         writer.Write((byte)AnimationType);
         writer.EndRPC();
-        RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, AnimationType);
+        RPCProcedure.WaveCannon((byte)RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, pos, AnimationType);
     }
     private void OnEffectEnds()
     {
-        WaveCannonObject obj = Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == WaveCannonObject.Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
+        WaveCannonObject obj = Objects.Values.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
         if (obj == null)
         {
             Logger.Info("nullなのでreturnしました", "WaveCannonButton");

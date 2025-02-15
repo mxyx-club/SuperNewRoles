@@ -74,11 +74,11 @@ internal class ShareGameVersion
 
         private static void ClearVersionErrorInfo()
         {
-            VersionErrorInfo = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, FastDestroyableSingleton<HudManager>.Instance.transform);
+            VersionErrorInfo = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskPanel.taskText, FastDestroyableSingleton<HudManager>.Instance.transform);
             VersionErrorInfo.fontSize = VersionErrorInfo.fontSizeMin = VersionErrorInfo.fontSizeMax = 3f;
             VersionErrorInfo.autoSizeTextContainer = false;
             VersionErrorInfo.enableWordWrapping = false;
-            VersionErrorInfo.alignment = TMPro.TextAlignmentOptions.Center;
+            VersionErrorInfo.alignment = TextAlignmentOptions.Center;
             VersionErrorInfo.transform.position = Vector3.zero;
             VersionErrorInfo.transform.localPosition = new Vector3(0f, 0f, -40f);
             VersionErrorInfo.transform.localScale = Vector3.one;

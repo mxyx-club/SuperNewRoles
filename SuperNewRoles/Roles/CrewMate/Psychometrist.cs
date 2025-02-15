@@ -77,7 +77,7 @@ public static class Psychometrist
         DeadBody targetbody = RoleClass.Psychometrist.CurrentTarget;
         if (targetbody == null || !PlayerControl.LocalPlayer.CanMove) return;
         DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == targetbody.ParentId)?.FirstOrDefault();
-        TextMeshPro DeathTimeText = GameObject.Instantiate(PlayerControl.LocalPlayer.NameText(), targetbody.transform);
+        TextMeshPro DeathTimeText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.NameText(), targetbody.transform);
         int count = UnityEngine.Random.Range(CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt() * -1, CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt());
         RoleClass.Psychometrist.DeathTimeTexts.Add((targetbody, DeathTimeText, count));
         DeathTimeText.transform.localPosition = new(-0.2f, 0.5f, 0);

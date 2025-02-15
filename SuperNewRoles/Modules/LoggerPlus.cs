@@ -94,7 +94,7 @@ internal class LoggerPlus
     }
 
     private static UserType GetUserType() =>
-        AmongUsClient.Instance.GameState is not AmongUsClient.GameStates.Started and not InnerNet.InnerNetClient.GameStates.Ended
+        AmongUsClient.Instance.GameState is not InnerNet.InnerNetClient.GameStates.Started and not InnerNet.InnerNetClient.GameStates.Ended
             ? UserType.Client
             : AmongUsClient.Instance.AmHost
                 ? (CachedPlayer.LocalPlayer.PlayerId == 0 ? UserType.Host : UserType.PromotedHost) // ホストの種類を判定

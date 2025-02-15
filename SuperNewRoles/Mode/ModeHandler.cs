@@ -45,12 +45,12 @@ public static class ModeHandler
         {
             HideAndSeek.main.ClearAndReloads();
             thisMode = HideAndSeek.main.IsAllInMod ? ModeId.Default : ModeId.SuperHostRoles;
-            if (thisMode == ModeId.SuperHostRoles) SuperHostRoles.Main.ClearAndReloads();
+            if (thisMode == ModeId.SuperHostRoles) Main.ClearAndReloads();
         }
         else if (IsMode(ModeId.SuperHostRoles, false))
         {
             thisMode = ModeId.SuperHostRoles;
-            SuperHostRoles.Main.ClearAndReloads();
+            Main.ClearAndReloads();
         }
         else if (IsMode(ModeId.Zombie, false))
         {
@@ -92,7 +92,7 @@ public static class ModeHandler
         }
         if (!IsMode(ModeId.Default))
         {
-            SuperHostRoles.BlockTool.IsCom = false;
+            BlockTool.IsCom = false;
         }
     }
     public static string[] modes = new string[] { ModTranslation.GetString("HideAndSeekModeName"), ModTranslation.GetString("SuperHostRolesModeName"), ModTranslation.GetString("BattleRoyalModeName"), ModTranslation.GetString("ZombieModeName"), ModTranslation.GetString("RandomColorModeName"), ModTranslation.GetString("NotImpostorCheckModeName"), ModTranslation.GetString("DetectiveModeName"), ModTranslation.GetString("CopsRobbersModeName"), ModTranslation.GetString("WerewolfModeName"), ModTranslation.GetString("PantsRoyalModeName") };
@@ -114,11 +114,11 @@ public static class ModeHandler
     public static Il2CppSystem.Collections.Generic.List<PlayerControl> TeamHandler(IntroCutscene __instance)
     {
         if (IsMode(ModeId.BattleRoyal)) return BattleRoyal.Intro.ModeHandler();
-        else if (IsMode(ModeId.SuperHostRoles)) return SuperHostRoles.Intro.ModeHandler(__instance);
+        else if (IsMode(ModeId.SuperHostRoles)) return Intro.ModeHandler(__instance);
         else if (IsMode(ModeId.Zombie)) return Zombie.Intro.ModeHandler();
-        else if (IsMode(ModeId.RandomColor)) return SuperHostRoles.Intro.ModeHandler(__instance);
-        else if (IsMode(ModeId.NotImpostorCheck)) return SuperHostRoles.Intro.ModeHandler(__instance);
-        else if (IsMode(ModeId.Detective)) return SuperHostRoles.Intro.ModeHandler(__instance);
+        else if (IsMode(ModeId.RandomColor)) return Intro.ModeHandler(__instance);
+        else if (IsMode(ModeId.NotImpostorCheck)) return Intro.ModeHandler(__instance);
+        else if (IsMode(ModeId.Detective)) return Intro.ModeHandler(__instance);
         else if (IsMode(ModeId.PantsRoyal)) return PantsRoyal.main.IntroHandler(__instance);
         else if (IsMode(ModeId.CopsRobbers))
         {
@@ -139,7 +139,7 @@ public static class ModeHandler
     {
         if (IsMode(ModeId.Zombie)) Zombie.Intro.YouAreHandle(__instance);
         else if (IsMode(ModeId.Detective)) Detective.Intro.YouAreHandle(__instance);
-        else if (IsMode(ModeId.BattleRoyal)) SuperNewRoles.Mode.BattleRoyal.Intro.YouAreHandle(__instance);
+        else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Intro.YouAreHandle(__instance);
         else if (IsMode(ModeId.PantsRoyal)) PantsRoyal.main.YouAreHandle(__instance);
     }
     public static void OptionLoad()
@@ -256,7 +256,7 @@ public static class ModeHandler
     public static bool EndGameChecks(ShipStatus __instance, PlayerStatistics statistics)
     {
         if (IsMode(ModeId.BattleRoyal)) return BattleRoyal.Main.EndGameCheck(__instance);
-        else if (IsMode(ModeId.SuperHostRoles)) return SuperHostRoles.EndGameCheck.CheckEndGame(__instance, statistics);
+        else if (IsMode(ModeId.SuperHostRoles)) return EndGameCheck.CheckEndGame(__instance, statistics);
         else if (IsMode(ModeId.Zombie)) return Zombie.Main.EndGameCheck(__instance, statistics);
         else if (IsMode(ModeId.RandomColor)) return RandomColor.Main.CheckEndGame(__instance, statistics);
         else if (IsMode(ModeId.NotImpostorCheck)) return NotImpostorCheck.WinCheck.CheckEndGame(__instance);

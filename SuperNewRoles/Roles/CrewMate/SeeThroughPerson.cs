@@ -15,7 +15,7 @@ public static class SeeThroughPerson
                 newcollider.transform.position = door.transform.position;
                 var TempCollider = door.gameObject.AddComponent<PolygonCollider2D>();
                 newcollider.AddComponent<EdgeCollider2D>().points = TempCollider.points;
-                GameObject.Destroy(TempCollider);
+                Object.Destroy(TempCollider);
                 door.myCollider.isTrigger = true;
                 RoleClass.SeeThroughPerson.Objects.Add(newcollider.GetComponent<EdgeCollider2D>());
                 door.animator.Play(door.OpenDoorAnim);

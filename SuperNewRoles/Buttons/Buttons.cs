@@ -281,7 +281,7 @@ internal static class HudManagerStartPatch
                 MechanicButton.HasEffect = true;
             },
             // FIXME: EvilMechanicでもNiceMechanicのボタンが表示されている状態です。変える方法分かったら変えて下さい…
-            PlayerControl.LocalPlayer.IsImpostor() ? Roles.Impostor.EvilMechanic.GetButtonSprite() : Roles.Crewmate.NiceMechanic.GetButtonSprite(),
+            PlayerControl.LocalPlayer.IsImpostor() ? EvilMechanic.GetButtonSprite() : NiceMechanic.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -923,7 +923,7 @@ internal static class HudManagerStartPatch
                     FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
                     CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
                     FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
-                    RoleClass.Doctor.Vital = GameObject.FindObjectOfType<VitalsMinigame>();
+                    RoleClass.Doctor.Vital = UnityEngine.Object.FindObjectOfType<VitalsMinigame>();
                 }
                 RoleClass.Doctor.MyPanelFlag = true;
             },
@@ -1336,7 +1336,7 @@ internal static class HudManagerStartPatch
             8,
             () => { return false; }
         );
-        sheriffNumShotsText = GameObject.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
+        sheriffNumShotsText = UnityEngine.Object.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
         sheriffNumShotsText.text = "";
         sheriffNumShotsText.enableWordWrapping = false;
         sheriffNumShotsText.transform.localScale = Vector3.one * 0.5f;
@@ -1598,7 +1598,7 @@ internal static class HudManagerStartPatch
             showButtonText = true
         };
 
-        RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+        RoleClass.SerialKiller.SuicideKillText = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
         RoleClass.SerialKiller.SuicideKillText.text = "";
         RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
         RoleClass.SerialKiller.SuicideKillText.transform.localScale = Vector3.one * 0.5f;
@@ -2037,7 +2037,7 @@ internal static class HudManagerStartPatch
             49,
             () => { return false; }
         );
-        GhostMechanicNumRepairText = GameObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
+        GhostMechanicNumRepairText = UnityEngine.Object.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
         GhostMechanicNumRepairText.text = "";
         GhostMechanicNumRepairText.enableWordWrapping = false;
         GhostMechanicNumRepairText.transform.localScale = Vector3.one * 0.5f;
@@ -2074,7 +2074,7 @@ internal static class HudManagerStartPatch
             () => { return false; }
         );
         {
-            PositionSwapperNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
+            PositionSwapperNumText = UnityEngine.Object.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
             PositionSwapperNumText.text = "";
             PositionSwapperNumText.enableWordWrapping = false;
             PositionSwapperNumText.transform.localScale = Vector3.one * 0.5f;
@@ -2153,7 +2153,7 @@ internal static class HudManagerStartPatch
             () => { return !PlayerControl.LocalPlayer.CanMove || (!RoleClass.SecretlyKiller.IsBlackOutKillCharge && ModHelpers.IsBlackout()); }
         );
         {
-            SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);
+            SecretlyKillNumText = UnityEngine.Object.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);
             SecretlyKillNumText.text = "";
             SecretlyKillNumText.enableWordWrapping = false;
             SecretlyKillNumText.transform.localScale = Vector3.one * 0.5f;
@@ -2824,7 +2824,7 @@ internal static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("DoppelgangerButtonName"),
             showButtonText = true
         };
-        RoleClass.Doppelganger.DoppelgangerDurationText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+        RoleClass.Doppelganger.DoppelgangerDurationText = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
         RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
         RoleClass.Doppelganger.DoppelgangerDurationText.enableWordWrapping = false;
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
@@ -2880,7 +2880,7 @@ internal static class HudManagerStartPatch
             showButtonText = true
         };
 
-        Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
+        Worshiper.SetupCustomButtons(__instance);
 
         FireFox.SetupCustomButtons(__instance);
 

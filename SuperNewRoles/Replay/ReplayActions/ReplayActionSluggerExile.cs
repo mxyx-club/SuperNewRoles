@@ -33,7 +33,7 @@ public class ReplayActionSluggerExile : ReplayAction
     {
         foreach (SluggerDeadbody db in SluggerDeadbody.DeadBodys.FindAll(x => x.PlayerId == sourcePlayer))
         {
-            GameObject.Destroy(db.gameObject);
+            Object.Destroy(db.gameObject);
         }
     }
     //試合内でアクションがあったら実行するやつ

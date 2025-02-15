@@ -77,7 +77,7 @@ internal class UpdateSystemPatch
         {
             if (systemType is SystemTypes.Comms or SystemTypes.Sabotage or SystemTypes.Electrical)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.SabotageRepair);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Painter.Handle(Painter.ActionType.SabotageRepair);
             }
         }
         if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers, ModeId.PantsRoyal)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;

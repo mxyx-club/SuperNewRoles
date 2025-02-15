@@ -59,7 +59,7 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton
 
     public void OnEffectEnds()
     {
-        if (!WaveCannonObject.Objects.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out WaveCannonObject obj))
+        if (!Objects.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out WaveCannonObject obj))
         {
             Logger.Info("nullなのでreturnしました", "WaveCannonButton");
             return;
@@ -67,7 +67,7 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton
 
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
-        writer.Write((byte)WaveCannonObject.RpcType.Shoot);
+        writer.Write((byte)RpcType.Shoot);
         writer.Write((byte)obj.Id);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);

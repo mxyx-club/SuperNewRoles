@@ -68,7 +68,7 @@ internal class ControllerManagerUpdatePatch
 
 
         //　ゲーム中
-        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && AmongUsClient.Instance.AmHost)
         {
             // 廃村
             if (ModHelpers.GetManyKeyDown(HaisonKeyCodes))

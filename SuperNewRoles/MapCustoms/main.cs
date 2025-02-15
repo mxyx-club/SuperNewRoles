@@ -56,7 +56,7 @@ internal class IntroCutsceneOnDestroyPatch
         {
             // シャワー 写真
             var array = new[] { "task_shower", "task_developphotos", "task_garbage1", "task_garbage2", "task_garbage3", "task_garbage4", "task_garbage5" };
-            foreach (var c in GameObject.FindObjectsOfType<Console>())
+            foreach (var c in UnityEngine.Object.FindObjectsOfType<Console>())
             {
                 if (c == null) continue;
                 if (array.Any(x => c.name == x)) c.checkWalls = true;
@@ -79,7 +79,7 @@ internal class IntroCutsceneOnDestroyPatch
         FungleAdditionalAdmin.AddAdmin();
 
         FungleShipStatus fungleShipStatus;
-        if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
+        if (IsMapCustom(MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
             GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
             // ぬ～んを消す
@@ -152,9 +152,9 @@ internal class AirshipExileControllerWrapUpAndSpawnPatch
 {
     private static void Prefix()
     { // エアーシップ電気室のドアをシャッフルする
-        if (MapCustoms.MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship)
+        if (IsMapCustom(MapCustomId.Airship)
             && MapCustom.ShuffleElectricalDoors.GetBool()
             && AmongUsClient.Instance.AmHost)
-            AirshipStatus.Instance.Systems[SystemTypes.Decontamination].Cast<ElectricalDoors>().Initialize();
+            ShipStatus.Instance.Systems[SystemTypes.Decontamination].Cast<ElectricalDoors>().Initialize();
     }
 }

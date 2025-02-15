@@ -144,7 +144,7 @@ public class EvilSeer : SeerBase, IImpostor, ISupportSHR, ICustomButton
         foreach (var arrow in DeadPlayerArrows)
         {
             bool isTarget = false;
-            foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+            foreach (DeadBody dead in Object.FindObjectsOfType<DeadBody>())
             {
                 if (arrow.Key.ParentId != dead.ParentId) continue;
                 isTarget = true;
@@ -172,11 +172,11 @@ public class EvilSeer : SeerBase, IImpostor, ISupportSHR, ICustomButton
             else
             {
                 if (arrow.Value?.arrow != null)
-                    UnityEngine.Object.Destroy(arrow.Value.arrow);
+                    Object.Destroy(arrow.Value.arrow);
                 DeadPlayerArrows.Remove(arrow.Key);
             }
         }
-        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        foreach (DeadBody dead in Object.FindObjectsOfType<DeadBody>())
         {
             if (DeadPlayerArrows.Any(x => x.Key.ParentId == dead.ParentId)) continue;
 

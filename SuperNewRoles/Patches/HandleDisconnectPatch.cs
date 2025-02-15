@@ -11,7 +11,7 @@ public static class HostDisconnectedPatch
     {
         if (player.OwnerId == AmongUsClient.Instance.HostId)
         {
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
                 //恐らくEndGame時にサーバー側でホストが切り替わるため、
                 //最初にこの処理を行ったプレイヤー(次のホスト)以外はこの処理に到達しない(既にホストが変わっている)

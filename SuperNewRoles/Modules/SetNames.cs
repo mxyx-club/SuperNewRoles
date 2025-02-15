@@ -68,7 +68,7 @@ public class SetNamesClass
         bool commsActive = RoleHelpers.IsComms();
         if (!PlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro playerInfo) || playerInfo == null)
         {
-            playerInfo = UnityEngine.Object.Instantiate(p.NameText(), p.NameText().transform.parent);
+            playerInfo = Object.Instantiate(p.NameText(), p.NameText().transform.parent);
             playerInfo.fontSize *= 0.75f;
             playerInfo.gameObject.name = "Info";
             PlayerInfos[p.PlayerId] = playerInfo;
@@ -80,7 +80,7 @@ public class SetNamesClass
         PlayerVoteArea playerVoteArea = CacheManager.GetVoteAreaById(p.PlayerId);
         if ((!MeetingPlayerInfos.TryGetValue(p.PlayerId, out TextMeshPro meetingInfo) || meetingInfo == null) && playerVoteArea != null)
         {
-            meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
+            meetingInfo = Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
             meetingInfo.transform.localPosition += Vector3.down * 0.1f;
             meetingInfo.fontSize = 1.5f;
             meetingInfo.gameObject.name = "Info";
@@ -211,11 +211,11 @@ public class SetNamesClass
 
             // ゲーム設定による, 基本的な判定
             // (役職の個別判定で死後役職が見られる場合は, ゲーム設定による判定を優先する)
-            if (!Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool()) return true; // 上位設定 "ゲームオプション" が有効か
+            if (!PlusGameOptions.PlusGameOptionSetting.GetBool()) return true; // 上位設定 "ゲームオプション" が有効か
             else
             {
-                if (!Mode.PlusMode.PlusGameOptions.CanNotGhostSeeRole.GetBool()) return true;
-                else if (Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool()) return target.IsImpostor();
+                if (!PlusGameOptions.CanNotGhostSeeRole.GetBool()) return true;
+                else if (PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool()) return target.IsImpostor();
             }
         }
         return false;
@@ -336,11 +336,11 @@ public class SetNamesClass
                 //クルーなら
                 if (!player.Player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && player.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
                 {//名前に(C)をつける
-                    SetNamesClass.SetPlayerNameText(player.Player, player.Player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                    SetPlayerNameText(player.Player, player.Player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
                 }
                 if (!player.Player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && player.TeamState == SatsumaAndImo.SatsumaTeam.Madmate)
                 {
-                    SetNamesClass.SetPlayerNameText(player.Player, player.Player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                    SetPlayerNameText(player.Player, player.Player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
                 }
             }
         }
@@ -352,11 +352,11 @@ public class SetNamesClass
                 return;
             if (!player.NameText().text.Contains(ModHelpers.Cs(Palette.White, " (C)")) && satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Crewmate)
             {//名前に(C)をつける
-                SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
             }
             else if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && satsumaAndImo.TeamState == SatsumaAndImo.SatsumaTeam.Madmate)
             {
-                SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
             }
         }
     }
@@ -367,13 +367,13 @@ public class SetNamesClass
             foreach (PlayerControl player in AttributeGuesser.AttributeGuesserPlayer)
             {
                 if (!player.NameText().text.Contains(ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕")))
-                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕"));
+                    SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕"));
             }
         }
         else if (PlayerControl.LocalPlayer.IsAttributeGuesser())
         {
             if (!PlayerControl.LocalPlayer.NameText().text.Contains(ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕")))
-                SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕"));
+                SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + ModHelpers.Cs(NiceGuesser.Roleinfo.RoleColor, " ⊕"));
         }
     }
 }

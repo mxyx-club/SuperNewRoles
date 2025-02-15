@@ -191,9 +191,9 @@ public static class DeviceClass
                             HashSet<int> hashSet = new();
                             int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
                             int count = 0;
-                            if (Roles.Impostor.Bat.RoleData.IsDeviceStop)
+                            if (Bat.RoleData.IsDeviceStop)
                             {
-                                counterArea.UpdateCount(Roles.Impostor.Bat.RoleData.RoomAdminData.TryGetValue((int)counterArea.RoomType, out int batadmincount) ? batadmincount : 0);
+                                counterArea.UpdateCount(Bat.RoleData.RoomAdminData.TryGetValue((int)counterArea.RoomType, out int batadmincount) ? batadmincount : 0);
                                 continue;
                             }
                             List<int> colors = new();
@@ -277,7 +277,7 @@ public static class DeviceClass
             if (!IsAdminRestrict) return;
             if (CachedPlayer.LocalPlayer.IsDead())
             {
-                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                if (TimeRemaining != null) UnityEngine.Object.Destroy(TimeRemaining.gameObject);
                 return;
             }
             if (DeviceTimers[DeviceType.Admin.ToString()] <= 0)
@@ -317,7 +317,7 @@ public static class DeviceClass
                 return;
             }
             if (!IsAdminRestrict) return;
-            if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+            if (TimeRemaining != null) UnityEngine.Object.Destroy(TimeRemaining.gameObject);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
             writer.Write((byte)DeviceType.Admin);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -376,7 +376,7 @@ public static class DeviceClass
             if (RoleClass.Doctor.Vital != null ||
                 BlackHatHacker.IsMyVutals)
                 return;
-            if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+            if (TimeRemaining != null) UnityEngine.Object.Destroy(TimeRemaining.gameObject);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
             writer.Write((byte)DeviceType.Vital);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -447,7 +447,7 @@ public static class DeviceClass
                 return;
             if (CachedPlayer.LocalPlayer.IsDead())
             {
-                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                if (TimeRemaining != null) UnityEngine.Object.Destroy(TimeRemaining.gameObject);
                 return;
             }
             if (DeviceTimers[DeviceType.Vital.ToString()] <= 0)
@@ -502,7 +502,7 @@ public static class DeviceClass
         if (!IsCameraRestrict) return;
         if (CachedPlayer.LocalPlayer.IsDead())
         {
-            if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+            if (TimeRemaining != null) UnityEngine.Object.Destroy(TimeRemaining.gameObject);
             return;
         }
         if (IsCameraCloseNow) return;

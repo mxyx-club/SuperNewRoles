@@ -861,7 +861,7 @@ public static class MurderPlayerPatch
                     Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
                     for (int i = 0; i <= RoleClass.OverKiller.KillCount; i++)
                     {
-                        DeadBody deadBody = GameObject.Instantiate(deadBodyPrefab);
+                        DeadBody deadBody = UnityEngine.Object.Instantiate(deadBodyPrefab);
                         deadBody.enabled = false;
                         deadBody.ParentId = target.PlayerId;
                         Vector3 position = target.transform.position + BodyOffset;

@@ -37,7 +37,7 @@ internal class SeerHandler
     private static Coroutine FlashCoroutine;
     public static void ShowFlash_ClearAndReload()
     {
-        FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
+        FullScreenRenderer = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         Renderer = FastDestroyableSingleton<HudManager>.Instance;
         FlashCoroutine = null;
         FullScreenRenderer.gameObject.SetActive(false);
@@ -194,7 +194,7 @@ internal class SeerHandler
                     // 自分が死んだ後は, どのシーアも霊魂の色にクルーのボディカラーを反映させる。
                     var soulColorId = PlayerControl.LocalPlayer.IsDead()
                                     ? bodyColorId
-                                    : EvilSeer.DefaultBodyColorId;
+                                    : SeerBase.DefaultBodyColorId;
 
                     bool flashModeFlag = false;
                     Color flashColor = new(42f / 255f, 187f / 255f, 245f / 255f); // 基本の発光カラー
@@ -229,7 +229,7 @@ internal class SeerHandler
 
                             if (PlayerControl.LocalPlayer.IsDead() || (isBodyColor && evilSeer.IsClearColor)) soulColorId = bodyColorId; // 彩光が最高
                             else if (isBodyColor) soulColorId = indistinctBodyColorId; // 明暗
-                            else soulColorId = EvilSeer.DefaultBodyColorId; // デフォルト
+                            else soulColorId = SeerBase.DefaultBodyColorId; // デフォルト
 
                             // |:===== 死の点滅関連の処理 =====:|
                             flashModeFlag = seerBase.SeerMode <= 1;

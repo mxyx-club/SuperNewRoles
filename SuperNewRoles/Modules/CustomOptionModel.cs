@@ -516,7 +516,7 @@ public class CustomRoleOption : CustomOption
         if (!RoleOptions.TryAdd(RoleId, this))
             Logger.Info(RoleId.ToString() + "を追加できんかったー：" + name);
         this.isHidden = isHidden;
-        if (max > 1) countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
+        if (max > 1) countOption = Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
     }
 }
 
@@ -580,11 +580,11 @@ internal class RoleOptionsDataGetNumPerGamePatch
     {
         if (role is RoleTypes.Crewmate or RoleTypes.Impostor) return;
 
-        if (Mode.ModeHandler.IsBlockVanillaRole()) __result = 0;
+        if (ModeHandler.IsBlockVanillaRole()) __result = 0;
 
         if (role != RoleTypes.GuardianAngel) return;
 
-        if (Mode.ModeHandler.IsBlockGuardianAngelRole()) __result = 0;
+        if (ModeHandler.IsBlockGuardianAngelRole()) __result = 0;
 
     }
 }

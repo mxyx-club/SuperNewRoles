@@ -64,7 +64,7 @@ internal class Doctor
         {
             public static void Prefix(Minigame __instance)
             {
-                if (GameObject.FindObjectOfType<VitalsMinigame>() && PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
+                if (UnityEngine.Object.FindObjectOfType<VitalsMinigame>() && PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
                 {
                     new LateTask(() => RoleClass.Doctor.MyPanelFlag = false, 0.5f, "Doctor flag");
                 }

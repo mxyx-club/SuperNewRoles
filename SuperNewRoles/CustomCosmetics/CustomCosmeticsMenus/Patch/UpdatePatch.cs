@@ -15,9 +15,9 @@ internal class UpdatePatch
         ObjectData.CosmicubeMenuHolderTint.enabled = false;
         if (!ObjectData.IsShow)
         {
-            if (GameObject.FindObjectOfType<PlayerTab>()?.ColorChips != null)
+            if (Object.FindObjectOfType<PlayerTab>()?.ColorChips != null)
             {
-                foreach (ColorChip chip in GameObject.FindObjectOfType<PlayerTab>().ColorChips)
+                foreach (ColorChip chip in Object.FindObjectOfType<PlayerTab>().ColorChips)
                 {
                     chip.gameObject.SetActive(false);
                 }

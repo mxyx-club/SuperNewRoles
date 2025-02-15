@@ -79,7 +79,7 @@ internal static class Kunoichi
         {
             if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, kunai.kunai.transform.position) > 6f)
             {
-                GameObject.Destroy(kunai.kunai);
+                UnityEngine.Object.Destroy(kunai.kunai);
                 RoleClass.Kunoichi.Kunais.Remove(kunai);
             }
             else
@@ -100,7 +100,7 @@ internal static class Kunoichi
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                         }
                         RoleClass.Kunoichi.Kunais.Remove(kunai);
-                        GameObject.Destroy(kunai.kunai);
+                        UnityEngine.Object.Destroy(kunai.kunai);
                         break;
                     }
                 }

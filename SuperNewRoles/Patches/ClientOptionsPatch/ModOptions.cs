@@ -164,7 +164,7 @@ public static class ClientModOptionsPatch
     {
         popUp.gameObject.SetActive(false);
         ReplayPopup.gameObject.SetActive(true);
-        Transform obj = GameObject.FindObjectOfType<OptionsMenuBehaviour>()?.transform;
+        Transform obj = Object.FindObjectOfType<OptionsMenuBehaviour>()?.transform;
         if (obj?.parent && obj?.parent == FastDestroyableSingleton<HudManager>.Instance.transform)
         {
             ReplayPopup.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);

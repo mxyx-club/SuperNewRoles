@@ -8,7 +8,7 @@ public class FungleAdditionalAdmin
         if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.TheFungle) &&
             MapCustom.TheFungleAdditionalAdmin.GetBool())
         {
-            Transform Admin = GameObject.Instantiate(
+            Transform Admin = Object.Instantiate(
                 AirshipObject.transform.FindChild("Cockpit/panel_cockpit_map"), ShipStatus.Instance.transform);
             Admin.transform.position = new Vector3(-10.3f, 13.5f, 0.1f);
             Admin.transform.Rotate(new(0, 0, 10f));

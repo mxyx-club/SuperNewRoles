@@ -217,7 +217,7 @@ public static class Balancer
                         MeetingHud.Instance.TitleText.text = titletext;
                         leftplayerarea.transform.localPosition = leftpos;
                         rightplayerarea.transform.localPosition = rightpos;
-                        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(AmongUs.GameOptions.Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat();
+                        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat();
                         MeetingHud.Instance.TimerText.gameObject.SetActive(true);
                         MeetingHud.Instance.TimerText.transform.localPosition = new(2.05f, -2, -1);
                         MeetingHud.Instance.ProceedButton.transform.localPosition = new(3.5f, -2, -1.05f);
@@ -276,7 +276,7 @@ public static class Balancer
     public static void StartAbility(PlayerControl source, PlayerControl player1, PlayerControl player2)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(AmongUs.GameOptions.Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat() - 6.5f;
+        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat() - 6.5f;
         currentAbilityUser = source;
         targetplayerleft = player1;
         targetplayerright = player2;
@@ -359,7 +359,7 @@ public static class Balancer
 
     private static TextMeshPro createtext(Vector3 pos, string text, float fontsize)
     {
-        TextMeshPro tmp = GameObject.Instantiate(MeetingHud.Instance.TitleText, MeetingHud.Instance.transform);
+        TextMeshPro tmp = Object.Instantiate(MeetingHud.Instance.TitleText, MeetingHud.Instance.transform);
         tmp.text = text;
         tmp.gameObject.gameObject.layer = 5;
         tmp.transform.localScale = Vector3.one;
@@ -369,7 +369,7 @@ public static class Balancer
         tmp.fontSizeMin = fontsize;
         tmp.enableWordWrapping = false;
         tmp.gameObject.SetActive(true);
-        GameObject.Destroy(tmp.GetComponent<TextTranslatorTMP>());
+        Object.Destroy(tmp.GetComponent<TextTranslatorTMP>());
         return tmp;
     }
 
@@ -429,7 +429,7 @@ public static class Balancer
             writer.EndRPC();
             RPCProcedure.BalancerBalance(PlayerControl.LocalPlayer.PlayerId, currentTarget.PlayerId, Target.PlayerId);
             IsAbilityUsed = true;
-            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
         }
 
         private static void Event(MeetingHud __instance)

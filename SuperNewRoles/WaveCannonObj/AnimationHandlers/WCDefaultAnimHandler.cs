@@ -119,7 +119,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                         .FirstOrDefault()?
                         .ResetCoolTime();
                     }
-                    GameObject.Destroy(CannonObject.gameObject);
+                    Object.Destroy(CannonObject.gameObject);
                 }
             });
         });

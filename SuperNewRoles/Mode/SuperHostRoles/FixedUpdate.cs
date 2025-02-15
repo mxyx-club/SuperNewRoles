@@ -64,7 +64,7 @@ public static class FixedUpdate
         {
             p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
         }
-        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
         {
             RoleFixedUpdate();
             BlockTool.FixedUpdate();

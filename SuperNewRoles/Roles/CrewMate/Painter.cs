@@ -58,7 +58,7 @@ public static class Painter
         {
             if (print != null && print.footprint != null)
             {
-                GameObject.Destroy(print.footprint);
+                UnityEngine.Object.Destroy(print.footprint);
             }
             return true;
         });

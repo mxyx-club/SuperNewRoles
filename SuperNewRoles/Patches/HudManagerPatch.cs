@@ -13,7 +13,7 @@ internal class HudManagerPatch
         public static void Postfix(HudManager __instance)
         {
             WallHack.WallHackUpdate();
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             ReplayManager.HudUpdate();
             Mode.Zombie.FixedUpdate.ZombieTimerUpdate(__instance);
             CustomButton.HudUpdate();
