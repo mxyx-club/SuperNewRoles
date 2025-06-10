@@ -1,6 +1,4 @@
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Rewired;
 
 namespace SuperNewRoles.Sabotage.CognitiveDeficit;
 
@@ -8,7 +6,7 @@ public static class TaskBar
 {
     public static ProgressTracker Instance;
     [HarmonyPatch(typeof(ProgressTracker), nameof(ProgressTracker.FixedUpdate))]
-    class TaskBarPatch
+    private class TaskBarPatch
     {
         public static void Postfix(ProgressTracker __instance)
         {

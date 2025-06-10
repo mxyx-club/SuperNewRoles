@@ -1,5 +1,4 @@
 using System.IO;
-using Il2CppInterop.Runtime;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -12,14 +11,14 @@ public static class AssetLoader
         input.CopyTo(ms);
         return ms.ToArray();
     }
-    
+
 #nullable enable
-    public static T? LoadAsset<T>(this AssetBundle assetBundle, string name) where T : UnityEngine.Object
+    public static T? LoadAsset<T>(this AssetBundle assetBundle, string name) where T : Object
     {
         return assetBundle.LoadAsset(name, Il2CppType.Of<T>())?.TryCast<T>();
     }
 #nullable disable
-    public static T DontUnload<T>(this T obj) where T : UnityEngine.Object
+    public static T DontUnload<T>(this T obj) where T : Object
     {
         obj.hideFlags |= HideFlags.DontUnloadUnusedAsset;
 

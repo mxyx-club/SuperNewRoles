@@ -1,21 +1,18 @@
 using System;
 using System.IO;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(GameManager), nameof(GameManager.Serialize))]
-class GameManagerSerializeFix
+internal class GameManagerSerializeFix
 {
     public static bool Prefix(GameManager __instance, [HarmonyArgument(0)] MessageWriter writer, [HarmonyArgument(1)] bool initialState, ref bool __result)
     {
@@ -23,7 +20,7 @@ class GameManagerSerializeFix
         for (int index = 0; index < __instance.LogicComponents.Count; ++index)
         {
             GameLogicComponent logicComponent = __instance.LogicComponents[index];
-            if (initialState || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
+            if (initialState || AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started ||
                 logicComponent.TryCast<LogicOptions>() == null)
             {
                 flag = true;
@@ -41,17 +38,17 @@ class GameManagerSerializeFix
 }
 
 [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-class ControllerManagerUpdatePatch
+internal class ControllerManagerUpdatePatch
 {
-    static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
-    static int resolutionIndex = 0;
-    static AudioSource source;
+    private static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
+    private static int resolutionIndex;
+    private static AudioSource source;
     public static void Postfix()
     {
         if (source != null)
         {
-            Logger.Info(source.time.ToString(), "a");
-            Logger.Info(source.timeSamples.ToString(), "b");
+            Info(source.time.ToString(), "a");
+            Info(source.timeSamples.ToString(), "b");
         }
         //解像度変更
         if (Input.GetKeyDown(KeyCode.F9))
@@ -61,23 +58,15 @@ class ControllerManagerUpdatePatch
             ResolutionManager.SetResolution(resolutions[resolutionIndex].Item1, resolutions[resolutionIndex].Item2, false);
         }
 
-        // その時点までのlogを切り出す
-        if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
-        {
-            string via = "KeyCommandVia";
-            Logger.SaveLog(via, via);
-        }
-
-
         //　ゲーム中
-        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && AmongUsClient.Instance.AmHost)
         {
             // 廃村
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
             {
                 RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                 RPCProcedure.SetHaison();
-                Logger.Info("===================== 廃村 ======================", "End Game");
+                Info("===================== 廃村 ======================", "End Game");
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
@@ -115,7 +104,7 @@ class ControllerManagerUpdatePatch
             if (Input.GetKeyDown(KeyCode.G))
             {
                 PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text, false);
-                Logger.Info(EOSManager.Instance.UserIDToken);
+                Info(EOSManager.Instance.UserIDToken);
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
                 //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
@@ -134,20 +123,20 @@ class ControllerManagerUpdatePatch
                 return;
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
                 DirectoryInfo d = new(filePath);
-                Logger.Info("FileName:" + d.GetFiles()[0].Name);
+                Info("FileName:" + d.GetFiles()[0].Name);
                 (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[0].Name);
                 ReplayManager.IsReplayMode = true;
-                Logger.Info($"IsSuc:{IsSuc}");
+                Info($"IsSuc:{IsSuc}");
                 if (IsSuc)
                 {
-                    Logger.Info($"PlayerCount:{replay.AllPlayersCount}");
-                    Logger.Info($"Mode:{replay.CustomMode}");
-                    Logger.Info($"Time:{replay.RecordTime.ToString()}");
+                    Info($"PlayerCount:{replay.AllPlayersCount}");
+                    Info($"Mode:{replay.CustomMode}");
+                    Info($"Time:{replay.RecordTime.ToString()}");
                 }
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
-                UnityEngine.Object.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, PlayerControl.LocalPlayer.gameObject.transform).Play(PlayerControl.LocalPlayer, null, PlayerControl.LocalPlayer.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
+                UObject.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, PlayerControl.LocalPlayer.gameObject.transform).Play(PlayerControl.LocalPlayer, null, PlayerControl.LocalPlayer.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
             }
             if (Input.GetKeyDown(KeyCode.J))
             {
@@ -171,7 +160,7 @@ class ControllerManagerUpdatePatch
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                Logger.Info("Test Option Set", "Test");
+                Info("Test Option Set", "Test");
                 IGameOptions options = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
                 options.SetFloat(FloatOptionNames.KillCooldown, 10f);
                 options.SetFloat(FloatOptionNames.CrewLightMod, 10f);
@@ -194,7 +183,7 @@ class ControllerManagerUpdatePatch
                 foreach (RoleId role in Enum.GetValues(typeof(RoleId)))
                 {
                     Roles.Role.QuoteMod quoteMod = Roles.RoleBases.CustomRoles.GetQuoteMod(role);
-                    if (quoteMod != Roles.Role.QuoteMod.SuperNewRoles) Logger.Info($"{role}, 参考元 : {quoteMod}", "QuoteMod Log");
+                    if (quoteMod != Roles.Role.QuoteMod.SuperNewRoles) Info($"{role}, 参考元 : {quoteMod}", "QuoteMod Log");
                 }
             }
         }

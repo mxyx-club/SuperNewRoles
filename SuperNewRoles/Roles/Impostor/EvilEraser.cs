@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles.Neutral;
 
@@ -62,7 +61,7 @@ public static class EvilEraser
     {
         return !IsBlockAndTryUse(blocktype, player);
     }
-    public static bool IsWinGodGuard = false;
+    public static bool IsWinGodGuard;
     public static bool IsGodWinGuard()
     {
         bool IsAlive = false;
@@ -94,7 +93,7 @@ public static class EvilEraser
         return false;
     }
 
-    public static bool IsWinFoxGuard = false;
+    public static bool IsWinFoxGuard;
     public static bool IsFoxWinGuard()
     {
         bool IsAlive = false;
@@ -127,7 +126,7 @@ public static class EvilEraser
         }
         return false;
     }
-    public static bool IsWinNeetGuard = false;
+    public static bool IsWinNeetGuard;
     public static bool IsNeetWinGuard()
     {
         bool IsAlive = false;

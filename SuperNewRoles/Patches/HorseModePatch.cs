@@ -1,7 +1,4 @@
-using System;
-using HarmonyLib;
 using UnityEngine;
-using UnityEngine.Events;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
@@ -11,11 +8,11 @@ namespace SuperNewRoles.Patches;
 public class MainMenuPatch
 {
     private static bool horseButtonState = HorseModeOption.enableHorseMode;
-    private static Sprite horseModeOffSprite = null;
+    private static Sprite horseModeOffSprite;
 
-    static void hidebtn(PassiveButton btn)
+    private static void hidebtn(PassiveButton btn)
     {
-        GameObject.Destroy(btn.GetComponent<AspectScaledAsset>());
+        Object.Destroy(btn.GetComponent<AspectScaledAsset>());
         btn.activeSprites = null;
         btn.inactiveSprites = null;
         btn.HeldButtonSprite = null;
@@ -110,7 +107,7 @@ public class MainMenuPatch
 
 public static class HorseModeOption
 {
-    public static bool enableHorseMode = false;
+    public static bool enableHorseMode;
 
     public static void ClearAndReloadMapOptions()
     {

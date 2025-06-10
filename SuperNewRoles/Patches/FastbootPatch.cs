@@ -1,11 +1,9 @@
-using HarmonyLib;
-
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
-class SplashLogoAnimatorPatch
+internal class SplashLogoAnimatorPatch
 {
-    static bool IsAgarthaLoaded = false;
+    private static bool IsAgarthaLoaded;
     public static void Prefix(SplashManager __instance)
     {
         if (!IsAgarthaLoaded)

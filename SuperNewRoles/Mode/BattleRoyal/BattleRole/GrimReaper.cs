@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static MonoMod.RuntimeDetour.DynamicHookGen;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole;
 public class GrimReaper : BattleRoyalRole
@@ -95,7 +91,7 @@ public class GrimReaper : BattleRoyalRole
     }
     public static bool CanUseAbility()
     {
-        foreach (GrimReaper gr in GrimReaper.grimReapers) if (gr.IsAbilityUsingNow) return false;
+        foreach (GrimReaper gr in grimReapers) if (gr.IsAbilityUsingNow) return false;
         return true;
     }
     public override void UseAbility(PlayerControl target)

@@ -1,11 +1,10 @@
-using Hazel;
 using SuperNewRoles.Buttons;
 using UnityEngine;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles;
 
-class JackalSeer
+internal class JackalSeer
 {
     public static void ResetCooldown()
     {

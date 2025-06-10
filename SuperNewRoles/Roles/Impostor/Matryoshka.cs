@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
@@ -49,7 +48,7 @@ public static class Matryoshka
         }
         else
         {
-            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            DeadBody[] array = Object.FindObjectsOfType<DeadBody>();
             for (int i = 0; i < array.Length; i++)
             {
                 if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == target.PlayerId)

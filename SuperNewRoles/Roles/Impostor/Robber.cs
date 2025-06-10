@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using static Il2CppSystem.Globalization.CultureInfo;
 
 namespace SuperNewRoles.Roles.Impostor.Robber;
 
@@ -116,7 +113,7 @@ public class Robber : RoleBase, IImpostor, IDeathHandler, IRpcHandler
             if (taskInfo != null)
                 taskInfo.Complete = false;
             target.myTasks.Remove(task);
-            GameObject.Destroy(task.gameObject);
+            Object.Destroy(task.gameObject);
             NormalPlayerTask taskById = ShipStatus.Instance.GetTaskById(taskInfo.TypeId);
             NormalPlayerTask normalPlayerTask = Object.Instantiate(taskById, target.transform);
             normalPlayerTask.Id = taskInfo.Id;

@@ -9,7 +9,7 @@ using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Roles;
 
-class Madmate
+internal class Madmate
 {
     public static HashSet<byte> CheckedImpostor;
     /// <summary>

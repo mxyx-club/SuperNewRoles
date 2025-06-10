@@ -1,15 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Hazel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
-using TMPro;
 using UnityEngine;
 using static SuperNewRoles.MapCustoms.MapCustom;
 
@@ -20,12 +15,12 @@ public static class SecretRoom
     public static PlayerControl leftplayer;
     public static PlayerControl rightplayer;
 
-    static PoolablePlayer left;
-    static PoolablePlayer right;
+    private static PoolablePlayer left;
+    private static PoolablePlayer right;
     public static PlayerControl UsePlayer;
-    public static bool IsWait = false;
+    public static bool IsWait;
     public static TextMeshPro LowerInfoText;
-    static readonly List<Vector2> TeleportPositions = new()
+    private static readonly List<Vector2> TeleportPositions = new()
         {
             new Vector2(-0.78f, -1f), new Vector2(-13, -1), new Vector2(-13, 1.5f), new Vector2(-21, -1.2f), new Vector2(-10, -7), new Vector2(-6.2f, -11),
             new Vector2(-13.4f, -12.2f), new Vector2(2.2f, -12), new Vector2(7.2f, -11.4f), new Vector2(16.3f, -8.6f), new Vector2(24.9f, -5.7f), new Vector2(33.6f, -0.6f), new Vector2(31.5f, 5.6f),
@@ -52,7 +47,7 @@ public static class SecretRoom
                 {
                     if (data1 == CachedPlayer.LocalPlayer.PlayerId)
                     {
-                        VitalsMinigame minigame = GameObject.FindObjectOfType<VitalsMinigame>();
+                        VitalsMinigame minigame = UObject.FindObjectOfType<VitalsMinigame>();
                         if (minigame != null && minigame.name == "secretroom_teleport-console")
                         {
                             minigame.Close();
@@ -167,7 +162,7 @@ public static class SecretRoom
             //newdoorcollider.points = new Vector2[] { new Vector2(1.85f, -0.0783f), new Vector2(3.05f, -0.0783f) };
 
             EdgeCollider2D shadow = Shadows.GetComponentsInChildren<EdgeCollider2D>()[0];
-            EdgeCollider2D newshadow = GameObject.Instantiate(shadow, Shadows);
+            EdgeCollider2D newshadow = UObject.Instantiate(shadow, Shadows);
             List<Vector2> shadow_new = shadow.points.ToArray()[..14].ToList();
             shadow_new.Add(new Vector2(1.64f, 0.8122f));
             shadow_new.Add(new Vector2(1.64f, 6f));
@@ -186,25 +181,25 @@ public static class SecretRoom
             newshadow.points = newshadow_new.ToArray();
             shadow.points = shadow_new.ToArray();
 
-            Transform entranse = GameObject.Instantiate(__instance.transform.FindChild("Cockpit/cockpit_chair"), room);
+            Transform entranse = UObject.Instantiate(__instance.transform.FindChild("Cockpit/cockpit_chair"), room);
             entranse.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_entrance.png", 115f);
             entranse.localPosition = new Vector3(2.45f, 1.23f, -0.0007f);
             entranse.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             entranse.name = "secretroom_entranse";
 
-            Transform Aisle = GameObject.Instantiate(entranse, room);
+            Transform Aisle = UObject.Instantiate(entranse, room);
             Aisle.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Aisle.png", 115f);
             Aisle.localPosition = new Vector3(2.45f, 4.35f, -0.1f);
             Aisle.localScale = new Vector3(1.5f, 200f, 1.5f);
             Aisle.name = "secretroom_aisle";
 
-            Transform Room = GameObject.Instantiate(entranse, room);
+            Transform Room = UObject.Instantiate(entranse, room);
             Room.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Room.png", 115f);
             Room.localPosition = new Vector3(2.5326f, 7.9f, -0.09f);
             Room.localScale = new Vector3(1.44f, 1.44f, 1.44f);
             Room.name = "secretroom_room";
 
-            Transform Grass = GameObject.Instantiate(entranse, room);
+            Transform Grass = UObject.Instantiate(entranse, room);
             Grass.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Grass.png", 115f);
             Grass.gameObject.AddComponent<EdgeCollider2D>().points = new Vector2[] {
                     new Vector2(-0.2f, -0.4f), new Vector2(0.175f, -0.4f), new Vector2(0.175f, -0.5f), new Vector2(-0.2f, -0.5f)
@@ -213,41 +208,41 @@ public static class SecretRoom
             Grass.localScale = new Vector3(1.57f, 1.57f, 1.57f);
             Grass.name = "secretroom_grass";
 
-            Transform Grass2 = GameObject.Instantiate(Grass, room);
+            Transform Grass2 = UObject.Instantiate(Grass, room);
             Grass2.localPosition = new Vector3(-1.67f, 6.9f, -8f);
             Grass2.localScale = new Vector3(1.57f, 1.57f, 1.57f);
             Grass2.name = "secretroom_grass2";
 
-            Transform Grass3 = GameObject.Instantiate(Grass, room);
+            Transform Grass3 = UObject.Instantiate(Grass, room);
             Grass3.localPosition = new Vector3(3.3f, 6.9f, -8f);
             Grass3.localScale = new Vector3(1.57f, 1.57f, 1.57f);
             Grass3.name = "secretroom_grass3";
 
-            Transform Grass4 = GameObject.Instantiate(Grass, room);
+            Transform Grass4 = UObject.Instantiate(Grass, room);
             Grass4.localPosition = new Vector3(6.78f, 6.9f, -8f);
             Grass4.localScale = new Vector3(1.57f, 1.57f, 1.57f);
             Grass4.name = "secretroom_grass4";
 
-            Transform Dustbin = GameObject.Instantiate(Grass, room);
+            Transform Dustbin = UObject.Instantiate(Grass, room);
             Dustbin.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Dustbin.png", 115f);
             Dustbin.localPosition = new Vector3(-0.9f, 6.8f, -8f);
             Dustbin.localScale = new Vector3(1.4f, 1.4f, 1.4f);
             Dustbin.name = "secretroom_dustbin";
 
-            Transform Teleport_on = GameObject.Instantiate(Grass, room);
+            Transform Teleport_on = UObject.Instantiate(Grass, room);
             Teleport_on.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Teleport_on.png", 115f);
             Teleport_on.localPosition = new Vector3(5.7f, 8.92f, -0.1f);
             Teleport_on.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             Teleport_on.name = "secretroom_teleport-on";
-            GameObject.Destroy(Teleport_on.GetComponent<EdgeCollider2D>());
+            UObject.Destroy(Teleport_on.GetComponent<EdgeCollider2D>());
 
-            Transform Teleport_on2 = GameObject.Instantiate(Teleport_on, room);
+            Transform Teleport_on2 = UObject.Instantiate(Teleport_on, room);
             Teleport_on2.localPosition = new Vector3(-0.6f, 8.9f, -0.1f);
             Teleport_on2.localScale = new Vector3(-1.5f, 1.5f, 1.5f);
             Teleport_on2.name = "secretroom_teleport-on2";
             ActivateConsole(Teleport_on2.gameObject);
 
-            Transform Teleport_console = GameObject.Instantiate(Teleport_on, room);
+            Transform Teleport_console = UObject.Instantiate(Teleport_on, room);
             Teleport_console.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Teleport_Console.png", 115f);
             Teleport_console.localPosition = new Vector3(2.55f, 9.75f, -0.1f);
             Teleport_console.localScale = new Vector3(1.35f, 1.35f, 1.35f);
@@ -272,7 +267,7 @@ public static class SecretRoom
             if (PlayerControl.LocalPlayer.PlayerId != UsePlayer.PlayerId) return;
             new LateTask(() =>
             {
-                if (GameObject.FindObjectOfType<VitalsMinigame>() == null && onTask)
+                if (UObject.FindObjectOfType<VitalsMinigame>() == null && onTask)
                 {
                     lastUpdate = DateTime.UtcNow;
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetSecretRoomTeleportStatus);
@@ -321,12 +316,12 @@ public static class SecretRoom
             }
         }
     }
-    static bool onTask;
+    private static bool onTask;
     public static DateTime lastUpdate;
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
-    class VitalsMinigameStartPatch
+    private class VitalsMinigameStartPatch
     {
-        static void Postfix()
+        private static void Postfix()
         {
             onTask = true;
         }
@@ -341,7 +336,7 @@ public static class SecretRoom
             {
                 if (LowerInfoText == null)
                 {
-                    LowerInfoText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.NameText());
+                    LowerInfoText = UObject.Instantiate(PlayerControl.LocalPlayer.NameText());
                     LowerInfoText.transform.parent = FastDestroyableSingleton<HudManager>.Instance.transform;
                     LowerInfoText.transform.localPosition = new Vector3(0, -1.5f, 0);
                     LowerInfoText.transform.localScale = new Vector3(2, 2f, 2);
@@ -392,7 +387,7 @@ public static class SecretRoom
                     RPCHelper.EndRPC(writer);
                     SetSecretRoomTeleportStatus(Status.UseConsole, CachedPlayer.LocalPlayer.PlayerId, 0);
                     ViewMinigame();
-                    var minigame = GameObject.FindObjectOfType<VitalsMinigame>();
+                    var minigame = UObject.FindObjectOfType<VitalsMinigame>();
                     minigame.name = "secretroom_teleport-console";
                     minigame.BatteryText.text = ModTranslation.GetString("StartExperiment"); // 実験を開始する
                     minigame.BatteryText.color = Color.white;
@@ -400,7 +395,7 @@ public static class SecretRoom
                     minigame.BatteryText.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
                     minigame.BatteryText.transform.FindChild("Sprite").gameObject.SetActive(false);
 
-                    PoolablePlayer leftpool = GameObject.Instantiate(minigame.vitals[0].PlayerIcon, minigame.transform);
+                    PoolablePlayer leftpool = UObject.Instantiate(minigame.vitals[0].PlayerIcon, minigame.transform);
                     leftpool.UpdateFromPlayerOutfit(PlayerControl.LocalPlayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
                     leftpool.transform.localPosition = new Vector3(-2f, 0.5f, 0f);
                     leftpool.transform.localScale = new Vector3(1, 1, 1);
@@ -414,7 +409,7 @@ public static class SecretRoom
                     left = leftpool;
 
                     //rightplayer = PlayerControl.LocalPlayer;
-                    PoolablePlayer rightpool = GameObject.Instantiate(minigame.vitals[0].PlayerIcon, minigame.transform);
+                    PoolablePlayer rightpool = UObject.Instantiate(minigame.vitals[0].PlayerIcon, minigame.transform);
                     rightpool.UpdateFromPlayerOutfit(PlayerControl.LocalPlayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
                     rightpool.transform.localPosition = new Vector3(2f, 0.5f, 0f);
                     rightpool.transform.localScale = new Vector3(-1, 1, 1);
@@ -429,14 +424,14 @@ public static class SecretRoom
                     rightpool.name = "right";
                     right = rightpool;
 
-                    var timetext = GameObject.Instantiate(rightpool.NameText(), minigame.transform);
+                    var timetext = UObject.Instantiate(rightpool.NameText(), minigame.transform);
                     timetext.gameObject.SetActive(true);
                     timetext.GetComponent<TextMeshPro>().characterWidthAdjustment = 10f;
                     timetext.text = "";
                     timetext.transform.localPosition = new Vector3(0, 1, -0.5f);
                     timetext.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
-                    var startbutton = GameObject.Instantiate(minigame.transform.FindChild("CloseButton"), minigame.transform);
+                    var startbutton = UObject.Instantiate(minigame.transform.FindChild("CloseButton"), minigame.transform);
                     startbutton.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Aislehjhrtjh.png", 115f);
                     var button = startbutton.GetComponent<PassiveButton>();
                     startbutton.transform.localScale = new Vector3(1, 20, 1);
@@ -451,7 +446,7 @@ public static class SecretRoom
                             writer.Write((byte)Status.Wait);
                             RPCHelper.EndRPC(writer);
                             Is = true;
-                            var obj = GameObject.FindObjectOfType<VitalsMinigame>();
+                            var obj = UObject.FindObjectOfType<VitalsMinigame>();
                             obj.BatteryText.text = ModTranslation.GetString("Processing"); // 処理中...
                             new LateTask(() =>
                             {
@@ -463,7 +458,7 @@ public static class SecretRoom
                                     RPCHelper.EndRPC(writer);
                                     new LateTask(() =>
                                     {
-                                        GameObject.FindObjectOfType<VitalsMinigame>().Close();
+                                        UObject.FindObjectOfType<VitalsMinigame>().Close();
                                         leftplayer = null;
                                         rightplayer = null;
                                     }, 0.1f, "VitalText Close");
@@ -471,17 +466,17 @@ public static class SecretRoom
                             }, 1f, "実験成功");
                         }
                     }));
-                    foreach (VitalsPanel panel in minigame.vitals) GameObject.Destroy(panel.gameObject);
+                    foreach (VitalsPanel panel in minigame.vitals) UObject.Destroy(panel.gameObject);
                 }
                 return false;
             }
             return true;
         }
-        static IEnumerator Escape(Console __instance, Coroutine coro)
+        private static IEnumerator Escape(Console __instance, Coroutine coro)
         {
             while (true)
             {
-                if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
+                if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
                 {
                     yield break;
                 }
@@ -490,7 +485,7 @@ public static class SecretRoom
                 {
                     while (IsWait)
                     {
-                        if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
+                        if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
                         {
                             LowerInfoText.text = "";
                             yield break;
@@ -530,7 +525,7 @@ public static class SecretRoom
             }
         }
 
-        static IEnumerator Move2(Console __instance)
+        private static IEnumerator Move2(Console __instance)
         {
             PlayerPhysics myPhysics = PlayerControl.LocalPlayer.MyPhysics;
             Vector2 worldPos = __instance.name.Contains("2") ? new Vector2(0.14f, -5.025f) : __instance.transform.position;
@@ -594,14 +589,14 @@ public static class SecretRoom
             return false;
         }
     }
-    static void ViewMinigame()
+    private static void ViewMinigame()
     {
         var moto = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
         CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
     }
-    static Console ActivateConsole(GameObject obj, float Distance = 1.7f)
+    private static Console ActivateConsole(GameObject obj, float Distance = 1.7f)
     {
         if (obj == null) return null;
         obj.layer = LayerMask.NameToLayer("ShortObjects");

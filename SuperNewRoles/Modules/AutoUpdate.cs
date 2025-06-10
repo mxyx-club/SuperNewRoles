@@ -1,16 +1,14 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
-using HarmonyLib;
 using Newtonsoft.Json.Linq;
 
 namespace SuperNewRoles;
 
 public class AutoUpdate
 {
-    static AnnouncementPanel firstpanel;
+    private static AnnouncementPanel firstpanel;
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Update))]
     public static class AnnouncementUpdatePatch
     {
@@ -36,8 +34,8 @@ public class AutoUpdate
     public static string announcementtitle = "None";
     public static string announcementtitlever = "None";
     public static GenericPopup InfoPopup;
-    private static bool IsLoad = false;
-    public static string updateURL = null;
+    private static bool IsLoad;
+    public static string updateURL;
     public static async Task<bool> Update()
     {
         try
@@ -97,15 +95,15 @@ public class AutoUpdate
         }
         return false;
     }
-    public static async Task<bool> checkForUpdate(TMPro.TextMeshPro setData)
+    public static async Task<bool> checkForUpdate(TextMeshPro setData)
     {
-        Logger.Info("checkForUpdateが来ました");
+        Info("checkForUpdateが来ました");
         try
         {
             HttpClient http = new();
             http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
             var response = await http.GetAsync(new System.Uri($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest"), HttpCompletionOption.ResponseContentRead);
-            Logger.Info($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest", "リリース情報のURL");
+            Info($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest", "リリース情報のURL");
             if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
             {
                 System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -117,7 +115,7 @@ public class AutoUpdate
             string tagname = data["tag_name"]?.ToString();
             if (tagname == null)
             {
-                Logger.Info("自動アップデートなのにタグね～じゃん！フィクションはバグだけにしとけよな！");
+                Info("自動アップデートなのにタグね～じゃん！フィクションはバグだけにしとけよな！");
                 return false; // Something went wrong
             }
             string changeLog = data["body"]?.ToString();
@@ -132,7 +130,7 @@ public class AutoUpdate
             announcementtitlever = title;
             if (!ConfigRoles.AutoUpdate.Value)
             {
-                Logger.Info("AutoUpdateRETURN", "AutoUpdate");
+                Info("AutoUpdateRETURN", "AutoUpdate");
                 return false;
             }
             if (!IsLoad)
@@ -155,7 +153,7 @@ public class AutoUpdate
                 JToken assets = data["assets"];
                 if (!assets.HasValues)
                 {
-                    Logger.Info("AssetsのValueがありませんでした。");
+                    Info("AssetsのValueがありませんでした。");
                     return false;
                 }
                 for (JToken current = assets.First; current != null; current = current.Next)

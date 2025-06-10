@@ -1,19 +1,18 @@
 using System;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles;
 
-class Lovers
+internal class Lovers
 {
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
-    class HandleDisconnectPatch
+    private class HandleDisconnectPatch
     {
         public static void Postfix(PlayerControl player)
         {
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
             {
                 if (player.IsLovers())
                 {

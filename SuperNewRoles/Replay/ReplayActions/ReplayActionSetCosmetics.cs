@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public enum ReplayCosmeticsType
@@ -52,7 +49,7 @@ public class ReplayActionSetCosmetics : ReplayAction
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
         if (target == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。target:{targetPlayer}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。target:{targetPlayer}");
             return;
         }
         switch (CosType)
@@ -79,7 +76,7 @@ public class ReplayActionSetCosmetics : ReplayAction
                 target.SetSkin(ChangeTarget, colorId);
                 break;
             default:
-                Logger.Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
+                Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
                 break;
         }
     }
@@ -88,7 +85,7 @@ public class ReplayActionSetCosmetics : ReplayAction
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
         if (target == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。target:{targetPlayer}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。target:{targetPlayer}");
             return;
         }
         ReplayAction action = GetLastAction(this, (ReplayAction act) => (act as ReplayActionSetCosmetics).targetPlayer == targetPlayer && (act as ReplayActionSetCosmetics).CosType == CosType);
@@ -118,7 +115,7 @@ public class ReplayActionSetCosmetics : ReplayAction
                     target.SetSkin("", colorId);
                     break;
                 default:
-                    Logger.Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
+                    Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
                     break;
             }
         }
@@ -149,7 +146,7 @@ public class ReplayActionSetCosmetics : ReplayAction
                     target.SetSkin(rasc.ChangeTarget, rasc.colorId);
                     break;
                 default:
-                    Logger.Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
+                    Info($"アクションを実行しようとしましたが、CosTypeがねえよ。target:{targetPlayer},CosType:{CosType}");
                     break;
             }
         }

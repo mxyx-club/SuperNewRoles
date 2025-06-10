@@ -1,5 +1,4 @@
 using System;
-using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using UnityEngine;
@@ -39,9 +38,9 @@ public static class Painter
     }
     public static void WrapUp()
     {
-        Logger.Info("WrapUp");
+        Info("WrapUp");
         if (RoleClass.Painter.Prints.Count > 0 && RoleClass.Painter.IsFootprintMeetingDestroy) DestroyPrints();
-        Logger.Info($"{RoleClass.Painter.CurrentTarget != null}");
+        Info($"{RoleClass.Painter.CurrentTarget != null}");
         if (RoleClass.Painter.CurrentTarget != null)
         {
             SpawnFootprints();
@@ -58,7 +57,7 @@ public static class Painter
         {
             if (print != null && print.footprint != null)
             {
-                GameObject.Destroy(print.footprint);
+                UObject.Destroy(print.footprint);
             }
             return true;
         });
@@ -68,7 +67,7 @@ public static class Painter
         if (RoleClass.Painter.CurrentTarget == null) throw new Exception("RoleClass.Painter.CurrentTargetがnullです");
         foreach (var data in RoleClass.Painter.ActionData)
         {
-            Logger.Info($"{data.Key}の数は{data.Value.Count}です");
+            Info($"{data.Key}の数は{data.Value.Count}です");
             foreach (var pos in data.Value)
             {
                 Footprint print = new(-1f, false, RoleClass.Painter.CurrentTarget, new(pos.x, pos.y, 0.01f));
@@ -80,10 +79,10 @@ public static class Painter
     }
     public static void Handle(ActionType type, Vector2? nullpos = null)
     {
-        Logger.Info($"ハンドル:{type}");
+        Info($"ハンドル:{type}");
         if (!RoleClass.Painter.IsEnables[type]) return;
         if (RoleClass.Painter.CurrentTarget == null) return;
-        Logger.Info($"ハンドル:{type}が通過");
+        Info($"ハンドル:{type}が通過");
         Vector2 pos = nullpos == null ? RoleClass.Painter.CurrentTarget.GetTruePosition() : (Vector2)nullpos;
         RoleClass.Painter.ActionData[type].Add(pos);
     }

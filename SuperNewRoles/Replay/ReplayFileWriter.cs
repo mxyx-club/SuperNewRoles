@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -23,7 +21,7 @@ public static class ReplayFileWriter
         ElectricalDoors electrical = ShipStatus.Instance?.transform?.Find("Electrical")?.GetComponent<ElectricalDoors>();
         if (electrical == null)
         {
-            Logger.Info("エレキドアがありませんでした。");
+            Info("エレキドアがありませんでした。");
             writer.Write(false);
         }
         else

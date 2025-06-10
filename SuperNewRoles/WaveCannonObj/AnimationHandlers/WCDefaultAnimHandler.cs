@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -50,7 +45,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
             return CachedSpritesShoot;
         }
     }
-    public static Sprite[] CachedSpritesShoot = null;
+    public static Sprite[] CachedSpritesShoot;
     public static Sprite[] ShootSpritesNowing
     {
         get
@@ -64,10 +59,10 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
             return CachedSpritesShootNowing;
         }
     }
-    public static Sprite[] CachedSpritesShootNowing = null;
+    public static Sprite[] CachedSpritesShootNowing;
     private static Sprite _colliderSprite;
 
-    public static Sprite[] CachedSpritesCharge = null;
+    public static Sprite[] CachedSpritesCharge;
     public WCDefaultAnimHandler(WaveCannonObject waveCannonObject)
     {
         CannonObject = waveCannonObject;
@@ -83,7 +78,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
     {
         WaveCannonEffect WCEffect = CannonObject.WaveCannonEffects.FirstOrDefault();
         WCEffect.transform.localPosition = new(0f, 0, 0.1f);
-        CannonObject.transform.localPosition += new Vector3(CannonObject.IsFlipX ? -4.05f : 4.05f,0);
+        CannonObject.transform.localPosition += new Vector3(CannonObject.IsFlipX ? -4.05f : 4.05f, 0);
         foreach (var obj in CannonObject.effectrenders) obj.sprite = ShootSprites[0];
         Sprite[] sprites = new Sprite[12];
         for (int i = 0; i < 12; i++)
@@ -124,7 +119,7 @@ public class WCDefaultAnimHandler : IWaveCannonAnimationHandler
                         .FirstOrDefault()?
                         .ResetCoolTime();
                     }
-                    GameObject.Destroy(CannonObject.gameObject);
+                    Object.Destroy(CannonObject.gameObject);
                 }
             });
         });

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Agartha;
-using HarmonyLib;
 using SuperNewRoles.MapCustoms;
 
 namespace SuperNewRoles.Modules;
@@ -8,7 +7,7 @@ namespace SuperNewRoles.Modules;
 public static class VentDataPatch
 {
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
-    class IntroCutsceneOnDestroy
+    private class IntroCutsceneOnDestroy
     {
         public static void Postfix()
         {

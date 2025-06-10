@@ -2,7 +2,7 @@ using static SuperNewRoles.Modules.CustomOption;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class SuperHostRolesOptions
+internal class SuperHostRolesOptions
 {
     public static CustomOption SettingSuperHostRolesMode;
 

@@ -4,5 +4,5 @@ namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 /// </summary>
 public interface IGroupIntro
 {
-    public bool IsGroupIntro(out string IntroText);
+    bool IsGroupIntro(out string IntroText);
 }

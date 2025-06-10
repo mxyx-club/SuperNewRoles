@@ -1,30 +1,23 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using BepInEx;
-using BepInEx.IL2CPP;
 using BepInEx.Unity.IL2CPP;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using Il2CppSystem.Data;
 using Newtonsoft.Json.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
-using static SuperNewRoles.Modules.CustomRegulation;
 
 namespace SuperNewRoles.Modules;
 public static class ModDownloader
 {
     public class ModObject
     {
-        public bool DataGetted = false;
+        public bool DataGetted;
         public bool Installed
         {
             get
@@ -79,21 +72,21 @@ public static class ModDownloader
         ModObject obj = GetModByGUId(guid);
         if (obj == null)
         {
-            Logger.Info("MODがnullでした:" + guid);
+            Info("MODがnullでした:" + guid);
             return;
         }
         if (obj.Installed)
         {
-            Logger.Info("MODがインストール済みでした:" + guid);
+            Info("MODがインストール済みでした:" + guid);
             return;
         }
         if (DownloadingPopup == null)
         {
-            var template = GameObject.FindObjectOfType<MainMenuManager>().transform.FindChild("StatsPopup").GetComponent<TransitionOpen>(); ;
-            DownloadingPopup = GameObject.Instantiate(template, template.transform.parent);
+            var template = Object.FindObjectOfType<MainMenuManager>().transform.FindChild("StatsPopup").GetComponent<TransitionOpen>(); ;
+            DownloadingPopup = Object.Instantiate(template, template.transform.parent);
             DownloadingPopup.OnClose = new();
             DownloadingPopup.transform.localPosition = new(0, 0, -30);
-            GameObject.Destroy(DownloadingPopup.GetComponent<StatsPopup>());
+            Object.Destroy(DownloadingPopup.GetComponent<StatsPopup>());
             DownloadingPopup.transform.FindChild("Background").localScale = new Vector3(0.75f, 0.5f, 0.5f);
             //DownloadingPopup.transform.FindChild("Background").localPosition = new Vector3(1.5f, 1f, 1f);
             DownloadingPopup.transform.FindChild("Background/IgnoreClicks").GetComponent<PassiveButton>().OnClick = new();
@@ -106,10 +99,10 @@ public static class ModDownloader
             DownloadingPopup.transform.FindChild("Title_TMP").GetComponent<TextMeshPro>().text = "導入中...";
             DownloadingPopup.transform.FindChild("Title_TMP").transform.localPosition = new(0, 0.65f, -2);
             DownloadingPopup.transform.FindChild("Title_TMP").transform.localScale = Vector3.one * 1.7f;
-            GameObject.Destroy(DownloadingPopup.transform.FindChild("Title_TMP").GetComponent<TextTranslatorTMP>());
+            Object.Destroy(DownloadingPopup.transform.FindChild("Title_TMP").GetComponent<TextTranslatorTMP>());
             PassiveButton ButtonTemplate = AccountManager.Instance.transform.FindChild("InfoTextBox/Button1").GetComponent<PassiveButton>();
 
-            var descbtn = GameObject.Instantiate(ButtonTemplate, DownloadingPopup.transform);
+            var descbtn = Object.Instantiate(ButtonTemplate, DownloadingPopup.transform);
             descbtn.transform.localPosition = new(0, -0.75f, 0);
             descbtn.transform.localScale = Vector3.one * 0.8f;
             descbtn.OnClick = new();
@@ -117,7 +110,7 @@ public static class ModDownloader
             {
                 DownloadingPopup.gameObject.SetActive(false);
             }));
-            GameObject.Destroy(descbtn.GetComponentInChildren<TextTranslatorTMP>());
+            Object.Destroy(descbtn.GetComponentInChildren<TextTranslatorTMP>());
             descbtn.GetComponentInChildren<TextMeshPro>().text = "閉じる";
             descbtn.gameObject.SetActive(false);
             DownloadingPopupCloseButton = descbtn;
@@ -128,7 +121,7 @@ public static class ModDownloader
     }
     public static IEnumerator InstallMod(ModObject obj)
     {
-        Logger.Info("インストール開始");
+        Info("インストール開始");
         foreach (string downloadurl in obj.DownloadAssetsURL)
         {
             string[] splited = downloadurl.Split("/");
@@ -138,7 +131,7 @@ public static class ModDownloader
             yield return request.SendWebRequest();
             if (request.responseCode != (long)HttpStatusCode.OK || request.downloadHandler == null)
             {
-                Logger.Info("reponseがおかしい:" + request.responseCode.ToString());
+                Info("reponseがおかしい:" + request.responseCode.ToString());
                 DownloadingPopupStatusText.text = splited[splited.Length - 1] + "のダウンロードが失敗しました。";
                 yield return null;
                 continue;
@@ -223,7 +216,7 @@ public static class ModDownloader
                     index++;
                     if (modobj.ButtonInited) continue;
                     //DescriptionButton
-                    var descbtn = GameObject.Instantiate(ButtonTemplate, TextTemplate.parent);
+                    var descbtn = Object.Instantiate(ButtonTemplate, TextTemplate.parent);
                     descbtn.transform.localPosition = new(1.77f, 1.265f - (index * 0.835f), -2);
                     descbtn.transform.localScale = Vector3.one * 0.6f;
                     descbtn.OnClick = new();
@@ -233,33 +226,33 @@ public static class ModDownloader
                         if (mobj.DescriptionPopup == null)
                         {
                             var template = __instance.transform.FindChild("StatsPopup");
-                            var obj = GameObject.Instantiate(template, Popup.transform.parent).gameObject;
+                            var obj = Object.Instantiate(template, Popup.transform.parent).gameObject;
                             mobj.DescriptionPopup = obj;
                             obj.transform.localPosition = new(0, 0, -20);
                             obj.transform.FindChild("Background").localScale = new(1, 0.85f, 1);
-                            GameObject.Destroy(obj.GetComponent<StatsPopup>());
+                            Object.Destroy(obj.GetComponent<StatsPopup>());
                             obj.transform.localScale = Vector3.one * 0.5f;
                             var devtitletext = obj.transform.FindChild("Title_TMP");
-                            GameObject.Destroy(devtitletext.GetComponent<TextTranslatorTMP>());
+                            Object.Destroy(devtitletext.GetComponent<TextTranslatorTMP>());
                             devtitletext.GetComponent<TextMeshPro>().text = mobj.ModName;
                             devtitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
                             devtitletext.localPosition = new Vector3(0, 1.9f, -2);
                             devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
                             var depetitletext = obj.transform.FindChild("StatNumsText_TMP");
-                            GameObject.Destroy(depetitletext.GetComponent<TextTranslatorTMP>());
+                            Object.Destroy(depetitletext.GetComponent<TextTranslatorTMP>());
                             depetitletext.GetComponent<TextMeshPro>().text = "前提MOD(自動でインストールされます)";
                             depetitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
                             depetitletext.localPosition = new Vector3(0, -0.75f, -2);
                             depetitletext.localScale = Vector3.one * 2.5f;
 
-                            var desctext = GameObject.Instantiate(depetitletext, depetitletext.parent);
+                            var desctext = Object.Instantiate(depetitletext, depetitletext.parent);
                             desctext.GetComponent<TextMeshPro>().text = mobj.DescriptionLong;
                             desctext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
                             desctext.localPosition = new Vector3(0, 0.5f, -2);
                             desctext.localScale = Vector3.one * 2f;
 
-                            var depetext = GameObject.Instantiate(depetitletext, depetitletext.parent);
+                            var depetext = Object.Instantiate(depetitletext, depetitletext.parent);
                             depetext.GetComponent<TextMeshPro>().text = mobj.DependencyMod.Count <= 0 ? "なし" : string.Join('、', mobj.DependencyMod);
                             depetext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
                             depetext.localPosition = new Vector3(0, -1.1f, -2);
@@ -271,8 +264,8 @@ public static class ModDownloader
                             guidtext.localPosition = new Vector3(0, 1.6f, -2);
                             guidtext.localScale = Vector3.one * 0.9f;
 
-                            var installButton = GameObject.Instantiate(ButtonTemplate, obj.transform);
-                            GameObject.Destroy(installButton.GetComponentInChildren<TextTranslatorTMP>());
+                            var installButton = Object.Instantiate(ButtonTemplate, obj.transform);
+                            Object.Destroy(installButton.GetComponentInChildren<TextTranslatorTMP>());
                             installButton.GetComponentInChildren<TextMeshPro>().text = mobj.Installed ? "インストール済み" : "ダウンロード";
                             mobj.InstallText.Add(installButton.GetComponentInChildren<TextMeshPro>());
                             installButton.transform.localPosition = new(0, -1.7f, 0);
@@ -286,10 +279,10 @@ public static class ModDownloader
                         mobj.DescriptionPopup.gameObject.SetActive(true);
                     }));
                     modobj.DescButton = descbtn;
-                    GameObject.Destroy(descbtn.GetComponentInChildren<TextTranslatorTMP>());
+                    Object.Destroy(descbtn.GetComponentInChildren<TextTranslatorTMP>());
                     descbtn.GetComponentInChildren<TextMeshPro>().text = "説明";
                     //DownloadButton
-                    var dlbtn = GameObject.Instantiate(ButtonTemplate, TextTemplate.parent);
+                    var dlbtn = Object.Instantiate(ButtonTemplate, TextTemplate.parent);
                     dlbtn.transform.localPosition = new(3f, 1.265f - (index * 0.835f), -2);
                     dlbtn.transform.localScale = Vector3.one * 0.6f;
                     dlbtn.OnClick = new();
@@ -297,7 +290,7 @@ public static class ModDownloader
                     {
                         InstallByGuid(mobj.ModGUId);
                     }));
-                    GameObject.Destroy(dlbtn.GetComponentInChildren<TextTranslatorTMP>());
+                    Object.Destroy(dlbtn.GetComponentInChildren<TextTranslatorTMP>());
                     dlbtn.GetComponentInChildren<TextMeshPro>().text = mobj.Installed ? "インストール済み" : "ダウンロード";
                     mobj.InstallText.Add(dlbtn.GetComponentInChildren<TextMeshPro>());
                 }
@@ -312,7 +305,7 @@ public static class ModDownloader
         yield return datarequest.SendWebRequest();
         if (datarequest.isNetworkError || datarequest.isHttpError)
         {
-            Logger.Info("CANT!!!");
+            Info("CANT!!!");
             yield break;
         }
         var datajson = JObject.Parse(datarequest.downloadHandler.text);
@@ -346,7 +339,7 @@ public static class ModDownloader
             yield return request.SendWebRequest();
             if (request.isNetworkError || request.isHttpError)
             {
-                Logger.Info("むりやった:" + obj.RepoURL);
+                Info("むりやった:" + obj.RepoURL);
                 continue;
             }
             string downloadtext = request.downloadHandler.text[1..];
@@ -388,7 +381,7 @@ public static class ModDownloader
                 }
                 else
                 {
-                    Logger.Info("ナニコレ:" + regulation["name"].ToString());
+                    Info("ナニコレ:" + regulation["name"].ToString());
                 }
             }
             if (Zips.Count <= 0)
@@ -404,11 +397,11 @@ public static class ModDownloader
         if (__instance != null)
         {
             var template = __instance.transform.FindChild("StatsPopup");
-            var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+            var obj = Object.Instantiate(template, template.transform.parent).gameObject;
             Popup = obj;
-            GameObject.Destroy(obj.GetComponent<StatsPopup>());
+            Object.Destroy(obj.GetComponent<StatsPopup>());
             var devtitletext = obj.transform.FindChild("Title_TMP");
-            GameObject.Destroy(devtitletext.GetComponent<TextTranslatorTMP>());
+            Object.Destroy(devtitletext.GetComponent<TextTranslatorTMP>());
             devtitletext.GetComponent<TextMeshPro>().text = "ModDownloader";
             devtitletext.localPosition = new Vector3(0, 2.351f, -2);
             devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
@@ -419,20 +412,20 @@ public static class ModDownloader
             foreach (ModObject modobj in ModObjects)
             {
                 if (!modobj.DataGetted) continue;
-                var text = GameObject.Instantiate(TextTemplate, TextTemplate.parent);
+                var text = Object.Instantiate(TextTemplate, TextTemplate.parent);
                 text.localPosition = new Vector3(0, -2.8f - (index * 0.8f), -2f);
                 text.localScale = new Vector3(1.75f, 1.75f, 1f);
                 text.GetComponent<TextMeshPro>().text = modobj.ModName;
                 //Description
 
-                text = GameObject.Instantiate(TextTemplate, TextTemplate.parent);
+                text = Object.Instantiate(TextTemplate, TextTemplate.parent);
                 text.localPosition = new Vector3(-1, -1.95f - (index * 0.775f), -2f);
                 text.localScale = new Vector3(1.25f, 1.25f, 1.25f);
                 text.GetComponent<TextMeshPro>().text = modobj.DescriptionShort;
                 index++;
             }
-            GameObject.Destroy(TextTemplate.gameObject);
-            GameObject.Destroy(obj.transform.FindChild("StatNumsText_TMP").gameObject);
+            Object.Destroy(TextTemplate.gameObject);
+            Object.Destroy(obj.transform.FindChild("StatNumsText_TMP").gameObject);
 
             obj.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
             obj.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);

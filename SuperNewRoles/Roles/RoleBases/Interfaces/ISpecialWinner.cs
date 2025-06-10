@@ -4,5 +4,5 @@ namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 
 public interface ISpecialWinner
 {
-    public bool CheckAndEndGame(ShipStatus __instance, PlayerStatistics statistics);
+    bool CheckAndEndGame(ShipStatus __instance, PlayerStatistics statistics);
 }

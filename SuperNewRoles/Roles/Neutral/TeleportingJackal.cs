@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class TeleportingJackal
+internal class TeleportingJackal
 {
     public static void ResetCooldowns()
     {

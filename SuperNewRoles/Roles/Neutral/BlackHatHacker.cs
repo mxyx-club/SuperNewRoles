@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
-using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

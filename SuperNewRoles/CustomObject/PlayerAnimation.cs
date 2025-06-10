@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Replay.ReplayActions;
 using UnityEngine;
@@ -37,7 +36,7 @@ public class PlayerAnimation
         this.Player = Player;
         if (Player == null)
         {
-            Logger.Error($"Playerがnullでした", "PlayerAnimation");
+            Error($"Playerがnullでした", "PlayerAnimation");
             return;
         }
         Physics = Player.MyPhysics;
@@ -61,7 +60,7 @@ public class PlayerAnimation
         }
         PlayerAnimations.Remove(PlayerId);
     }
-    public bool Playing = false;
+    public bool Playing;
     public bool IsLoop;
     public float Framerate;
     private float updatetime;
@@ -97,14 +96,14 @@ public class PlayerAnimation
                     countdata = "00" + i.ToString();
                 }
             }
-            Logger.Info(path + countdata + ".png");
+            Info(path + countdata + ".png");
             Sprites.Add(ModHelpers.LoadSpriteFromResources(path + countdata + ".png", pixelsPerUnit));
         }
         return Sprites.ToArray();
     }
     public void Init(Sprite[] sprites, bool isLoop, float framerate, Action onAnimationEnd = null, Action onFixedUpdate = null)
     {
-        Logger.Info("いにっと");
+        Info("いにっと");
         Sprites = sprites;
         IsLoop = isLoop;
         Playing = true;
@@ -176,7 +175,7 @@ public class PlayerAnimation
                     else
                     {
                         Playing = false;
-                        Logger.Info($"チェック:{OnAnimationEnd != null}");
+                        Info($"チェック:{OnAnimationEnd != null}");
                         if (OnAnimationEnd != null) OnAnimationEnd();
                         return;
                     }
@@ -201,7 +200,7 @@ public class PlayerAnimation
                     else
                     {
                         Playing = false;
-                        Logger.Info($"チェック:{OnAnimationEnd != null}");
+                        Info($"チェック:{OnAnimationEnd != null}");
                         if (OnAnimationEnd != null) OnAnimationEnd();
                         return;
                     }

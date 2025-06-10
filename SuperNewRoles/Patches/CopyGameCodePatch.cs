@@ -1,9 +1,8 @@
-using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class CopyGameCode
+internal class CopyGameCode
 {
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public class GameStartManagerStartPatch
@@ -12,7 +11,7 @@ class CopyGameCode
         {
             if (ConfigRoles.AutoCopyGameCode.Value)
             {
-                string code = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
+                string code = GameCode.IntToGameName(AmongUsClient.Instance.GameId);
                 GUIUtility.systemCopyBuffer = code;
             }
         }

@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
-using UnityEngine;
 
 namespace SuperNewRoles.Mode.PantsRoyal;
 public class TurnData
@@ -15,7 +11,7 @@ public class TurnData
     public float StartTimer;
     public float LastUpdateStartTimer;
     public float LastUpdateCountdownTime;
-    public bool CooldowntextReseted = false;
+    public bool CooldowntextReseted;
     public bool IsStarted;
     public TurnData(bool IsStart = true)
     {
@@ -42,7 +38,7 @@ public class TurnData
         }
         else
         {
-            Logger.Info("エラーが発生しました。:" + StartPlayerCount.ToString());
+            Info("エラーが発生しました。:" + StartPlayerCount.ToString());
         }
         TurnTimer = TurnTimerFirst;
         EndPlayerCount = (int)Math.Floor(StartPlayerCount / 2.0);

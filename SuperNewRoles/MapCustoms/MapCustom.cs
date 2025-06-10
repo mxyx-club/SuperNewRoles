@@ -5,7 +5,7 @@ using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.MapCustoms;
 
-class MapCustom
+internal class MapCustom
 {
     public static CustomOption MapCustomOption;
 

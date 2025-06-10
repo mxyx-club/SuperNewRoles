@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Il2CppSystem.Runtime.Remoting.Lifetime;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -14,7 +12,6 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -25,7 +22,7 @@ public class StartGame
 {
     public static void Postfix()
     {
-        MapOption.RandomMap.Prefix();
+        RandomMap.Prefix();
         FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
     }
 }
@@ -44,7 +41,7 @@ public class AbilityUpdate
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
 public class FixedUpdate
 {
-    static void SetBasePlayerOutlines()
+    private static void SetBasePlayerOutlines()
     {
         foreach (PlayerControl target in CachedPlayer.AllPlayers)
         {
@@ -55,7 +52,7 @@ public class FixedUpdate
         }
     }
 
-    static void SetBaseVentMaterial()
+    private static void SetBaseVentMaterial()
     {
         if (PlayerControl.LocalPlayer.IsUseVent()) return;
         if (!ShipStatus.Instance) return;
@@ -67,7 +64,7 @@ public class FixedUpdate
         }
     }
 
-    static void ReduceKillCooldown(PlayerControl __instance)
+    private static void ReduceKillCooldown(PlayerControl __instance)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
         {
@@ -90,7 +87,7 @@ public class FixedUpdate
         OldModeButtons.OldModeUpdate();
 
         // -- 以下ゲーム中のみ --
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
         {
             return;
         }
@@ -276,7 +273,8 @@ public class FixedUpdate
                                 if (arrow.Value?.arrow != null)
                                     Object.Destroy(arrow.Value.arrow);
                                 RoleBaseManager.GetLocalRoleBase<EvilSeer>().DeadPlayerArrows.Remove(arrow.Key);
-                            };
+                            }
+                            ;
                             break;
                     }
                 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
@@ -32,7 +31,7 @@ public static class BotManager
 
         Bot.PlayerId = id;
         GameData.Instance.AddPlayer(Bot);
-        AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
+        AmongUsClient.Instance.Spawn(Bot, -2, SpawnFlags.IsClientCharacter);
         //Bot.transform.position = new Vector3(9999f, 9999f, 0);
         Bot.NetTransform.enabled = true;
         return Bot;
@@ -66,7 +65,7 @@ public static class BotManager
     }
     public static void SetBot(PlayerControl Bot)
     {
-        Logger.Info("SETBOT!!!:" + Bot.PlayerId.ToString());
+        Info("SETBOT!!!:" + Bot.PlayerId.ToString());
         AllBots.Add(Bot);
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);
         writer.Write(Bot.PlayerId);

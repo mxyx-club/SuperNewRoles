@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using AmongUs.GameOptions;
-using InnerNet;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -121,7 +119,7 @@ public static class ReplayFileReader
             }
             else
             {
-                Logger.Info("プレイヤー情報が保存されていませんでした。:" + player.PlayerId);
+                Info("プレイヤー情報が保存されていませんでした。:" + player.PlayerId);
             }
             replay.ReplayPlayers.Add(player);
         }

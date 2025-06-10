@@ -1,4 +1,3 @@
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ public static class FixedUpdate
     public static bool IsHideName;
     public static bool IsHideNameSet;
     public static bool IsRandomColorMeeting;
-    public static bool IsMeetingIn = false;
+    public static bool IsMeetingIn;
     public static void Update()
     {
         if (!IsHideNameSet)

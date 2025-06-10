@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics;
 
-class HttpConnect
+internal class HttpConnect
 {
     public static async Task<string> Download(string url)
     {

@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
@@ -138,7 +135,7 @@ public class Safecracker
     [HarmonyPatch(typeof(Console), nameof(Console.Use))]
     public static class ConsolsUsePatch
     {
-        static Minigame tempminigame;
+        private static Minigame tempminigame;
         public static void Prefix(Console __instance)
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Safecracker)
@@ -148,7 +145,7 @@ public class Safecracker
                 if (canUse)
                 {
                     PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
-                    Logger.Info($"タスクタイプ : {task.TaskType}, タスクID : {(int)task.TaskType}", "Task Data");
+                    Info($"タスクタイプ : {task.TaskType}, タスクID : {(int)task.TaskType}", "Task Data");
                     tempminigame = task.MinigamePrefab;
                     if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles or TaskTypes.MushroomMixupSabotage) return;
                     ShipStatus ship = GameManager.Instance.LogicOptions.currentGameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : Agartha.MapLoader.Airship;

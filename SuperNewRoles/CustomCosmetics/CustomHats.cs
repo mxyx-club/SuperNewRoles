@@ -1,24 +1,16 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Innersloth.Assets;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SuperNewRoles.CustomCosmetics;
 
@@ -29,7 +21,7 @@ public class CustomHats
 
     public static Dictionary<string, HatExtension> CustomHatRegistry = new();
     public static HatExtension TestExt = new() { IsNull = true };
-    public static bool IsEnd = false;
+    public static bool IsEnd;
 
     public struct HatExtension
     {
@@ -139,7 +131,7 @@ public class CustomHats
     {
         return HatSprites.ContainsKey(path) ? HatSprites[path] : null;
     }
-    static readonly Dictionary<string, Sprite> HatSprites = new();
+    private static readonly Dictionary<string, Sprite> HatSprites = new();
     private static CustomHatData CreateHatData(CustomHat ch, bool fromDisk = false, bool testOnly = false)
     {
         if (hatShader == null && DestroyableSingleton<HatManager>.InstanceExists)
@@ -216,12 +208,12 @@ public class CustomHats
     public static class HatManagerPatch
     {
         private static bool LOADED;
-        private static bool SPRITELOADED = false;
-        private static bool RUNNING = false;
-        public static bool IsLoadingnow = false;
+        private static bool SPRITELOADED;
+        private static bool RUNNING;
+        public static bool IsLoadingnow;
         public static List<HatData> hatdata = new();
 
-        static void Prefix(HatManager __instance)
+        private static void Prefix(HatManager __instance)
         {
             if (!IsEnd) return;
             if (RUNNING) return;
@@ -236,7 +228,7 @@ public class CustomHats
                     string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
                     string[] hats = (from r in assembly.GetManifestResourceNames()
                                      where r.StartsWith(hatres) && r.EndsWith(".png")
-                                     select r).ToArray<string>();
+                                     select r).ToArray();
 
                     List<CustomHat> customhats = CreateCustomHatDetails(hats);
                     foreach (CustomHat ch in customhats)
@@ -254,7 +246,7 @@ public class CustomHats
                 var data = __instance.allHats.ToList();
                 data.AddRange(addHatData);
                 hatdata = data;
-                __instance.allHats = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<HatData>(data.ToArray());
+                __instance.allHats = new Il2CppReferenceArray<HatData>(data.ToArray());
                 IsLoadingnow = false;
             }
             else
@@ -266,7 +258,7 @@ public class CustomHats
 
         public static readonly List<CustomHatData> addHatData = new();
 
-        static IEnumerator LoadHatSprite()
+        private static IEnumerator LoadHatSprite()
         {
             IsLoadingnow = true;
             if (!LOADED)
@@ -275,7 +267,7 @@ public class CustomHats
                 string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
                 string[] hats = (from r in assembly.GetManifestResourceNames()
                                  where r.StartsWith(hatres) && r.EndsWith(".png")
-                                 select r).ToArray<string>();
+                                 select r).ToArray();
 
                 List<CustomHat> customhats = CreateCustomHatDetails(hats);
                 foreach (CustomHat ch in customhats)
@@ -355,7 +347,7 @@ public class CustomHats
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
     private static class ShipStatusSetHat
     {
-        static void Postfix(ShipStatus __instance)
+        private static void Postfix(ShipStatus __instance)
         {
             if (DestroyableSingleton<TutorialManager>.InstanceExists)
             {
@@ -393,7 +385,7 @@ public class CustomHats
         }
     }
 
-    private static readonly List<TMPro.TMP_Text> hatsTabCustomTexts = new();
+    private static readonly List<TMP_Text> hatsTabCustomTexts = new();
     public const string innerslothPackageName = "Innersloth Hats";
     private const float headerSize = 0.8f;
     private const float headerX = 0.8f;
@@ -410,19 +402,19 @@ public class CustomHats
     [HarmonyPatch(typeof(HatsTab), nameof(HatsTab.OnEnable))]
     public class HatsTabOnEnablePatch
     {
-        public static TMPro.TMP_Text textTemplate;
+        public static TMP_Text textTemplate;
 
         public static float CreateHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
         {
             float offset = YStart;
             if (textTemplate != null)
             {
-                TMPro.TMP_Text title = UnityEngine.Object.Instantiate<TMPro.TMP_Text>(textTemplate, __instance.scroller.Inner);
+                TMP_Text title = Object.Instantiate(textTemplate, __instance.scroller.Inner);
                 title.transform.parent = __instance.scroller.Inner;
                 title.transform.localPosition = new Vector3(headerX, YStart, inventoryZ);
-                title.alignment = TMPro.TextAlignmentOptions.Center;
+                title.alignment = TextAlignmentOptions.Center;
                 title.fontSize *= 1.25f;
-                title.fontWeight = TMPro.FontWeight.Thin;
+                title.fontWeight = FontWeight.Thin;
                 title.enableAutoSizing = false;
                 title.autoSizeTextContainer = true;
                 title.text = ModTranslation.GetString(packageName);
@@ -455,7 +447,7 @@ public class CustomHats
 
                 float xpos = __instance.XRange.Lerp((i2 % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
                 float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
-                ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
+                ColorChip colorChip = Object.Instantiate(__instance.ColorTabPrefab, __instance.scroller.Inner);
 
                 int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color;
 
@@ -542,7 +534,7 @@ public class CustomHats
     {
         public static bool Prefix(HatsTab __instance)
         {
-            foreach (TMPro.TMP_Text customText in hatsTabCustomTexts)
+            foreach (TMP_Text customText in hatsTabCustomTexts)
             {
                 if (customText != null && customText.transform != null && customText.gameObject != null)
                 {
@@ -558,7 +550,7 @@ public class CustomHats
 
 public class CustomHatLoader
 {
-    public static bool running = false;
+    public static bool running;
 
     /// <summary>ハットをダウンロードするRepositoryURL</summary>
     /// <value>key : URL, value : クローゼット名</value>
@@ -585,7 +577,7 @@ public class CustomHatLoader
 
     public static List<string> CachedRepos = new();
     public static List<CustomHatOnline> hatDetails = new();
-    private static Task hatFetchTask = null;
+    private static Task hatFetchTask;
     public static void LaunchHatFetcher()
     {
         if (running)

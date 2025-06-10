@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -10,7 +9,7 @@ using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class WrapUpClass
+internal class WrapUpClass
 {
     public static void WrapUp(GameData.PlayerInfo exiled)
     {
@@ -68,7 +67,7 @@ class WrapUpClass
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(exiled.Object.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+                    Writer = StartRPC(CustomRPC.SetWinCond);
                     Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                     Writer.EndRPC();
                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);

@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
-using Il2CppSystem;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using UnityEngine;
 

@@ -1,21 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.WaveCannonObj.AnimationHandlers;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.WaveCannonObj;
 
@@ -91,8 +83,8 @@ public class WaveCannonObject : CustomAnimation
 
     public bool IsShootNow;
     public bool IsFlipX;
-    public int DestroyIndex { get; set; } = 0;
-    static Vector3 OwnerPos;
+    public int DestroyIndex { get; set; }
+    private static Vector3 OwnerPos;
     public bool IsShootFirst;
 
     public override void Awake()
@@ -144,7 +136,7 @@ public class WaveCannonObject : CustomAnimation
         //当たり判定の部分を作成
         CreateEffect();
 
-        Logger.Info("WaveCannon Animation:" + animType.ToString());
+        Info("WaveCannon Animation:" + animType.ToString());
         CurrentAnimationHandler = CreateAnimHandler();
         if (CurrentAnimationHandler == null)
         {
@@ -295,7 +287,7 @@ public class WaveCannonObject : CustomAnimation
         else
             Options.SetEffectSound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
 
-        foreach(WaveCannonEffect effect in WaveCannonEffects)
+        foreach (WaveCannonEffect effect in WaveCannonEffects)
             effect.SetChargeState(false);
 
         CurrentAnimationHandler.OnShot();
@@ -309,7 +301,7 @@ public class WaveCannonObject : CustomAnimation
 
             // 賢者が波動砲に触れているかを判定
             bool touching = false;
-            foreach(Collider2D collider in WaveColliders)
+            foreach (Collider2D collider in WaveColliders)
             {
                 if (!player.Collider.IsTouching(collider))
                     continue;

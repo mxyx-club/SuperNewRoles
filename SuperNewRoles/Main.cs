@@ -1,21 +1,30 @@
+global using System.Linq;
+global using System.Reflection;
+global using AmongUs.Data;
+global using HarmonyLib;
+global using Hazel;
+global using Il2CppInterop.Runtime;
+global using Il2CppInterop.Runtime.Injection;
+global using Il2CppInterop.Runtime.InteropTypes;
+global using Il2CppInterop.Runtime.InteropTypes.Arrays;
+global using InnerNet;
 global using SuperNewRoles.Modules;
+global using TMPro;
+global using static SuperNewRoles.Logger;
+global using ISystem = Il2CppSystem.Collections.Generic;
+global using UObject = UnityEngine.Object;
+global using URandom = UnityEngine.Random;
 using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using AmongUs.Data;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
-using HarmonyLib;
-using Il2CppInterop.Runtime.Injection;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.WaveCannonObj;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -34,7 +43,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public const bool IsHideText = false; // プルリク時にtrueなら指摘してください
 
     public static Assembly assembly => _assembly != null ? _assembly : (_assembly = Assembly.GetExecutingAssembly());
-    private static Assembly _assembly = null;
+    private static Assembly _assembly;
 
     public const string ModUrl = "SuperNewRoles/SuperNewRoles";
     public const string MasterBranch = "master";
@@ -49,10 +58,10 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static BepInEx.Logging.ManualLogSource Logger;
     public static Sprite ModStamp;
     public static int optionsPage = 1;
-    public static int optionsMaxPage = 0;
+    public static int optionsMaxPage;
     public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
     public static SuperNewRolesPlugin Instance;
-    public static bool IsUpdate = false;
+    public static bool IsUpdate;
     public static string NewVersion = "";
     public static string thisname;
     public static string ThisPluginModName;
@@ -128,20 +137,20 @@ public partial class SuperNewRolesPlugin : BasePlugin
         try
         {
             var directoryPath = Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins";
-            SuperNewRoles.Logger.Info($"DirectoryPathが半角のみ:{ModHelpers.IsOneByteOnlyString(directoryPath)}", "IsOneByteOnly path"); // フォルダパスが半角のみで構成されているか
+            Info($"DirectoryPathが半角のみ:{ModHelpers.IsOneByteOnlyString(directoryPath)}", "IsOneByteOnly path"); // フォルダパスが半角のみで構成されているか
             var di = new DirectoryInfo(directoryPath);
             var pluginFiles = di.GetFiles();
             foreach (var f in pluginFiles)
             {
                 var name = f.Name;
-                SuperNewRoles.Logger.Info($"---------- {name} -----------", "Data");
-                SuperNewRoles.Logger.Info(name, nameof(pluginFiles)); // ファイル名
-                SuperNewRoles.Logger.Info($"{f.Length}MB", name); // サイズをバイト単位で取得
+                Info($"---------- {name} -----------", "Data");
+                Info(name, nameof(pluginFiles)); // ファイル名
+                Info($"{f.Length}MB", name); // サイズをバイト単位で取得
             }
         }
         catch (Exception e)
         {
-            SuperNewRoles.Logger.Error($"pluginFilesの取得時に例外発生{e.ToString()}", "pluginFiles");
+            Error($"pluginFilesの取得時に例外発生{e.ToString()}", "pluginFiles");
         }
 
         Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
@@ -176,20 +185,21 @@ public partial class SuperNewRolesPlugin : BasePlugin
         // ロードが終わってないなら待つ
         LoadHarmonyPatchTask.Wait();
     }
-    static bool ViewdNonVersion = false;
+    private static bool ViewdNonVersion;
     public static void SetNonVanilaVersionPatch()
     {
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version))
         {
             var CVoriginal = AccessTools.Method(typeof(MainMenuManager), nameof(MainMenuManager.Awake));
-            var CVpostfix = new HarmonyMethod(typeof(SuperNewRolesPlugin), nameof(SuperNewRolesPlugin.MainMenuVersionCheckPatch));
-            SuperNewRolesPlugin.Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
+            var CVpostfix = new HarmonyMethod(typeof(SuperNewRolesPlugin), nameof(MainMenuVersionCheckPatch));
+            Instance.Harmony.Patch(CVoriginal, postfix: CVpostfix);
         }
     }
     // CPUの割当を0と1にする
     public static void UpdateCPUProcessorAffinity()
     {
-        if (!ConfigRoles._isCPUProcessorAffinity.Value){
+        if (!ConfigRoles._isCPUProcessorAffinity.Value)
+        {
             Logger.LogWarning("UpdateCPUProcessorAffinity: IsCPUProcessorAffinity is false");
             return;
         }
@@ -224,12 +234,12 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         if (SupportVanilaVersion != null && !SupportVanilaVersion.Contains(Application.version) && !ViewdNonVersion)
         {
-            GenericPopup popup = GameObject.Instantiate(DestroyableSingleton<DiscordManager>.Instance.discordPopup);
+            GenericPopup popup = UObject.Instantiate(DestroyableSingleton<DiscordManager>.Instance.discordPopup);
             popup.transform.FindChild("Background").transform.localScale = new(3, 2.5f, 1f);
             Transform ExitGame = popup.transform.FindChild("ExitGame");
             ExitGame.transform.localPosition = new(0, -2f, -0.5f);
             TextMeshPro egtmp = ExitGame.GetComponentInChildren<TextMeshPro>();
-            GameObject.Destroy(egtmp.GetComponent<TextTranslatorTMP>());
+            UObject.Destroy(egtmp.GetComponent<TextTranslatorTMP>());
             egtmp.text = "OK";
             StringBuilder builder = new($"<size=200%>やあ、みなさん</size>\n\nこのバージョンでは今のバニラバージョン、「{Application.version}」を\nサポートしていません。\nこのバージョンが対応しているバニラバージョンは、\n<size=150%>");
             int count = 0;
@@ -262,7 +272,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
         }
     }
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-    class GetBroadcastVersionPatch
+    private class GetBroadcastVersionPatch
     {
         public static void Postfix(ref int __result)
         {
@@ -290,11 +300,11 @@ public partial class SuperNewRolesPlugin : BasePlugin
     {
         public static void Prefix()
         {
-            DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+            DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
         }
         public static void Postfix(ChatController __instance)
         {
-            DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+            DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
 
             if (Input.GetKeyDown(KeyCode.F1))
             {

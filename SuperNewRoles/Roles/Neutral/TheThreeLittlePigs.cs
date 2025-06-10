@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Timers;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
@@ -51,7 +50,7 @@ public class TheThreeLittlePigs
         PlayerControl third = Assigned.FirstOrDefault(assigned => assigned.Item1 == RoleId.TheThirdLittlePig).Item2;
         if (first == null || second == null || third == null)
         {
-            Logger.Error("TheThreeLittlePigsOnAssigned : 仔豚の割り当てに失敗しました", "TheThreeLittlePigsOnAssigned");
+            Error("TheThreeLittlePigsOnAssigned : 仔豚の割り当てに失敗しました", "TheThreeLittlePigsOnAssigned");
             return;
         }
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
@@ -82,7 +81,7 @@ public class TheThreeLittlePigs
     public static void ClearAndReload()
     {
         TheThreeLittlePigsPlayer = new();
-        Logger.Info($"タスク総数 : {AllTask}", "TheThreeLittlePigs");
+        Info($"タスク総数 : {AllTask}", "TheThreeLittlePigs");
         TheFirstLittlePig = new();
         TheSecondLittlePig = new();
         TheThirdLittlePig = new();
@@ -143,30 +142,30 @@ public class TheThreeLittlePigs
                 if (PlayerControl.LocalPlayer.IsAlive() && TaskCheck(PlayerControl.LocalPlayer))
                 {
                     SeerHandler.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
-                    Logger.Info($"{FlashTime / 1000}s経過して、条件が達成されていた為発光させました", "TheFirstLittlePig");
+                    Info($"{FlashTime / 1000}s経過して、条件が達成されていた為発光させました", "TheFirstLittlePig");
                 }
                 else
                 {
-                    Logger.Info($"{FlashTime / 1000}s経過しましたが、条件が達成されませんでした。条件(生きているか : {PlayerControl.LocalPlayer.IsAlive()}, タスクを完了しているか : {TaskCheck(PlayerControl.LocalPlayer)})", "TheFirstLittlePig");
+                    Info($"{FlashTime / 1000}s経過しましたが、条件が達成されませんでした。条件(生きているか : {PlayerControl.LocalPlayer.IsAlive()}, タスクを完了しているか : {TaskCheck(PlayerControl.LocalPlayer)})", "TheFirstLittlePig");
                 }
             };
             Timer.AutoReset = PlayerControl.LocalPlayer ? PlayerControl.LocalPlayer.IsAlive() : true;
             Timer.Enabled = PlayerControl.LocalPlayer ? PlayerControl.LocalPlayer.IsAlive() : true;
             if (PlayerControl.LocalPlayer ? PlayerControl.LocalPlayer.IsAlive() : true) return;
-            Logger.Info($"{FlashTime / 1000}sにタイマーセット", "TheFirstLittlePig");
+            Info($"{FlashTime / 1000}sにタイマーセット", "TheFirstLittlePig");
         }
         public void TimerStop(bool isEndGame = false)
         {
             if (Timer == null) return;
             Timer.Stop();
             if (isEndGame) Timer.Dispose();
-            Logger.Info($"タイマーを止めました", "TheFirstLittlePig");
+            Info($"タイマーを止めました", "TheFirstLittlePig");
         }
         public TheFirstLittlePigClass()
         {
             Player = new();
             ClearTask = (int)(AllTask * (int.Parse(TheFirstLittlePigClearTask.GetString().Replace("%", "")) / 100f));
-            Logger.Info($"1番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheFirstLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
+            Info($"1番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheFirstLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
             FlashTime = (TheFirstLittlePigIsCustomTimer.GetBool() ? TheFirstLittlePigCustomTimer.GetFloat() :
                         RoleClass.DefaultKillCoolDown >= 5 ? RoleClass.DefaultKillCoolDown : 5) * 1000;
         }
@@ -180,7 +179,7 @@ public class TheThreeLittlePigs
         {
             Player = new();
             ClearTask = (int)(AllTask * (int.Parse(TheSecondLittlePigClearTask.GetString().Replace("%", "")) / 100f));
-            Logger.Info($"2番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheSecondLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
+            Info($"2番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheSecondLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
             GuardCount = new();
         }
     }
@@ -193,7 +192,7 @@ public class TheThreeLittlePigs
         {
             Player = new();
             ClearTask = (int)(AllTask * (int.Parse(TheThirdLittlePigClearTask.GetString().Replace("%", "")) / 100f));
-            Logger.Info($"3番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheThirdLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
+            Info($"3番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheThirdLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
             CounterCount = new();
         }
     }

@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionExile : ReplayAction
@@ -26,7 +23,7 @@ public class ReplayActionExile : ReplayAction
         PlayerControl exile = ModHelpers.PlayerById(exilePlayer);
         if (exile == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。exile:{exilePlayer}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。exile:{exilePlayer}");
             return;
         }
         exile.Exiled();
@@ -36,7 +33,7 @@ public class ReplayActionExile : ReplayAction
         PlayerControl exile = ModHelpers.PlayerById(exilePlayer);
         if (exile == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。exile:{exilePlayer}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。exile:{exilePlayer}");
             return;
         }
         exile.Revive();

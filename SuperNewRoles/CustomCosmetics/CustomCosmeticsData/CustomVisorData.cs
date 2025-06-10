@@ -1,15 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HarmonyLib;
-using Innersloth.Assets;
-using PowerTools;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using static SuperNewRoles.CustomCosmetics.CustomHats;
-using static SuperNewRoles.Modules.Blacklist;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomVisorData : VisorData
@@ -42,8 +33,8 @@ public class CustomVisorData : VisorData
             }
         }
     }
-    static Dictionary<string, VisorViewData> cache = new();
-    static VisorViewData getbycache(string id)
+    private static Dictionary<string, VisorViewData> cache = new();
+    private static VisorViewData getbycache(string id)
     {
         if (!cache.ContainsKey(id) || cache[id] == null)
         {
@@ -52,7 +43,7 @@ public class CustomVisorData : VisorData
         return cache[id];
     }
     [HarmonyPatch(typeof(CosmeticsCache), nameof(CosmeticsCache.GetVisor))]
-    class CosmeticsCacheGetVisorPatch
+    private class CosmeticsCacheGetVisorPatch
     {
         public static bool Prefix(CosmeticsCache __instance, string id, ref VisorViewData __result)
         {
@@ -64,7 +55,7 @@ public class CustomVisorData : VisorData
         }
     }
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.UpdateMaterial))]
-    class VisorLayerUpdateMaterialPatch
+    private class VisorLayerUpdateMaterialPatch
     {
         public static bool Prefix(VisorLayer __instance)
         {
@@ -100,7 +91,7 @@ public class CustomVisorData : VisorData
                     __instance.Image.maskInteraction = (SpriteMaskInteraction)2;
                     break;
                 default:
-                    __instance.Image.maskInteraction = (SpriteMaskInteraction)0;
+                    __instance.Image.maskInteraction = 0;
                     break;
             }
 
@@ -119,7 +110,7 @@ public class CustomVisorData : VisorData
         }
     }
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetFlipX))]
-    class VisorLayerSetFlipXPatch
+    private class VisorLayerSetFlipXPatch
     {
         public static bool Prefix(VisorLayer __instance, bool flipX)
         {
@@ -138,7 +129,7 @@ public class CustomVisorData : VisorData
         }
     }
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetFloorAnim))]
-    class VisorLayerSetFloorAnimPatch
+    private class VisorLayerSetFloorAnimPatch
     {
         public static bool Prefix(VisorLayer __instance)
         {
@@ -149,7 +140,7 @@ public class CustomVisorData : VisorData
         }
     }
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.PopulateFromViewData))]
-    class VisorLayerPopulateFromViewDataPatch
+    private class VisorLayerPopulateFromViewDataPatch
     {
         public static bool Prefix(VisorLayer __instance)
         {
@@ -166,7 +157,7 @@ public class CustomVisorData : VisorData
     }
 
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.SetVisor), new Type[] { typeof(VisorData), typeof(int) })]
-    class VisorLayerSetVisorPatch
+    private class VisorLayerSetVisorPatch
     {
         public static bool Prefix(VisorLayer __instance, VisorData data, int color)
         {

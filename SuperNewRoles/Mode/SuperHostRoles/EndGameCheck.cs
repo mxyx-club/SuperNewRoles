@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -10,7 +9,7 @@ using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class EndGameCheck
+internal class EndGameCheck
 {
     public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
     {
@@ -270,7 +269,8 @@ class EndGameCheck
                 CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.FoxWin, false);
             }
             return true;
-        };
+        }
+        ;
         return false;
     }
     public static void EndGameForSabotage(ShipStatus __instance)

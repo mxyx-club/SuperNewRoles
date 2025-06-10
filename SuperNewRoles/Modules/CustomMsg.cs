@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Modules;
 
 public class CustomMessage
 {
-    public readonly TMPro.TMP_Text text;
+    public readonly TMP_Text text;
     private static readonly List<CustomMessage> customMessages = new();
 
     /// <summary>
@@ -24,11 +23,11 @@ public class CustomMessage
         RoomTracker roomTracker = FastDestroyableSingleton<HudManager>.Instance?.roomTracker;
         if (roomTracker != null)
         {
-            GameObject gameObject = UnityEngine.Object.Instantiate(roomTracker.gameObject);
+            GameObject gameObject = UObject.Instantiate(roomTracker.gameObject);
 
             gameObject.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
-            UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
-            text = gameObject.GetComponent<TMPro.TMP_Text>();
+            UObject.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
+            text = gameObject.GetComponent<TMP_Text>();
             text.text = message;
 
             // Use local position to place it in the player's view instead of the world location
@@ -64,7 +63,7 @@ public class CustomMessage
                 }
                 if (p == 1f && text != null && text.gameObject != null)
                 {
-                    UnityEngine.Object.Destroy(text.gameObject);
+                    UObject.Destroy(text.gameObject);
                     customMessages.Remove(this);
                 }
             })));

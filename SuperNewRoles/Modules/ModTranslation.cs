@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using AmongUs.Data;
 
 namespace SuperNewRoles.Modules;
 
@@ -10,7 +7,7 @@ public static class ModTranslation
 {
     // 一番左と一行全部
     public static Dictionary<string, string[]> dictionary = new();
-    public static Dictionary<string, string[]> AprilDictionary = null;
+    public static Dictionary<string, string[]> AprilDictionary;
     private static readonly HashSet<string> outputtedStr = new();
     public static string GetString(string key)
     {
@@ -26,7 +23,7 @@ public static class ModTranslation
             if (langId == SupportedLangs.SChinese && (values.Length < 4 || values[3] == ""))
             { //簡体中国語がない場合英語で返す
                 if (!outputtedStr.Contains(key))
-                    Logger.Info($"SChinese not found:{key}", "ModTranslation");
+                    Info($"SChinese not found:{key}", "ModTranslation");
                 outputtedStr.Add(key);
                 return values[1];
             }
@@ -34,7 +31,7 @@ public static class ModTranslation
             if (langId == SupportedLangs.TChinese && (values.Length < 5 || values[4] == ""))
             { //繁体中国語がない場合英語で返す
                 if (!outputtedStr.Contains(key))
-                    Logger.Info($"TChinese not found:{key}", "ModTranslation");
+                    Info($"TChinese not found:{key}", "ModTranslation");
                 outputtedStr.Add(key);
                 return values[1];
             }
@@ -75,12 +72,12 @@ public static class ModTranslation
         string[] keys = dictionary.Where(x => x.Value[index].Equals(value)).Select(x => x.Key).ToArray(); // 指定された翻訳を有するkeyをすべて取得する。
         if (0 == keys.Length) // 翻訳キー取得失敗
         {
-            Logger.Info($"key not found:{value}", "ModTranslation");
+            Info($"key not found:{value}", "ModTranslation");
             return (value.Split(""), false);
         }
         else // 翻訳キー取得成功
         {
-            Logger.Info($"key could be found : ( {string.Join(", ", keys)} )", "ModTranslation");
+            Info($"key could be found : ( {string.Join(", ", keys)} )", "ModTranslation");
             return (keys, true);
         }
     }
@@ -118,7 +115,7 @@ public static class ModTranslation
             }
             catch
             {
-                Logger.Error($"Error: Loading Translate.csv Line:{i}", "ModTranslation");
+                Error($"Error: Loading Translate.csv Line:{i}", "ModTranslation");
             }
         }
     }

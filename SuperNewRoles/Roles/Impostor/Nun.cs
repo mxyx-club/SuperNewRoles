@@ -1,13 +1,12 @@
 using System.Collections;
 using SuperNewRoles.Replay.ReplayActions;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.Impostor;
 
 public static class Nun
 {
-    static bool Is = false;
+    private static bool Is;
     public static IEnumerator NotMoveUsePlatform(MovingPlatformBehaviour __instance)
     {
         bool IsTargetOn = __instance.Target != null;

@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cpp2IL.Core.InstructionSets;
 
 namespace SuperNewRoles.Modules;
 public class VentInfo
 {
-    public static Dictionary<int, VentInfo> VentInfos = null;
+    public static Dictionary<int, VentInfo> VentInfos;
     public Vent Vent { get; }
     public int VentId { get; }
     public int UsedCount { get; private set; }
@@ -19,7 +15,7 @@ public class VentInfo
     public VentInfo(Vent vent)
     {
         if (vent == null)
-            throw new ArgumentNullException(nameof(vent)+" is null");
+            throw new ArgumentNullException(nameof(vent) + " is null");
         if (VentInfos.ContainsKey(vent.Id))
             throw new ArgumentException($"VentInfo already exists: {vent.Id}");
         Vent = vent;
@@ -37,7 +33,7 @@ public class VentInfo
     public static void ShipStatusAwake()
     {
         VentInfos = new();
-        foreach(Vent vent in ShipStatus.Instance.AllVents)
+        foreach (Vent vent in ShipStatus.Instance.AllVents)
         {
             _ = new VentInfo(vent);
         }

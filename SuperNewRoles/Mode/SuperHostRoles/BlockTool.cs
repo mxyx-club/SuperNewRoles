@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
-using SuperNewRoles.MapOption;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class BlockTool
+internal class BlockTool
 {
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
-    class UpdateSystemPatch
+    private class UpdateSystemPatch
     {
         public static void Prefix(
             [HarmonyArgument(0)] SystemTypes systemType,
@@ -38,11 +34,11 @@ class BlockTool
     public static List<byte> CameraPlayers;
     public static List<byte> OldDesyncCommsPlayers;
     private static readonly float UsableDistance = 1.5f;
-    private static int Count = 0;
+    private static int Count;
     public static bool IsCom;
-    public static float CameraTime = 0;
-    public static float AdminTime = 0;
-    public static float VitalTime = 0;
+    public static float CameraTime;
+    public static float AdminTime;
+    public static float VitalTime;
     public static void FixedUpdate()
     {
         Count--;

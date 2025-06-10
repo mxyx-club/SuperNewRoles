@@ -1,6 +1,6 @@
 namespace SuperNewRoles.Mode.Detective;
 
-class Intro
+internal class Intro
 {
     public static void YouAreHandle(IntroCutscene __instance)
     {

@@ -1,5 +1,3 @@
-using System.Linq;
-using HarmonyLib;
 using Rewired;
 using UnityEngine;
 

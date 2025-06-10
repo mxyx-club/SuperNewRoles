@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;

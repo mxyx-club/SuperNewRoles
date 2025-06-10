@@ -2,7 +2,7 @@ using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles;
 
-class IntroHandler
+internal class IntroHandler
 {
     public static void Handler()
     {

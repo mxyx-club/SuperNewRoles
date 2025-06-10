@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.Zombie;
 
-class FixedUpdate
+internal class FixedUpdate
 {
     public static float NameChangeTimer;
     public static bool IsStart;
     public static void ZombieTimerUpdate(HudManager __instance)
     {
         ModeHandler.HudUpdate(__instance);
-        if (ModeHandler.IsMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+        if (ModeHandler.IsMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
         {
             if (NameChangeTimer >= 0f)
             {
@@ -37,7 +37,7 @@ class FixedUpdate
             }
         }
     }
-    public static int FixedUpdateTimer = 0;
+    public static int FixedUpdateTimer;
     public static void Update()
     {
         if (!IsStart || !AmongUsClient.Instance.AmHost) return;

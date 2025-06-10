@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using InnerNet;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -40,7 +38,7 @@ public static class PlayerControlHelper
     public static void RefreshRoleDescription(PlayerControl player)
     {
         if (player == null) return;
-        Logger.Info($"Set Role Description. player : {player.name}", "RefreshRoleDescription");
+        Info($"Set Role Description. player : {player.name}", "RefreshRoleDescription");
 
         RoleId playerRole = player.GetRole();
         List<RoleId> infos = new() { player.GetRole() };
@@ -67,7 +65,7 @@ public static class PlayerControlHelper
             Object.Destroy(t.gameObject);
         }
 
-        Logger.Info($"Set Role Description. infos : {string.Join(", ", infos)}", "RefreshRoleDescription");
+        Info($"Set Role Description. infos : {string.Join(", ", infos)}", "RefreshRoleDescription");
         // Add TextTask for remaining RoleInfos
         foreach (RoleId roleId in infos)
         {

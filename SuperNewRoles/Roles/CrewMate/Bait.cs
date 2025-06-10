@@ -1,11 +1,8 @@
-using System.Linq;
-using Hazel;
-using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class Bait
+internal class Bait
 {
     public class BaitUpdate
     {

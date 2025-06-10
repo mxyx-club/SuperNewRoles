@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
@@ -27,7 +26,7 @@ public static class Debugger
     public static DebugTabs currentTab = DebugTabs.FunctionsTab;
     public static ShapeshifterMinigame minigame;
     public static PlayerControl target;
-    public static bool canSeeRole = false;
+    public static bool canSeeRole;
 
     public static void CreateDebugMenu(ShapeshifterMinigame minigame)
     {
@@ -231,7 +230,7 @@ public static class Debugger
 
     public static void ReShowPanels()
     {
-        foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
+        foreach (ShapeshifterPanel panel in UObject.FindObjectsOfType<ShapeshifterPanel>()) UObject.Destroy(panel.gameObject);
         CreateTab();
         CreateAllPanels();
         CreatePlayerPanel();
@@ -248,9 +247,9 @@ public static class Debugger
 
             int num = index % 3;
 
-            ShapeshifterPanel panel = GameObject.Instantiate(minigame.PanelPrefab, minigame.transform);
+            ShapeshifterPanel panel = UObject.Instantiate(minigame.PanelPrefab, minigame.transform);
             panel.transform.localScale *= 0.5f;
-            panel.transform.localPosition = new Vector3(minigame.XStart + (float)num * 1.45f, minigame.YStart + 0.8f, -1f);
+            panel.transform.localPosition = new Vector3(minigame.XStart + num * 1.45f, minigame.YStart + 0.8f, -1f);
             static void Create(ShapeshifterPanel panel, int index, Action action)
             {
                 panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() =>
@@ -281,8 +280,8 @@ public static class Debugger
 
             int num = index % 3;
             int num2 = index / 3;
-            ShapeshifterPanel panel = GameObject.Instantiate(minigame.PanelPrefab, minigame.transform);
-            panel.transform.localPosition = new Vector3(minigame.XStart + (float)num * minigame.XOffset, minigame.YStart + (float)num2 * minigame.YOffset, -1f);
+            ShapeshifterPanel panel = UObject.Instantiate(minigame.PanelPrefab, minigame.transform);
+            panel.transform.localPosition = new Vector3(minigame.XStart + num * minigame.XOffset, minigame.YStart + num2 * minigame.YOffset, -1f);
             static void Create(ShapeshifterPanel panel, int index, Action action)
             {
                 panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() =>
@@ -314,8 +313,8 @@ public static class Debugger
             int num = index % 3;
             int num2 = index / 3;
 
-            ShapeshifterPanel panel = GameObject.Instantiate(minigame.PanelPrefab, minigame.transform);
-            panel.transform.localPosition = new Vector3(minigame.XStart + (float)num * minigame.XOffset, minigame.YStart + (float)num2 * minigame.YOffset, -1f);
+            ShapeshifterPanel panel = UObject.Instantiate(minigame.PanelPrefab, minigame.transform);
+            panel.transform.localPosition = new Vector3(minigame.XStart + num * minigame.XOffset, minigame.YStart + num2 * minigame.YOffset, -1f);
             panel.SetPlayer(index, p.Data, (Action)(() =>
             {
                 if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
@@ -340,9 +339,9 @@ public static class Debugger
 
             int num = index % 3;
 
-            ShapeshifterPanel panel = GameObject.Instantiate(minigame.PanelPrefab, minigame.transform);
+            ShapeshifterPanel panel = UObject.Instantiate(minigame.PanelPrefab, minigame.transform);
             panel.transform.localScale *= 0.4f;
-            panel.transform.localPosition = new Vector3(minigame.XStart + (float)num * 1.5f, minigame.YStart + 0.45f, -1f);
+            panel.transform.localPosition = new Vector3(minigame.XStart + num * 1.5f, minigame.YStart + 0.45f, -1f);
             static void Create(ShapeshifterPanel panel, int index, Action action)
             {
                 panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() =>
@@ -378,9 +377,9 @@ public static class Debugger
             int num = index % 8;        //横方向のリミット
             int num2 = index / 8;       //縦方向のリミット
 
-            ShapeshifterPanel panel = GameObject.Instantiate(minigame.PanelPrefab, minigame.transform);
+            ShapeshifterPanel panel = UObject.Instantiate(minigame.PanelPrefab, minigame.transform);
             panel.transform.localScale *= 0.3f;
-            panel.transform.localPosition = new Vector3(minigame.XStart - 0.7f + (float)num * 1f, minigame.YStart + (float)num2 * -0.3f, -1f);
+            panel.transform.localPosition = new Vector3(minigame.XStart - 0.7f + num * 1f, minigame.YStart + num2 * -0.3f, -1f);
             panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() =>
             {
                 if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);

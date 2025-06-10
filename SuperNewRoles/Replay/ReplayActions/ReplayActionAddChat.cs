@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionAddChat : ReplayAction
@@ -14,7 +11,7 @@ public class ReplayActionAddChat : ReplayAction
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
         chatText = reader.ReadString();
-        Logger.Info(chatText, "CHATTEXT");
+        Info(chatText, "CHATTEXT");
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {
@@ -31,7 +28,7 @@ public class ReplayActionAddChat : ReplayAction
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
         {
-            Logger.Info("sourceがnullでした");
+            Info("sourceがnullでした");
             return;
         }
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(source, chatText);

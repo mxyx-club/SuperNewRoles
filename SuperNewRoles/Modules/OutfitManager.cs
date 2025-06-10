@@ -19,7 +19,7 @@ public static class OutfitManager
         var callerMethod = caller.GetMethod();
         string callerMethodName = callerMethod.Name;
         string callerClassName = callerMethod.DeclaringType.FullName;
-        Logger.Info($"{pc.name} : CurrentOutfitType = {pc.CurrentOutfitType}, 呼び出し元 : {callerClassName}.{callerMethodName}", "OutfitManager");
+        Info($"{pc.name} : CurrentOutfitType = {pc.CurrentOutfitType}, 呼び出し元 : {callerClassName}.{callerMethodName}", "OutfitManager");
     }
     public static void changeToPlayer(this PlayerControl pc, PlayerControl target)
     {

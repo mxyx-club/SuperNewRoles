@@ -1,6 +1,5 @@
 using System.Text;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
@@ -10,14 +9,14 @@ namespace SuperNewRoles.Roles;
 [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
 public class Bakery
 {
-    private static TMPro.TextMeshPro confirmImpostorSecondText;
+    private static TextMeshPro confirmImpostorSecondText;
     public static bool Prefix(
         ExileController __instance,
         [HarmonyArgument(0)] ref GameData.PlayerInfo exiled,
         bool tie)
     {
         if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null && (Balancer.currentAbilityUser == null || !Balancer.IsDoubleExile)) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
-        
+
         string printStr = "";
 
         if (RoleClass.Assassin.TriggerPlayer != null)
@@ -84,7 +83,7 @@ public class Bakery
             {
                 IsSec = true;
                 __instance.exiled = null;
-                ExileController controller = GameObject.Instantiate(__instance, __instance.transform.parent);
+                ExileController controller = Object.Instantiate(__instance, __instance.transform.parent);
                 controller.exiled = Balancer.targetplayerright.Data;
                 controller.Begin(controller.exiled, false);
                 IsSec = false;
@@ -125,10 +124,11 @@ public class Bakery
         if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
         {
             return Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
-        };
+        }
+        ;
         return false;
     }
-    static bool IsSec;
+    private static bool IsSec;
     // 生存判定
     public static bool BakeryAlive()
     {
@@ -138,11 +138,11 @@ public class Bakery
         {
             if (p.IsAlive())
             {
-                Logger.Info("パン屋が生きていると判定されました");
+                Info("パン屋が生きていると判定されました");
                 return true;
             }
         }
-        Logger.Info("パン屋が生きていないと判定されました");
+        Info("パン屋が生きていないと判定されました");
         return false;
     }
     public static string GetExileText()
@@ -152,7 +152,7 @@ public class Bakery
         return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
     }
 
-    static void Postfix(ExileController __instance)
+    private static void Postfix(ExileController __instance)
     {
         // 文字定義
         confirmImpostorSecondText = Object.Instantiate(
@@ -169,14 +169,14 @@ public class Bakery
 
         if (isBakeryAlive) // パン屋 生存していたら実行
         {
-            Logger.Info("パン屋がパンを焼きました", "ConfirmImpostorSecondText"); // ログ
+            Info("パン屋がパンを焼きました", "ConfirmImpostorSecondText"); // ログ
             isUseConfirmImpostorSecondText = true;
             changeStringBuilder.AppendLine(GetExileText());
         }
 
         if (isCrookGetInsure.Item1) // 詐欺師 保険金受給していたら実行
         {
-            Logger.Info("詐欺師が保険金を受け取りました", "ConfirmImpostorSecondText"); // ログ
+            Info("詐欺師が保険金を受け取りました", "ConfirmImpostorSecondText"); // ログ
             isUseConfirmImpostorSecondText = true;
             changeStringBuilder.AppendLine(isCrookGetInsure.Item2);
         }
@@ -206,7 +206,7 @@ public class Bakery
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
     public class BakeryChatDisable
     {
-        static void Postfix()
+        private static void Postfix()
         {
             confirmImpostorSecondText.gameObject.SetActive(false);
         }

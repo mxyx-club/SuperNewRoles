@@ -1,9 +1,7 @@
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -29,7 +27,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         );
     public static new OptionInfo Optioninfo =
         new(RoleId.SilverBullet, 406800, true,
-            CoolTimeOption: (30,2.5f,60,2.5f, true),
+            CoolTimeOption: (30, 2.5f, 60, 2.5f, true),
             optionCreator: CreateOption);
     public static new IntroInfo Introinfo =
         new(RoleId.SilverBullet, introSound: RoleTypes.Engineer);
@@ -173,7 +171,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                 text.Append(ModTranslation.GetString("SilverBulletVentNotUsed"));
             else
             {
-                text.Append(string.Format(ModTranslation.GetString("SilverBulletVentUsed"), usedPlayers.Count)+"\n\n");
+                text.Append(string.Format(ModTranslation.GetString("SilverBulletVentUsed"), usedPlayers.Count) + "\n\n");
                 if (AnalysisLightOption.GetBool())
                 {
                     text.AppendLine("|-----------------------");
@@ -183,11 +181,9 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
                         PlayerControl player = ModHelpers.PlayerById(playerId);
                         text.AppendLine(string.Format(
                             ModTranslation.GetString(
-                                $"SilverBulletVentUsedColor{
-                                    (CustomColors.LighterColors.Contains(
+                                $"SilverBulletVentUsedColor{(CustomColors.LighterColors.Contains(
                                         player.Data.DefaultOutfit.ColorId
-                                    ) ? "Light" : "Dark")
-                                }"
+                                    ) ? "Light" : "Dark")}"
                             ), index)
                         );
                         index++;
@@ -222,7 +218,7 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
         if (AnalysisCount <= 0)
         {
             LastUsedVentData = null;
-            Logger.Warn($"残り使用可能回数が0になったのでLastUsedVentDataをnullにしました。","SilverBullet");
+            Warn($"残り使用可能回数が0になったのでLastUsedVentDataをnullにしました。", "SilverBullet");
         }
     }
 
@@ -232,13 +228,13 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
             return true;
         if ((AnalyzeTargetVent = ModHelpers.SetTargetVent(targetingPlayer: Player)) != null && AnalysisCount > 0)
         {
-            Logger.Info("Analyze Petting");
+            Info("Analyze Petting");
             AnalyzeOnClick();
             return false;
         }
         else if (RoleHelpers.IsSabotage() && CanRepairCount > 0)
         {
-            Logger.Info("Repair Petting");
+            Info("Repair Petting");
             RepairOnClick();
             return false;
         }
@@ -252,7 +248,8 @@ public class SilverBullet : RoleBase, ICrewmate, ISupportSHR, ICustomButton, IRp
     void ISupportSHR.BuildName(StringBuilder Suffix, StringBuilder RoleNameText, PlayerData<string> ChangePlayers)
     {
         RoleNameText.Append(ModHelpers.Cs(Roleinfo.RoleColor, $"({AnalysisCount})"));
-        if (CanUseRepairOption.GetBool()) {
+        if (CanUseRepairOption.GetBool())
+        {
             RoleNameText.Append(ModHelpers.Cs(RoleClass.ImpostorRed, $"({CanRepairCount})"));
         }
     }

@@ -5,12 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -24,11 +22,11 @@ public static class CredentialsPatch
     private static class VersionShowerPatch
     {
         public static string modColor = "#a6d289";
-        static void Postfix(VersionShower __instance)
+        private static void Postfix(VersionShower __instance)
         {
-            if (GameObject.FindObjectOfType<MainMenuManager>() == null)
+            if (UObject.FindObjectOfType<MainMenuManager>() == null)
                 return;
-            var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
+            var credentials = UObject.Instantiate(__instance.text);
             credentials.transform.position = new Vector3(2, -0.15f, 0);
             credentials.transform.localScale = Vector3.one * 2;
             //ブランチ名表示
@@ -37,11 +35,11 @@ public static class CredentialsPatch
             credentialsText += ModTranslation.GetString("creditsMain");
             credentials.SetText(credentialsText);
 
-            credentials.alignment = TMPro.TextAlignmentOptions.Center;
+            credentials.alignment = TextAlignmentOptions.Center;
             credentials.fontSize *= 0.9f;
             _ = AutoUpdate.checkForUpdate(credentials);
 
-            var version = UnityEngine.Object.Instantiate(credentials);
+            var version = UObject.Instantiate(credentials);
             version.transform.position = new Vector3(2, -0.5f, 0);
             version.transform.localScale = Vector3.one * 1.5f;
             version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}");
@@ -53,10 +51,10 @@ public static class CredentialsPatch
     [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
     private static class PingTrackerPatch
     {
-        static void Postfix(PingTracker __instance)
+        private static void Postfix(PingTracker __instance)
         {
             __instance.text.alignment = TextAlignmentOptions.TopRight;
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
             {
                 __instance.text.text = $"{baseCredentials}\n{__instance.text.text}";
                 try
@@ -104,7 +102,7 @@ public static class CredentialsPatch
         // ☆バ☆ナ☆ー☆ス☆プ☆ラ☆イ☆ト
         public static Sprite SuperNakanzinoBannerSprite;
         public static Sprite horseBannerSprite;
-        static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
+        private static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
         {
             while (true)
             {
@@ -137,7 +135,8 @@ public static class CredentialsPatch
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("NOTOK!!!");
                         return response.StatusCode;
-                    };
+                    }
+                    ;
                     if (response.Content == null)
                     {
                         System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -181,12 +180,12 @@ public static class CredentialsPatch
             return HttpStatusCode.OK;
         }
         public static GameObject CreditsPopup;
-        static void ViewBoosterPatch(MainMenuManager __instance)
+        private static void ViewBoosterPatch(MainMenuManager __instance)
         {
             var template = __instance.transform.FindChild("StatsPopup");
-            var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+            var obj = UObject.Instantiate(template, template.transform.parent).gameObject;
             CreditsPopup = obj;
-            GameObject.Destroy(obj.GetComponent<StatsPopup>());
+            UObject.Destroy(obj.GetComponent<StatsPopup>());
 
             var devTitletext = obj.transform.FindChild("StatNumsText_TMP");
             devTitletext.GetComponent<TextMeshPro>().text = ModTranslation.GetString("Developer");
@@ -198,36 +197,36 @@ public static class CredentialsPatch
             devText.localScale = new Vector3(1.25f, 1.25f, 1f);
             devText.GetComponent<TextMeshPro>().text = DevsData;
 
-            var supporterTitletext = UnityEngine.Object.Instantiate(devTitletext, obj.transform);
+            var supporterTitletext = UObject.Instantiate(devTitletext, obj.transform);
             supporterTitletext.GetComponent<TextMeshPro>().text = $"<align={"left"}>{ModTranslation.GetString("Supporter")}</align>";
             supporterTitletext.localPosition = new Vector3(1.45f, -1.65f, -2f);
             supporterTitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
-            var supporterText = UnityEngine.Object.Instantiate(devText, obj.transform);
+            var supporterText = UObject.Instantiate(devText, obj.transform);
             supporterText.localPosition = new Vector3(3f, -1.65f, -2f);
             supporterText.localScale = new Vector3(1.25f, 1.25f, 1f);
             supporterText.GetComponent<TextMeshPro>().text = SupporterData;
 
-            var transTitletext = UnityEngine.Object.Instantiate(devTitletext, obj.transform);
+            var transTitletext = UObject.Instantiate(devTitletext, obj.transform);
             transTitletext.GetComponent<TextMeshPro>().text = $"<align={"left"}>{ModTranslation.GetString("Translator")}</align>";
             transTitletext.localPosition = new Vector3(1.45f, -4.5f, -2f);
             transTitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
-            var transText = UnityEngine.Object.Instantiate(devText, obj.transform);
+            var transText = UObject.Instantiate(devText, obj.transform);
             transText.localPosition = new Vector3(3f, -4.5f, -2f);
             transText.localScale = new Vector3(1.25f, 1.25f, 1f);
             transText.GetComponent<TextMeshPro>().text = TransData;
 
             var textobj = obj.transform.FindChild("Title_TMP");
-            UnityEngine.Object.Destroy(textobj.GetComponent<TextTranslatorTMP>());
+            UObject.Destroy(textobj.GetComponent<TextTranslatorTMP>());
             textobj.GetComponent<TextMeshPro>().text = ModTranslation.GetString("DevAndSpnTitle");
             textobj.localScale = new Vector3(1.5f, 1.5f, 1f);
             obj.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
             obj.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
         }
-        static bool Downloaded = false;
+        private static bool Downloaded;
         public static MainMenuManager instance;
-        static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
+        private static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
         {
             while (true)
             {

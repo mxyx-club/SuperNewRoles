@@ -2,7 +2,7 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
-class Bait
+internal class Bait
 {
     public static void MurderPostfix(PlayerControl __instance, PlayerControl target)
     {

@@ -1,13 +1,6 @@
-using System.Linq;
 using AmongUs.GameOptions;
-using Hazel;
-using InnerNet;
-using Steamworks;
-using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
-using UnityEngine.UIElements.StyleSheets;
 using static MeetingHud;
 
 namespace SuperNewRoles.Helpers;
@@ -124,7 +117,7 @@ public static class RPCHelper
     }
     public static void RpcSyncOption()
     {
-        GameManager gm = NormalGameManager.Instance;
+        GameManager gm = GameManager.Instance;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
         writer.StartMessage(5);
         writer.Write(AmongUsClient.Instance.GameId);
@@ -132,7 +125,7 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(gm.NetId);
-                writer.StartMessage((byte)4);
+                writer.StartMessage(4);
                 writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions, AprilFoolsMode.IsAprilFoolsModeToggledOn));
                 writer.EndMessage();
             }
@@ -179,14 +172,14 @@ public static class RPCHelper
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
         {
-            Logger.Info("Send=>All");
+            Info("Send=>All");
             writer.StartMessage(5);
             writer.Write(AmongUsClient.Instance.GameId);
         }
         else
         {
             if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
-            Logger.Info("Send=>" + TargetClientId.ToString());
+            Info("Send=>" + TargetClientId.ToString());
             writer.StartMessage(6);
             writer.Write(AmongUsClient.Instance.GameId);
             writer.WritePacked(TargetClientId);
@@ -206,7 +199,7 @@ public static class RPCHelper
     }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
     {
-        GameManager gm = NormalGameManager.Instance;
+        GameManager gm = GameManager.Instance;
         MessageWriter writer = MessageWriter.Get(sendOption);
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
@@ -366,7 +359,7 @@ public static class RPCHelper
     {
         target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
         target.SetRoleRPC(Id);
-        Logger.Info($"[{target.GetDefaultName()}] の役職を [{Id}] に変更しました。");
+        Info($"[{target.GetDefaultName()}] の役職を [{Id}] に変更しました。");
     }
     public static void RpcResetAbilityCooldown(this PlayerControl target)
     {
@@ -414,8 +407,8 @@ public static class RPCHelper
     {
         if (AmongUsClient.Instance.AmClient)
         {
-            ((MonoBehaviour)player).StopAllCoroutines();
-            ((MonoBehaviour)player).StartCoroutine(player.CoExitVent(id));
+            player.StopAllCoroutines();
+            player.StartCoroutine(player.CoExitVent(id));
         }
         MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, 20, SendOption.None);
         messageWriter.WritePacked(id);
@@ -426,7 +419,7 @@ public static class RPCHelper
     {
         foreach (byte i in new[] { 79, 80, 81, 82 })
         {
-            Logger.Info($"amount:{i}", "RpcOpenToilet");
+            Info($"amount:{i}", "RpcOpenToilet");
             MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.Doors, i);
         }
     }

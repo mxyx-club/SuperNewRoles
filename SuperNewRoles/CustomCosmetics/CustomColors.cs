@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using AmongUs.Data.Legacy;
-using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -204,7 +200,7 @@ public class CustomColors
             }
             catch (Exception e)
             {
-                Logger.Info(e.ToString());
+                Info(e.ToString());
             }
         }
         CustomColorData = CustomColorDataOld;
@@ -330,7 +326,7 @@ public class CustomColors
         [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LoadPlayerPrefs))]
         private static class LoadPlayerPrefsPatch
         { // Fix Potential issues with broken colors
-            private static bool needsPatch = false;
+            private static bool needsPatch;
             public static void Prefix([HarmonyArgument(0)] bool overrideLoad)
             {
                 if (!LegacySaveManager.loaded || overrideLoad)

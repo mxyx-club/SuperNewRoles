@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
@@ -29,7 +23,7 @@ namespace SuperNewRoles.Patches;
 #region KillButtonDoClickPatch
 
 [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
-class KillButtonDoClickPatch
+internal class KillButtonDoClickPatch
 {
     public static bool Prefix(KillButton __instance)
     {
@@ -111,11 +105,11 @@ class KillButtonDoClickPatch
 #region CheckMurderPatch
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
-static class CheckMurderPatch
+internal static class CheckMurderPatch
 {
-    public static bool isKill = false;
+    public static bool isKill;
 
-    public static bool IsKillSuc = false;
+    public static bool IsKillSuc;
 
     public static bool HandleSHR(PlayerControl __instance, PlayerControl target)
     {
@@ -239,7 +233,7 @@ static class CheckMurderPatch
                 if (RoleClass.FastMaker.IsCreatedMadmate)//まだ作ってなくて、設定が有効の時
                 {
                     //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                    Logger.Info("マッドメイトを作成済みの為 普通のキル", "FastMakerSHR");
+                    Info("マッドメイトを作成済みの為 普通のキル", "FastMakerSHR");
                     break;
                 }
                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
@@ -248,7 +242,7 @@ static class CheckMurderPatch
                 Madmate.CreateMadmate(target);//クルーにして、マッドにする
                 Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
                 RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
-                Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
+                Info("マッドメイトを作成しました", "FastMakerSHR");
                 return false;
             case RoleId.Jackal:
                 Jackal jackal = __instance.GetRoleBase<Jackal>();
@@ -257,7 +251,7 @@ static class CheckMurderPatch
                 //まだ作ってなくて、設定が有効の時
                 if (jackal.CanSidekick)
                 {
-                    Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
+                    Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
                     break;
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
@@ -269,18 +263,18 @@ static class CheckMurderPatch
                     Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                 }
                 Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
-                Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
+                Info("ジャッカルフレンズを作成しました。", "JackalSHR");
                 return false;
             case RoleId.JackalSeer:
                 if (RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.JackalSeer.CanCreateFriend)//まだ作ってなくて、設定が有効の時
                 {
                     // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                    if (!RoleClass.JackalSeer.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSeerSHR");
-                    else if (RoleClass.JackalSeer.CanCreateFriend && RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSeerSHR");
-                    else Logger.Info("不正なキル", "JackalSeerSHR");
+                    if (!RoleClass.JackalSeer.CanCreateFriend) Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSeerSHR");
+                    else if (RoleClass.JackalSeer.CanCreateFriend && RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSeerSHR");
+                    else Info("不正なキル", "JackalSeerSHR");
                     break;
                 }
-                Logger.Info("未作成 且つ 設定が有効である為 フレンズを作成", "JackalSeerSHR");
+                Info("未作成 且つ 設定が有効である為 フレンズを作成", "JackalSeerSHR");
                 if (target == null || RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) return false;
                 __instance.RpcShowGuardEffect(target);
                 RoleClass.JackalSeer.CreatePlayers.Add(__instance.PlayerId);
@@ -289,7 +283,7 @@ static class CheckMurderPatch
                     Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                 }
                 Mode.SuperHostRoles.ChangeName.SetRoleName(target);//名前も変える
-                Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
+                Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
                 return false;
             case RoleId.DarkKiller:
                 if (!MapUtilities.CachedShipStatus.Systems.TryGetValue(SystemTypes.Electrical, out ISystemType elec))
@@ -336,7 +330,7 @@ static class CheckMurderPatch
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
         IsKillSuc = true;
-        Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
+        Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
         if (
                 __instance.IsBot() ||
                 __instance.IsDead() ||
@@ -354,11 +348,11 @@ static class CheckMurderPatch
             MurderHelpers.RpcMurderPlayerFailed(__instance, target);
             return IsKillSuc = false;
         }
-        Logger.Info("キル可能かを通過しました。", "CheckMurder");
+        Info("キル可能かを通過しました。", "CheckMurder");
         if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
         if (__instance.PlayerId == target.PlayerId)
         {
-            Logger.Info($"自爆:{target.name}", "CheckMurder");
+            Info($"自爆:{target.name}", "CheckMurder");
             __instance.RpcMurderPlayer(target, true);
             return false;
         }
@@ -439,11 +433,11 @@ static class CheckMurderPatch
                     return IsKillSuc = false;
                 break;
         }
-        Logger.Info("全モード通過", "CheckMurder");
-        Logger.Info("全スタントマン系通過", "CheckMurder");
+        Info("全モード通過", "CheckMurder");
+        Info("全スタントマン系通過", "CheckMurder");
         __instance.RpcMurderPlayerCheck(target);
         Camouflager.ResetCamouflageSHR(target);
-        Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
+        Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
         return false;
     }
     public static void Postfix(PlayerControl __instance, PlayerControl target)
@@ -537,8 +531,8 @@ static class CheckMurderPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
 public static class MurderPlayerPatch
 {
-    public static bool resetToCrewmate = false;
-    public static bool resetToDead = false;
+    public static bool resetToCrewmate;
+    public static bool resetToDead;
     public static bool Prefix(PlayerControl __instance, ref PlayerControl target, MurderResultFlags resultFlags)
     {
         __instance.isKilling = false;
@@ -637,7 +631,7 @@ public static class MurderPlayerPatch
 
         //ダークキラーがキルできるか判定
         if (__instance.IsRole(RoleId.DarkKiller) && !IsBlackout()) return false;
-        
+
         if (!AmongUsClient.Instance.AmHost ||
             __instance.PlayerId == target.PlayerId)
             return true;
@@ -674,7 +668,7 @@ public static class MurderPlayerPatch
             CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
         {
             new CustomMessage("MurderPlayerが発生しました", 5f);
-            Logger.Info("MurderPlayerが発生しました", "DebugMode");
+            Info("MurderPlayerが発生しました", "DebugMode");
         }
 
         KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
@@ -726,14 +720,14 @@ public static class MurderPlayerPatch
         // |:===== 以下targetが生存している場合には発生させない処理 =====:|
         if (target.IsAlive()) return;
 
-        Logger.Info("死亡者リストに追加");
+        Info("死亡者リストに追加");
 
         DeadPlayer.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
 
         if (IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
         {
             new CustomMessage("\n死者が発生しました", 5f);
-            Logger.Info("死者が発生しました", "DebugMode");
+            Info("死者が発生しました", "DebugMode");
         }
 
         SeerHandler.WrapUpPatch.MurderPlayerPatch.Postfix(target);
@@ -791,7 +785,7 @@ public static class MurderPlayerPatch
                     case RoleId.Jumbo:
                         if (!RoleClass.Jumbo.JumboSize.ContainsKey(target.PlayerId))
                             break;
-                        DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                        DeadBody[] array = UObject.FindObjectsOfType<DeadBody>();
                         for (int i = 0; i < array.Length; i++)
                         {
                             if (array[i].ParentId == target.PlayerId)
@@ -865,7 +859,7 @@ public static class MurderPlayerPatch
                     Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
                     for (int i = 0; i <= RoleClass.OverKiller.KillCount; i++)
                     {
-                        DeadBody deadBody = GameObject.Instantiate(deadBodyPrefab);
+                        DeadBody deadBody = UObject.Instantiate(deadBodyPrefab);
                         deadBody.enabled = false;
                         deadBody.ParentId = target.PlayerId;
                         Vector3 position = target.transform.position + BodyOffset;

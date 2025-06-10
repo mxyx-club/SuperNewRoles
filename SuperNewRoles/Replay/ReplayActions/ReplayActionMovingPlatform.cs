@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
@@ -34,7 +30,7 @@ public class ReplayActionMovingPlatform : ReplayAction
     public override void OnAction()
     {
         //ここに処理書く
-        MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+        MovingPlatformBehaviour mpb = Object.FindObjectOfType<MovingPlatformBehaviour>();
         currentAction = this;
         mpb.StartCoroutine(UseMovingPlatform(mpb, ModHelpers.PlayerById(sourcePlayer), this).WrapToIl2Cpp());
     }
@@ -88,24 +84,24 @@ public class ReplayActionMovingPlatform : ReplayAction
             target.MyPhysics.ResetMoveState();
         }
         __instance.Target = target;
-        Logger.Info(ReplayManager.CurrentReplay.MovingPlatformFrameCount.ToString() + ":" + ReplayManager.CurrentReplay.CurrentMovingPlatformState.ToString(), "FRAMECOUNT");
+        Info(ReplayManager.CurrentReplay.MovingPlatformFrameCount.ToString() + ":" + ReplayManager.CurrentReplay.CurrentMovingPlatformState.ToString(), "FRAMECOUNT");
         if (target.AmOwner)
         {
             PlayerControl.HideCursorTemporarily();
         }
-            ((Behaviour)target.Collider).enabled = false;
+        target.Collider.enabled = false;
         target.moveable = false;
-        ((Behaviour)target.NetTransform).enabled = false;
+        target.NetTransform.enabled = false;
         target.inMovingPlat = true;
         target.ForceKillTimerContinue = true;
         Vector3 val = (__instance.IsLeft ? __instance.LeftUsePosition : __instance.RightUsePosition);
         Vector3 val2 = ((!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition);
         Vector3 sourcePos = ReplayManager.CurrentReplay.MovingPlatformPosition.x == -999 ? (__instance.IsLeft ? __instance.LeftPosition : __instance.RightPosition) : ReplayManager.CurrentReplay.MovingPlatformPosition;
         Vector3 targetPos = ((!__instance.IsLeft) ? __instance.LeftPosition : __instance.RightPosition);
-        Vector3 val3 = ((Component)__instance).transform.parent.TransformPoint(val);
-        Vector3 worldUseTargetPos = ((Component)__instance).transform.parent.TransformPoint(val2);
-        Vector3 worldSourcePos2 = ((Component)__instance).transform.parent.TransformPoint(sourcePos);
-        Vector3 worldTargetPos2 = ((Component)__instance).transform.parent.TransformPoint(targetPos);
+        Vector3 val3 = __instance.transform.parent.TransformPoint(val);
+        Vector3 worldUseTargetPos = __instance.transform.parent.TransformPoint(val2);
+        Vector3 worldSourcePos2 = __instance.transform.parent.TransformPoint(sourcePos);
+        Vector3 worldTargetPos2 = __instance.transform.parent.TransformPoint(targetPos);
         if (ReplayManager.CurrentReplay.MovingPlatformPosition.x != -999)
         {
             worldSourcePos2.y = 8.9246f;
@@ -126,7 +122,7 @@ public class ReplayActionMovingPlatform : ReplayAction
         {
             ReplayManager.CurrentReplay.CurrentMovingPlatformState = MovingPlatformState.WaitEffect1st;
             yield return Effects.Wait(0.1f);
-            ((Behaviour)target.MyPhysics).enabled = false;
+            target.MyPhysics.enabled = false;
             worldSourcePos2 -= (Vector3)target.Collider.offset;
             worldTargetPos2 -= (Vector3)target.Collider.offset;
             if (Constants.ShouldPlaySfx())
@@ -138,7 +134,7 @@ public class ReplayActionMovingPlatform : ReplayAction
         {
             float Speed = (ReplayManager.CurrentReplay.MovingPlatformFrameCount / 60.0f);
             ReplayManager.CurrentReplay.CurrentMovingPlatformState = MovingPlatformState.Slide;
-            yield return Effects.All(Effects.Slide2D(((Component)__instance).transform, sourcePos, targetPos, Speed), Effects.Slide2DWorld(((Component)target).transform, worldSourcePos2, worldTargetPos2, Speed), MovingPlatformFrameCounter(__instance).WrapToIl2Cpp());
+            yield return Effects.All(Effects.Slide2D(__instance.transform, sourcePos, targetPos, Speed), Effects.Slide2DWorld(target.transform, worldSourcePos2, worldTargetPos2, Speed), MovingPlatformFrameCounter(__instance).WrapToIl2Cpp());
             if (Constants.ShouldPlaySfx())
             {
                 SoundManager.Instance.StopNamedSound("PlatformMoving");
@@ -148,23 +144,23 @@ public class ReplayActionMovingPlatform : ReplayAction
                 __instance.ResetPlatform();
                 yield break;
             }
-        ((Behaviour)target.MyPhysics).enabled = true;
+            target.MyPhysics.enabled = true;
         }
 
         if ((int)ReplayManager.CurrentReplay.CurrentMovingPlatformState <= (int)MovingPlatformState.WalkTo3rd)
         {
             ReplayManager.CurrentReplay.CurrentMovingPlatformState = MovingPlatformState.WalkTo3rd;
             yield return target.MyPhysics.WalkPlayerTo(worldUseTargetPos);
-            target.SetPetPosition(((Component)target).transform.position);
+            target.SetPetPosition(target.transform.position);
         }
         if ((int)ReplayManager.CurrentReplay.CurrentMovingPlatformState <= (int)MovingPlatformState.WaitEffect2nd)
         {
             ReplayManager.CurrentReplay.CurrentMovingPlatformState = MovingPlatformState.WaitEffect2nd;
             yield return Effects.Wait(0.1f);
             target.inMovingPlat = false;
-            ((Behaviour)target.Collider).enabled = true;
+            target.Collider.enabled = true;
             target.moveable = true;
-            ((Behaviour)target.NetTransform).enabled = true;
+            target.NetTransform.enabled = true;
             target.ForceKillTimerContinue = false;
             __instance.Target = null;
         }

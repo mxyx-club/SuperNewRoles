@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionShapeshift : ReplayAction
@@ -34,7 +31,7 @@ public class ReplayActionShapeshift : ReplayAction
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
         if (source == null || target == null)
         {
-            Logger.Info("対象がnullでした。");
+            Info("対象がnullでした。");
             return;
         }
         source.Shapeshift(target, animate);
@@ -45,7 +42,7 @@ public class ReplayActionShapeshift : ReplayAction
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
         if (source == null || target == null)
         {
-            Logger.Info("対象がnullでした。");
+            Info("対象がnullでした。");
             return;
         }
         ReplayAction action = GetLastAction(this, ((ReplayAction act) => (act as ReplayActionShapeshift).sourcePlayer == this.sourcePlayer));
@@ -59,7 +56,7 @@ public class ReplayActionShapeshift : ReplayAction
             PlayerControl targetlast = ModHelpers.PlayerById(shape.targetPlayer);
             if (targetlast == null)
             {
-                Logger.Info("対象がnullでした。2");
+                Info("対象がnullでした。2");
                 return;
             }
             source.Shapeshift(targetlast, !shape.animate);

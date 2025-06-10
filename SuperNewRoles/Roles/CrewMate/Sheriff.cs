@@ -4,7 +4,7 @@ using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles;
 
-class Sheriff
+internal class Sheriff
 {
     public static void ResetKillCooldown()
     {
@@ -156,7 +156,7 @@ class Sheriff
     {
         ResetKillCooldown();
     }
-    class SheriffRoleExecutionData
+    private class SheriffRoleExecutionData
     {
         /// <summary>執行挙動のモード</summary>
         public ExecutionMode Mode;

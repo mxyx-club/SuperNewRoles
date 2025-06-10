@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -61,15 +58,15 @@ public class WaveCannon : RoleBase, IImpostor, ICustomButton
 
     public void OnEffectEnds()
     {
-        if (!WaveCannonObject.Objects.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out WaveCannonObject obj))
+        if (!Objects.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out WaveCannonObject obj))
         {
-            Logger.Info("nullなのでreturnしました", "WaveCannonButton");
+            Info("nullなのでreturnしました", "WaveCannonButton");
             return;
         }
 
         var pos = CachedPlayer.LocalPlayer.transform.position;
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
-        writer.Write((byte)WaveCannonObject.RpcType.Shoot);
+        writer.Write((byte)RpcType.Shoot);
         writer.Write((byte)obj.Id);
         writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
         writer.Write(CachedPlayer.LocalPlayer.PlayerId);

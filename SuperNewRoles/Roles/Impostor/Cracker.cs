@@ -1,14 +1,12 @@
-using HarmonyLib;
-
 namespace SuperNewRoles.Roles.Impostor;
 
 public static class Cracker
 {
     //ここにコードを書きこんでください
     [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
-    class VitalsMinigameUpdatePatch
+    private class VitalsMinigameUpdatePatch
     {
-        static void Postfix(VitalsMinigame __instance)
+        private static void Postfix(VitalsMinigame __instance)
         {
             for (int k = 0; k < __instance.vitals.Length; k++)
             {

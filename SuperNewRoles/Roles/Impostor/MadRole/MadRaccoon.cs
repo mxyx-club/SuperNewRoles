@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Timers;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
-using TMPro;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
@@ -52,7 +50,7 @@ public static class MadRaccoon
     internal static class RoleData
     {
         public static List<PlayerControl> Player;
-        public static Color32 color = Roles.RoleClass.ImpostorRed;
+        public static Color32 color = RoleClass.ImpostorRed;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static bool IsImpostorCheck;
@@ -81,7 +79,7 @@ public static class MadRaccoon
         private static CustomButton shapeshiftButton;
         private static Timer coolTimeTimer;
         private static Timer durationTimeTimer;
-        private static TextMeshPro shapeDurationText = null;
+        private static TextMeshPro shapeDurationText;
         private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MadRacoonButton.png", 115f);
 
         internal static void SetupCustomButtons(HudManager hm)
@@ -103,7 +101,7 @@ public static class MadRaccoon
                 buttonText = ModTranslation.GetString("MadRaccoonButtonName"),
                 showButtonText = true
             };
-            shapeDurationText = UnityEngine.Object.Instantiate(shapeshiftButton.actionButton.cooldownTimerText, shapeshiftButton.actionButton.cooldownTimerText.transform.parent);
+            shapeDurationText = Object.Instantiate(shapeshiftButton.actionButton.cooldownTimerText, shapeshiftButton.actionButton.cooldownTimerText.transform.parent);
             shapeDurationText.text = "";
             shapeDurationText.enableWordWrapping = false;
             shapeDurationText.transform.localScale = Vector3.one * 0.5f;
@@ -184,7 +182,7 @@ public static class MadRaccoon
         {
             if (PlayerControl.LocalPlayer.CurrentOutfitType != PlayerOutfitType.Shapeshifted)
             {
-                Logger.Error("シェイプシフトが既に解除されている状態で[RpcRevertShapeshift]を呼ぼうとした為, 無効化しました。", "MadRaccoon Button");
+                Error("シェイプシフトが既に解除されている状態で[RpcRevertShapeshift]を呼ぼうとした為, 無効化しました。", "MadRaccoon Button");
                 return;
                 // MeetingHud.Startで呼び出した際は[PlayerOutfitType.Default], 任意解除(PlayerControl.Shapeshift)で呼び出した際は[PlayerOutfitType.Shapeshifted]になって状態が変動している。
                 // その為, CurrentOutfitTypeでの制御は予備のループ対処機構として使用している。

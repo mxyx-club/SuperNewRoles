@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -51,7 +50,7 @@ public static class LadderDead
     }
     public static Dictionary<byte, Vector3> TargetLadderData;
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.ClimbLadder))]
-    class Ladders
+    private class Ladders
     {
         public static void Postfix(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
         {

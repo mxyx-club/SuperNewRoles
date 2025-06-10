@@ -1,12 +1,10 @@
 using System;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Werewolf;
 
-class Main
+internal class Main
 {
     public static bool IsChatBlock(PlayerControl sourcePlayer, string text)
     {
@@ -34,13 +32,13 @@ class Main
         return false;
     }
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
-    class TranslationControllerGetStringPatch
+    private class TranslationControllerGetStringPatch
     {
-        static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id, [HarmonyArgument(1)] Il2CppReferenceArray<Il2CppSystem.Object> parts)
+        private static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id, [HarmonyArgument(1)] Il2CppReferenceArray<Il2CppSystem.Object> parts)
         {
             if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false))
             {
-                float num3 = (float)GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.DiscussionTime) - MeetingHud.Instance.discussionTimer;
+                float num3 = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.DiscussionTime) - MeetingHud.Instance.discussionTimer;
                 __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), Mathf.CeilToInt(num3));
             }
         }

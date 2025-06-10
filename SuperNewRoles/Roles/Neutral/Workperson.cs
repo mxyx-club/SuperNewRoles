@@ -1,11 +1,9 @@
-using HarmonyLib;
-
 namespace SuperNewRoles.Roles;
 
-class Workperson
+internal class Workperson
 {
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-    class BeginCrewmatePatch
+    private class BeginCrewmatePatch
     {
         public static void Postfix()
         {

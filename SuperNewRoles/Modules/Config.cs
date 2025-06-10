@@ -1,6 +1,5 @@
 using System.IO;
 using BepInEx.Configuration;
-using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -33,7 +32,7 @@ public static class ConfigRoles
     public static ConfigEntry<bool> ReplayEnable { get; set; }
     public static ConfigEntry<float> ReplayQualityTime { get; set; }
     public static bool IsSendAnalyticsPopupViewd;
-    public static bool IsUpdated = false;
+    public static bool IsUpdated;
     public static void Load()
     {
         var issendanaly = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalyticsViewd", false);

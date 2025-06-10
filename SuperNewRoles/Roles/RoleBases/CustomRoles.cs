@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -112,11 +109,11 @@ public static class CustomRoles
     }
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
-    class HandleDisconnectPatch
+    private class HandleDisconnectPatch
     {
         public static void Postfix(GameData __instance, PlayerControl player, DisconnectReasons reason)
         {
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
             {
                 RoleBaseManager.PlayerRoles.Values.Do(
                     x =>

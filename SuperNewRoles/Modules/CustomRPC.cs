@@ -1,25 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor.Crab;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -27,7 +21,6 @@ using SuperNewRoles.Sabotage;
 using SuperNewRoles.WaveCannonObj;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
-using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Modules;
 
@@ -403,7 +396,7 @@ public static class RPCProcedure
     public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, Vector2 position, WaveCannonObject.WCAnimType AnimType)
     {
         ReplayActionWavecannon.Create(Type, Id, IsFlipX, OwnerId, position);
-        Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {position} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
+        Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {position} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
         switch ((WaveCannonObject.RpcType)Type)
         {
             case WaveCannonObject.RpcType.Spawn:
@@ -450,7 +443,7 @@ public static class RPCProcedure
     }
     public static void MoveDeadBody(byte id, float x, float y)
     {
-        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        foreach (DeadBody dead in UObject.FindObjectsOfType<DeadBody>())
         {
             if (dead.ParentId == id)
             {
@@ -463,7 +456,7 @@ public static class RPCProcedure
     {
         PlayerControl player = ModHelpers.PlayerById(id);
         if (!player) return;
-        foreach (DeadBody dead in UnityEngine.Object.FindObjectsOfType<DeadBody>())
+        foreach (DeadBody dead in UObject.FindObjectsOfType<DeadBody>())
         {
             if (dead.ParentId == body)
             {
@@ -499,7 +492,7 @@ public static class RPCProcedure
             return;
         if (!Rocket.RoleData.RocketData.TryGetValue(source, out List<PlayerControl> players))
         {
-            Logger.Info("RocketMuri:ロケット無理でした。");
+            Info("RocketMuri:ロケット無理でした。");
             return;
         }
         int count = 0;
@@ -637,11 +630,11 @@ public static class RPCProcedure
         PlayerControl player = ModHelpers.PlayerById(id);
         if (player == null) return;
         bool isDead = player.IsDead();
-        Logger.Info($"{player.Data.PlayerName}が発言します。元のIsDead : {isDead}", "RPC Chat");
+        Info($"{player.Data.PlayerName}が発言します。元のIsDead : {isDead}", "RPC Chat");
         player.Data.IsDead = false;
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
         player.Data.IsDead = isDead;
-        if (isDead != player.Data.IsDead) Logger.Error($"{player.Data.PlayerName}のIsDeadが正常に戻りませんでした。元のIsDead : {isDead}, 現在のIsDead : {player.Data.IsDead}", "RPC Chat");
+        if (isDead != player.Data.IsDead) Error($"{player.Data.PlayerName}のIsDeadが正常に戻りませんでした。元のIsDead : {isDead}, 現在のIsDead : {player.Data.IsDead}", "RPC Chat");
     }
     public static void SetVigilance(bool isVigilance, byte id)
     {
@@ -650,7 +643,7 @@ public static class RPCProcedure
         if (Squid.IsVigilance.ContainsKey(id) && Squid.IsVigilance[id] && player.AmOwner && !isVigilance)
         {
             Squid.ResetCooldown();
-            Logger.Info("イカの警戒が解けたためクールをリセットしました");
+            Info("イカの警戒が解けたためクールをリセットしました");
         }
         Squid.IsVigilance[id] = isVigilance;
     }
@@ -829,14 +822,14 @@ public static class RPCProcedure
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                if (Is) Roles.Impostor.Camouflager.CamouflageSHR();
-                else Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                if (Is) Camouflager.CamouflageSHR();
+                else Camouflager.ResetCamouflageSHR();
             }
         }
         else
         {
-            if (Is) Roles.Impostor.Camouflager.Camouflage();
-            else Roles.Impostor.Camouflager.ResetCamouflage();
+            if (Is) Camouflager.Camouflage();
+            else Camouflager.ResetCamouflage();
         }
     }
 
@@ -871,7 +864,7 @@ public static class RPCProcedure
             if (CachedPlayer.LocalPlayer.PlayerControl == dyingTarget)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
-                if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
+                if (Guesser.guesserUI != null) Guesser.ExitButton.OnClick.Invoke();
             }
     }
 
@@ -891,7 +884,7 @@ public static class RPCProcedure
         PlayerAnimation PlayerAnim = PlayerAnimation.GetPlayerAnimation(playerid);
         if (PlayerAnim == null)
         {
-            Logger.Info("PlayerAnimがぬるだった...:" + playerid.ToString());
+            Info("PlayerAnimがぬるだった...:" + playerid.ToString());
             return;
         }
         PlayerAnim.HandleAnim(AnimType);
@@ -916,7 +909,7 @@ public static class RPCProcedure
     {
         if (IsChangeReported)
         {
-            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            DeadBody[] array = UObject.FindObjectsOfType<DeadBody>();
             for (int i = 0; i < array.Length; i++)
             {
                 if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == TargetId)
@@ -944,7 +937,7 @@ public static class RPCProcedure
         PlayerControl source = ModHelpers.PlayerById(sourceid);
         PlayerControl target = ModHelpers.PlayerById(targetid);
         if (source == null) return;
-        Roles.Impostor.Matryoshka.Set(source, target, Is);
+        Matryoshka.Set(source, target, Is);
     }
     public static void PartTimerSet(byte playerid, byte targetid)
     {
@@ -955,7 +948,7 @@ public static class RPCProcedure
     public static void UncheckedUsePlatform(byte playerid, bool IsMove)
     {
         PlayerControl source = ModHelpers.PlayerById(playerid);
-        AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+        AirshipStatus airshipStatus = UObject.FindObjectOfType<AirshipStatus>();
         if (airshipStatus)
         {
             if (IsMove)
@@ -966,7 +959,7 @@ public static class RPCProcedure
             else
             {
                 airshipStatus.GapPlatform.StopAllCoroutines();
-                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
+                airshipStatus.GapPlatform.StartCoroutine(Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
             }
         }
     }
@@ -1146,7 +1139,7 @@ public static class RPCProcedure
                 AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
                 SceneChanger.ChangeScene("MainMenu");
             }
-            catch (Exception ex) { Logger.Info($"{ex}", "AutoCreateRoom"); }
+            catch (Exception ex) { Info($"{ex}", "AutoCreateRoom"); }
             AmongUsClient.Instance.CoJoinOnlineGameFromCode(gameid);
         }
     }
@@ -1407,7 +1400,7 @@ public static class RPCProcedure
         {
             if (RoleClass.Clergyman.currentMessage?.text != null)
             {
-                GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
+                UObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
             }
             RoleClass.Clergyman.IsLightOff = false;
         }
@@ -1450,12 +1443,12 @@ public static class RPCProcedure
     }
     public static void CleanBody(byte playerId)
     {
-        DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+        DeadBody[] array = UObject.FindObjectsOfType<DeadBody>();
         for (int i = 0; i < array.Length; i++)
         {
             if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == playerId)
             {
-                UnityEngine.Object.Destroy(array[i].gameObject);
+                UObject.Destroy(array[i].gameObject);
             }
         }
     }
@@ -1506,9 +1499,9 @@ public static class RPCProcedure
         }
     }
     [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
-    class KillAnimationCoPerformKillPatch
+    private class KillAnimationCoPerformKillPatch
     {
-        public static bool hideNextAnimation = false;
+        public static bool hideNextAnimation;
 
         public static void Prefix(KillAnimation __instance, [HarmonyArgument(0)] ref PlayerControl source, [HarmonyArgument(1)] ref PlayerControl target)
         {
@@ -1562,7 +1555,7 @@ public static class RPCProcedure
         source.ProtectPlayer(target, colorid);
         source.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
         source.ProtectPlayer(target, colorid);
-        if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
+        if (targetId == CachedPlayer.LocalPlayer.PlayerId) HudManagerStartPatch.ShielderButton.Timer = 0f;
     }
     public static void SetShielder(byte PlayerId, bool Is)
         => RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
@@ -1570,8 +1563,8 @@ public static class RPCProcedure
     public static Vent MakeVent(byte id, float x, float y, float z, bool chain)
     {
         ReplayActionMakeVent.Create(id, x, y, z, chain);
-        Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
-        Vent VentMakerVent = UnityEngine.Object.Instantiate(template);
+        Vent template = UObject.FindObjectOfType<Vent>();
+        Vent VentMakerVent = UObject.Instantiate(template);
         if (chain && RoleClass.VentMaker.Vent.Contains(id))
         {
             RoleClass.VentMaker.Vent[id].Right = VentMakerVent;
@@ -1661,16 +1654,16 @@ public static class RPCProcedure
     public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
-    class RPCHandlerPatch
+    private class RPCHandlerPatch
     {
-        static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
+        private static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
         {
             switch ((RpcCalls)callId)
             {
                 case RpcCalls.UsePlatform:
                     if (AmongUsClient.Instance.AmHost)
                     {
-                        AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+                        AirshipStatus airshipStatus = UObject.FindObjectOfType<AirshipStatus>();
                         if (airshipStatus)
                         {
                             airshipStatus.GapPlatform.Use(__instance);
@@ -1709,10 +1702,10 @@ public static class RPCProcedure
             {CustomRPC.MoveDeadBody,false},
         };
 
-        static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
+        private static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
-                Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
+                Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
                 byte packetId = callId;
@@ -2041,7 +2034,7 @@ public static class RPCProcedure
                         JumpDancerJump(reader);
                         break;
                     case CustomRPC.BatSetDeviceStop:
-                        Roles.Impostor.Bat.BatSetDeviceStop();
+                        Bat.BatSetDeviceStop();
                         break;
                     case CustomRPC.RocketSeize:
                         RocketSeize(reader.ReadByte(), reader.ReadByte());

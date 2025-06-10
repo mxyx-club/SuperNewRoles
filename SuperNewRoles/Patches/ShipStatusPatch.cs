@@ -1,8 +1,5 @@
 using System;
-using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -11,15 +8,14 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
-static class ShipStatus_AwakePatch
+internal static class ShipStatus_AwakePatch
 {
-    static void Postfix(ShipStatus __instance)
+    private static void Postfix(ShipStatus __instance)
     {
         MapCustoms.Airship.SecretRoom.ShipStatusAwake(__instance);
         AddVitals.AddVital();
@@ -38,7 +34,7 @@ public static class ShipStatus_Awake_Patch
 }
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(MessageReader) })]
-class UpdateSystemMessagReaderPatch
+internal class UpdateSystemMessagReaderPatch
 {
     public static bool Prefix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
@@ -50,7 +46,7 @@ class UpdateSystemMessagReaderPatch
         msgReader.Position = position;
         return UpdateSystemPatch.Prefix(__instance, systemType, player, amount);
     }
-    static byte amount;
+    private static byte amount;
     public static void Postfix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
         [HarmonyArgument(1)] PlayerControl player,
@@ -61,7 +57,7 @@ class UpdateSystemMessagReaderPatch
 }
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
-class UpdateSystemPatch
+internal class UpdateSystemPatch
 {
     public static bool Prefix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
@@ -76,7 +72,7 @@ class UpdateSystemPatch
         {
             if (systemType is SystemTypes.Comms or SystemTypes.Sabotage or SystemTypes.Electrical)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.SabotageRepair);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Painter.Handle(Painter.ActionType.SabotageRepair);
             }
         }
         if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers, ModeId.PantsRoyal)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
@@ -145,7 +141,7 @@ public static class ShipStatus_OnDestroy_Patch
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
-class LightPatch
+internal class LightPatch
 {
     public static bool Prefix(ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player, ref float __result)
     {
@@ -171,7 +167,7 @@ class LightPatch
             : GetNeutralLightRadius(__instance, false);
         return false;
     }
-    
+
     public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor, float? timer = null)
     {
         if (Clergyman.IsLightOutVision()) return shipStatus.MinLightRadius * RoleClass.Clergyman.DownImpoVision;

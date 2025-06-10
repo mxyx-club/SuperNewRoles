@@ -1,6 +1,3 @@
-using Hazel;
-using InnerNet;
-
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
 public static class NotBlackOut

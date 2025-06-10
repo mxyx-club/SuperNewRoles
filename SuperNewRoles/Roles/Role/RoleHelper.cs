@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -18,7 +16,6 @@ using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace SuperNewRoles;
 
@@ -432,7 +429,7 @@ public static class RoleHelpers
                 var obj = RoleClass.SeeThroughPerson.Objects.Find(data => data.name == "Door-SeeThroughPersonCollider-" + door.transform.position.x + "." + door.transform.position.y + "." + door.Id);
                 if (obj == null) continue;
                 door.myCollider.isTrigger = false;
-                GameObject.Destroy(obj.gameObject);
+                UObject.Destroy(obj.gameObject);
             }
         }
         else if (player.IsRole(RoleId.Camouflager) && role != RoleId.Camouflager && RoleClass.Camouflager.IsCamouflage)
@@ -1552,7 +1549,7 @@ public static class RoleHelpers
     /// <param name="player">判断対象</param>
     /// <returns>true => タスクトリガー能力を有する / false => タスクトリガー能力を有さない</returns>
     internal static bool IsUseTaskTrigger(this PlayerControl player)
-        => !player.IsClearTask() || Patches.SelectTask.GetHaveTaskManageAbility(player.GetRole());
+        => !player.IsClearTask() || SelectTask.GetHaveTaskManageAbility(player.GetRole());
 
     public static void ClearTaskUpdate()
     {
@@ -1567,8 +1564,8 @@ public static class RoleHelpers
         if (!player) return;
         ShipStatus ship = ShipStatus.Instance;
         if (!ship) return;
-        Il2CppSystem.Collections.Generic.List<byte> tasks = new();
-        Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
+        ISystem.List<byte> tasks = new();
+        ISystem.HashSet<TaskTypes> types = new();
         int start = 0;
         ship.AddTasksFromList(ref start, task.numCommon, tasks, types, ship.CommonTasks.ListToIl2Cpp());
         start = 0;
@@ -1679,7 +1676,7 @@ public static class RoleHelpers
         }
         catch (Exception e)
         {
-            Logger.Error(e.ToString(), "IsComms");
+            Error(e.ToString(), "IsComms");
         }
         return false;
     }

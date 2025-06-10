@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class WallHack
+internal class WallHack
 {
     public static void WallHackUpdate()
     {
@@ -11,7 +11,7 @@ class WallHack
             return;
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started ||
             AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
             {
                 PlayerControl.LocalPlayer.Collider.offset = new Vector2(0f, 127f);

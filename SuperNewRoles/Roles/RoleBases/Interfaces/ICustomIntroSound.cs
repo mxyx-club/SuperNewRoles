@@ -9,5 +9,5 @@ public interface ICustomIntroSound
     /// <summary>
     /// Introのサウンド
     /// </summary>
-    public AudioClip IntroSound { get; }
+    AudioClip IntroSound { get; }
 }

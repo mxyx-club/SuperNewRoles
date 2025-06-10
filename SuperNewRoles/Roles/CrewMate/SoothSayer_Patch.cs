@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class SoothSayer_updatepatch
+internal class SoothSayer_updatepatch
 {
     internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
@@ -19,7 +17,7 @@ class SoothSayer_updatepatch
 public static class SoothSayer_Patch
 {
     private static string nameData;
-    static void SoothSayerOnClick(int Index, MeetingHud __instance)
+    private static void SoothSayerOnClick(int Index, MeetingHud __instance)
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
         var introData = Target.GetRole();
@@ -45,14 +43,14 @@ public static class SoothSayer_Patch
         if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
         {
             RoleClass.SoothSayer.DisplayedPlayer.Add(Target.PlayerId);
-            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
         if (RoleClass.SoothSayer.Count <= 0)
         {
-            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
     }
-    static void Event(MeetingHud __instance)
+    private static void Event(MeetingHud __instance)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.SoothSayer.Count >= 1)
         {
@@ -77,7 +75,7 @@ public static class SoothSayer_Patch
         }
     }
 
-    static void SpiritOnClick(int Index, MeetingHud __instance)
+    private static void SpiritOnClick(int Index, MeetingHud __instance)
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
         var introData = Target.GetRole();
@@ -110,7 +108,7 @@ public static class SoothSayer_Patch
             __instance.playerStates.ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
     }
-    static void SpiritEvent(MeetingHud __instance)
+    private static void SpiritEvent(MeetingHud __instance)
     {
         if (CustomOptionHolder.SpiritMediumIsAutoMode.GetBool()) return;
         if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.SpiritMedium.MaxCount >= 1)

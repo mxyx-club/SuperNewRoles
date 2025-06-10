@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.MapOption;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
@@ -20,7 +16,7 @@ public static class VentAndSabo
             MapTaskOverlay __instance,
             [HarmonyArgument(0)] PlayerTask task)
         {
-            Il2CppSystem.Collections.Generic.List<Vector2> locations = task.Locations;
+            ISystem.List<Vector2> locations = task.Locations;
             //サウナー
             ImportantTextTask imptsk;
             if ((imptsk = task.TryCast<ImportantTextTask>()) != null)
@@ -74,7 +70,7 @@ public static class VentAndSabo
         }
     }
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
-    class MapBehaviourPatch
+    private class MapBehaviourPatch
     {
         public static bool Prefix(MapBehaviour __instance, ref bool __state)
         {
@@ -106,12 +102,12 @@ public static class VentAndSabo
         }
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
-    class EnterVentAnimPatch
+    private class EnterVentAnimPatch
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl pc) => MapOption.MapOption.CanPlayVentAnimation || pc.AmOwner;
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
-    class ExitVentAnimPatch
+    private class ExitVentAnimPatch
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl pc) => MapOption.MapOption.CanPlayVentAnimation || pc.AmOwner;
     }
@@ -257,9 +253,9 @@ public static class VentAndSabo
         }
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
-    class VentSetOutlinePatch
+    private class VentSetOutlinePatch
     {
-        static bool Prefix(Vent __instance, bool on, bool mainTarget)
+        private static bool Prefix(Vent __instance, bool on, bool mainTarget)
         {
             // Vent outline set role color
             var color = CustomRoles.GetRoleColor(PlayerControl.LocalPlayer);

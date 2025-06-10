@@ -1,5 +1,3 @@
-using System.Linq;
-using Hazel;
 using SuperNewRoles.Buttons;
 using UnityEngine;
 

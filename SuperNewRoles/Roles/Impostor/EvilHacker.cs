@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.Impostor;
 

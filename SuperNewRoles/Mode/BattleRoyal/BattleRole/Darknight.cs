@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AmongUs.GameOptions;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole;
@@ -28,7 +23,7 @@ public class Darknight : BattleRoyalRole
         ability.MyKillCoolTime = 0;
         ability.MyKillDistance = 0;
     }
-    public bool IsKillingNow = false;
+    public bool IsKillingNow;
     public void OnKill(PlayerControl target)
     {
         IsKillingNow = true;

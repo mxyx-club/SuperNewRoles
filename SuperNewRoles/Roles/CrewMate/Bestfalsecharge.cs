@@ -20,7 +20,7 @@ public class Bestfalsecharge : RoleBase, IWrapUpHandler, ICrewmate
         );
     public static new OptionInfo Optioninfo = new(RoleId.Bestfalsecharge, 403200, true);
     public static new IntroInfo Introinfo = new(RoleId.Bestfalsecharge);
-    public bool IsOnMeeting = false;
+    public bool IsOnMeeting;
     public Bestfalsecharge(PlayerControl p) : base(p, Roleinfo, Optioninfo, Introinfo)
     {
         IsOnMeeting = false;

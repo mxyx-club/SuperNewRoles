@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
 
-class ButtonTime
+internal class ButtonTime
 {
     public static void Update()
     {
@@ -157,7 +157,7 @@ class ButtonTime
             }
             var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.EvilSpeedBooster.CoolTime);
             HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = (float)(RoleClass.EvilSpeedBooster.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-            if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
+            if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
         }
     }
     public static void CamouflagerButton()

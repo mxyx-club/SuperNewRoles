@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using HarmonyLib;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
 using UnityEngine;
@@ -71,7 +65,7 @@ public static class FixedUpdate
         {
             p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
         }
-        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
         {
             RoleFixedUpdate();
             BlockTool.FixedUpdate();

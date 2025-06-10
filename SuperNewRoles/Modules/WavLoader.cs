@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -95,7 +91,7 @@ public static class WavLoader
     }
     private static AudioClip CreateAudioClip(byte[] data, int channels, int sampleRate, UInt16 bitPerSample, string audioClipName)
     {
-        Logger.Info(bitPerSample.ToString(), "BITPAR");
+        Info(bitPerSample.ToString(), "BITPAR");
         var audioClipData = bitPerSample switch
         {
             8 => Create8BITAudioClipData(data),
@@ -103,7 +99,7 @@ public static class WavLoader
             32 => Create32BITAudioClipData(data),
             _ => throw new ArgumentException($"bitPerSample is not supported : bitPerSample = {bitPerSample}")
         };
-        Logger.Info(audioClipData.Length.ToString() + ":Length");
+        Info(audioClipData.Length.ToString() + ":Length");
         var audioClip = AudioClip.Create(audioClipName, (audioClipData.Length / 2) - 30, channels, sampleRate, false);
         audioClip.SetData(audioClipData, 0);
         return audioClip;

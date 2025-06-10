@@ -1,9 +1,5 @@
 using System;
-using AmongUs.Data;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.Helpers;
 using static System.Int32;
 
@@ -12,7 +8,7 @@ namespace SuperNewRoles.Patches;
 [Harmony]
 public static class DynamicLobbies
 {
-    static int LobbyLimit = 15;
+    private static int LobbyLimit = 15;
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     public static class AmongUsClientOnPlayerJoined

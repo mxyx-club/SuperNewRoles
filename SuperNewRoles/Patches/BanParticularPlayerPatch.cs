@@ -1,11 +1,7 @@
-using HarmonyLib;
-using InnerNet;
-using UnityEngine;
-
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
-class BanBlockedPlayerPatch
+internal class BanBlockedPlayerPatch
 {
     //TOHより、ありがとうございます
     public static void Postfix([HarmonyArgument(0)] ClientData client)

@@ -76,10 +76,10 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
     /// <summary>
     /// 採取対象に表示するマーク ( © => 赤血球 )
     /// </summary>
-    const string ErythrocyteMark = "<color=#b32323> \u00A9</color>";
+    private const string ErythrocyteMark = "<color=#b32323> \u00A9</color>";
 
     [Flags]
-    enum JudgmentType
+    private enum JudgmentType
     {
         None = 0b00,                //  (false, false)
         TeamType = 0b01,            //  (false, true)
@@ -156,7 +156,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             SampleCrews.SecondCrew = MTButtonInfo.CurrentTarget.PlayerId;
             AbilityRemainingCount--;
         }
-        else Logger.Error("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey);
+        else Error("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey);
 
         IsSHRFirstCool = false;
         SetButtonInfo();
@@ -285,9 +285,9 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
 
                 AbilityRemainingCount--;
             }
-            else { Logger.Info($"同じ検体を取得した為, 保存しませんでした。 => target = {target.name}, FirstCrew = {ModHelpers.PlayerById(SampleCrews.FirstCrew)}", Roleinfo.NameKey); }
+            else { Info($"同じ検体を取得した為, 保存しませんでした。 => target = {target.name}, FirstCrew = {ModHelpers.PlayerById(SampleCrews.FirstCrew)}", Roleinfo.NameKey); }
         }
-        else { Logger.Info("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey); }
+        else { Info("既に検体を取得済みにもかかわらず, 対象が取得されました。", Roleinfo.NameKey); }
 
         if (isResetCool)
         {
@@ -333,14 +333,14 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             else // 呼ばれる事は無い(はずの)フレーバーテキスト
             {
                 resultText = $"{ModTranslation.GetString("MedicalTechnologistSampleResult")}\n<pos=10%>Please report to the SuperNewRoles developer.</pos>\n<pos=10%>ErrorCode : 0b_{Convert.ToString((int)JudgmentSystem, 2)}</pos>";
-                Logger.Error($"JudgmentSystem に 不正な値が代入されています。 => JudgmentSystem = {JudgmentSystem}", Roleinfo.NameKey);
+                Error($"JudgmentSystem に 不正な値が代入されています。 => JudgmentSystem = {JudgmentSystem}", Roleinfo.NameKey);
             }
         }
         else // 呼ばれる事は無い(はずの)フレーバーテキスト
         {
             samplePresentation = string.Format(ModTranslation.GetString("MedicalTechnologistSamplePresentation"), firstCrew != null ? firstCrew.name : "null", secondCrew != null ? secondCrew.name : "null");
             resultText = $"{ModTranslation.GetString("MedicalTechnologistSampleResult")}\n<pos=10%>検体不適正 ( 不合格検体 )</pos>\n<pos=10%>検体が適切に提出なされなかった為,</pos>\n<pos=10%>陣営の判別が行えませんでした。</pos>";
-            Logger.Error("検体が揃っていないにも関わらず, 提出されました。", Roleinfo.NameKey);
+            Error("検体が揃っていないにも関わらず, 提出されました。", Roleinfo.NameKey);
         }
 
         return $"{judgmentSystemText}\n\n{samplePresentation}\n\n{resultText}";
@@ -469,13 +469,14 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             this.DetailedTeamType = detailedTeamRoleType;
         }
 
-        static TeamType GetRoleAndModifierTeamType(PlayerControl Sample)
+        private static TeamType GetRoleAndModifierTeamType(PlayerControl Sample)
         {
             TeamType roleTeamType = CustomRoles.GetRoleTeamType(Sample); // マッドはImpostor, フレンズ及び式神はこの時点ではDefaultNeutral になる
             TeamType ModifierTeamType = roleTeamType;
 
             // TeamRoleType 及び, TeamType では, 判別できない役職の陣営を取得する。
-            if (Sample.IsRole(RoleId.ShermansServant)) { ModifierTeamType = TeamType.Crewmate; };
+            if (Sample.IsRole(RoleId.ShermansServant)) { ModifierTeamType = TeamType.Crewmate; }
+            ;
 
             // moderator の陣営を取得する。
             if (Sample.IsLovers()) { ModifierTeamType = TeamType.Neutral; } // TODO : ラバーズリワークの影響を受ける。現在強制的に第三陣営判定しているリワーク後は ラバーズの設定 : [第三陣営として配役する] に従うように変更。
@@ -486,7 +487,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
             return roleAndModifierTeamType;
         }
 
-        static DetailedTeamRoleType GetDetailedTeamType(PlayerControl Sample, TeamType roleAndModifierTeamType) =>
+        private static DetailedTeamRoleType GetDetailedTeamType(PlayerControl Sample, TeamType roleAndModifierTeamType) =>
             roleAndModifierTeamType == TeamType.Neutral
                 ? GetDetailedNeutralType(Sample) // 勝利陣営分類が第三陣営の時, 第三陣営の詳細な陣営を取得する。
                 : (DetailedTeamRoleType)roleAndModifierTeamType; // 勝利陣営分類が第三陣営以外の時, 役職及びモデファイラの勝利陣営分類を詳細な陣営に変換する。
@@ -497,7 +498,7 @@ public class MedicalTechnologist : RoleBase, ICrewmate, ISupportSHR, ICustomButt
         /// </summary>
         /// <param name="Sample">解析対象の検体</param>
         /// <returns>DetailedTeamRoleType : 第三陣営の詳細な勝利陣営</returns>
-        static DetailedTeamRoleType GetDetailedNeutralType(PlayerControl Sample)
+        private static DetailedTeamRoleType GetDetailedNeutralType(PlayerControl Sample)
         {
             // RoleIdで判定できない役を判定する
             if (Sample.IsLovers()) return DetailedTeamRoleType.Lovers; // TODO : ラバーズリワークの影響を受ける。別のラバーズを別陣営判定にするかはリワーク後, 要相談。

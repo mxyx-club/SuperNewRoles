@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -83,7 +80,7 @@ public class CustomAnimation : MonoBehaviour
             int zerodigts = Digits - ModHelpers.GetDigit(i);
             if (zerodigts < 0)
             {
-                Logger.Info("Digitsミスってね？直して～～～");
+                Info("Digitsミスってね？直して～～～");
                 return Sprites.ToArray();
             }
             string countdata = ModHelpers.GetStringByCount('0', zerodigts) + i.ToString();
@@ -135,7 +132,7 @@ public class CustomAnimation : MonoBehaviour
     {
         if (Options.IsMeetingDestroy && RoleClass.IsMeeting)
         {
-            GameObject.Destroy(this.gameObject);
+            Destroy(this.gameObject);
             return;
         }
         if (Playing && Options.Sprites.Length > 1)

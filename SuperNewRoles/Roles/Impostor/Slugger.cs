@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Role;

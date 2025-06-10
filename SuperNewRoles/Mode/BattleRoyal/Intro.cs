@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal;
 
-class Intro
+internal class Intro
 {
-    public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler()
+    public static ISystem.List<PlayerControl> ModeHandler()
     {
-        Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
+        ISystem.List<PlayerControl> Teams = new();
         Teams.Add(PlayerControl.LocalPlayer);
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {

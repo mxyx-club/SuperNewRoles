@@ -1,5 +1,3 @@
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
@@ -54,7 +52,7 @@ public static class PlayerPhysicsSpeedPatch2
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
         if (ModeHandler.IsMode(ModeId.Default))
         {
             if (RoleClass.Freezer.IsSpeedDown ||

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Modules;
 
-class ChacheManager
+internal class ChacheManager
 {
     public static Dictionary<int, RoleId> MyRoleChache;
     public static Dictionary<int, RoleId> MyGhostRoleChache;

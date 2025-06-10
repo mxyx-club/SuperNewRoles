@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
 using static SuperNewRoles.CustomCosmetics.CustomCosmeticsData.CustomPlateData;
@@ -11,11 +9,11 @@ namespace SuperNewRoles.CustomCosmetics;
 
 public class CustomPlate
 {
-    public static bool isAdded = false;
-    static readonly List<NamePlateData> namePlateData = new();
+    public static bool isAdded;
+    private static readonly List<NamePlateData> namePlateData = new();
     public static readonly List<CustomPlateData> customPlateData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
-    class UnlockedNamePlatesPatch
+    private class UnlockedNamePlatesPatch
     {
         public static void Postfix(HatManager __instance)
         {

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Agartha;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
@@ -19,14 +16,14 @@ public static class PlayerCountChange
         __instance.MinPlayers = 1;
     }
 }
-class ShareGameVersion
+internal class ShareGameVersion
 {
-    public static bool IsVersionOK = false;
-    public static bool IsChangeVersion = false;
-    public static bool IsRPCSend = false;
+    public static bool IsVersionOK;
+    public static bool IsChangeVersion;
+    public static bool IsRPCSend;
     public static float timer = 600;
     public static float RPCTimer = 1f;
-    private static float kickingTimer = 0f;
+    private static float kickingTimer;
     private static bool notcreateroom;
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     public class AmongUsClientOnPlayerJoinedPatch
@@ -66,7 +63,7 @@ class ShareGameVersion
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public class GameStartManagerUpdatePatch
     {
-        private static bool update = false;
+        private static bool update;
         public static Dictionary<int, PlayerVersion> VersionPlayers = new();
         public static int Proce;
         private static string currentText = "";
@@ -87,7 +84,7 @@ class ShareGameVersion
                 }
                 else
                 {
-                    Logger.Info("COMMeDDDDDDDDDDDD!!!!!!!!!");
+                    Info("COMMeDDDDDDDDDDDD!!!!!!!!!");
                     __instance.StartButton.GetComponent<PassiveButton>().OnClick.Invoke();
                     FastDestroyableSingleton<GameStartManager>.Instance.startState = GameStartManager.StartingStates.Countdown;
                     FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
@@ -114,7 +111,7 @@ class ShareGameVersion
             {
                 if (CustomOptionHolder.DisconnectNotPCOption.GetBool())
                 {
-                    foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients)
+                    foreach (ClientData p in AmongUsClient.Instance.allClients)
                     {
                         if (p.PlatformData.Platform is not Platforms.StandaloneEpicPC and not Platforms.StandaloneSteamPC)
                         {
@@ -179,7 +176,7 @@ class ShareGameVersion
             }
             if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)
             {
-                foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
+                foreach (ClientData client in AmongUsClient.Instance.allClients.ToArray())
                 {
                     if (client.Id != AmongUsClient.Instance.HostId)
                     {

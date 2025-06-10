@@ -1,5 +1,3 @@
-
-using System.Collections.Generic;
 using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -13,8 +11,8 @@ public interface IAdditionalWinner
     /// 追加勝利に関する情報を返す。
     /// </summary>
     /// <returns></returns>
-    public AdditionalWinData CanWin();
-    public struct AdditionalWinData
+    AdditionalWinData CanWin();
+    struct AdditionalWinData
     {
         public bool CanWin { get; }
         public WinCondition winCondition { get; }

@@ -1,14 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using BepInEx.Configuration;
-using Il2CppSystem.Net;
-using LibCpp2IL.Elf;
 using UnityEngine;
-using static Rewired.Controller;
 
 namespace SuperNewRoles.Modules;
 public static class LegacyOptionDataMigration
@@ -21,7 +14,7 @@ public static class LegacyOptionDataMigration
         FileInfo file = new(OptionSaver.OptionSaverFileName);
         if (!file.Exists)
         {
-            Logger.Info("Start Migration", "Migration LagacyOption");
+            Info("Start Migration", "Migration LagacyOption");
             string configtext = File.ReadAllText(SuperNewRolesPlugin.Instance.Config.ConfigFilePath);
             bool IsFirstPresetUpdated = false;
             for (int i = 0; i < CustomOptionHolder.presets.Length; i++)
@@ -32,7 +25,7 @@ public static class LegacyOptionDataMigration
                 //プリセットがなかったらスキップ
                 if (!configtext.Contains($"[Preset{i}]"))
                     continue;
-                Logger.Info("Start Preset" + i.ToString() + " Migration", "Migration LagacyOption");
+                Info("Start Preset" + i.ToString() + " Migration", "Migration LagacyOption");
                 Dictionary<uint, byte> SaveValues = new();
                 string presettext = $"Preset{i}";
                 foreach (CustomOption opt in CustomOption.options)
@@ -45,12 +38,12 @@ public static class LegacyOptionDataMigration
                 }
                 if (SaveValues.Count > 0)
                 {
-                    Logger.Info("Start Preset" + i.ToString() + " Write", "Migration LagacyOption");
+                    Info("Start Preset" + i.ToString() + " Write", "Migration LagacyOption");
                     BinaryWriter writer = new(new FileStream(OptionSaver.PresetFileNameBase + i.ToString() + "." + OptionSaver.Extension, FileMode.OpenOrCreate, FileAccess.Write));
                     writer.Write(OptionSaver.Version);
                     OptionSaver.WriteCheckSum(writer);
                     writer.Write(SaveValues.Count);
-                    Logger.Info(SaveValues.Count.ToString() + ":COUNT!!!!!");
+                    Info(SaveValues.Count.ToString() + ":COUNT!!!!!");
                     foreach (var data in SaveValues)
                     {
                         writer.Write(data.Key);
@@ -59,7 +52,7 @@ public static class LegacyOptionDataMigration
                     writer.Close();
                     if (i == 0)
                         IsFirstPresetUpdated = true;
-                    Logger.Info("Sucsess Preset" + i.ToString() + " Migration", "Migration LagacyOption");
+                    Info("Sucsess Preset" + i.ToString() + " Migration", "Migration LagacyOption");
                 }
             }
             OptionSaver.WriteOptionData();
@@ -72,12 +65,12 @@ public static class LegacyOptionDataMigration
                 }
                 DeleteOptionConfig();
             }
-            Logger.Info("Sucsess Migration", "Migration LagacyOption");
+            Info("Sucsess Migration", "Migration LagacyOption");
         }
     }
     public static void DeleteOptionConfig()
     {
-        Logger.Info("Called");
+        Info("Called");
         StringBuilder deletedtext = new();
         StringBuilder deletetext = new();
         bool IsDelete = false;

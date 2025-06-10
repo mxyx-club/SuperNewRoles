@@ -1,13 +1,9 @@
 using System.Text;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor.MadRole;
-using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
@@ -15,7 +11,7 @@ namespace SuperNewRoles.Patches;
 
 #region PlayerControlCheckProtectPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
-static class CheckProtectPatch
+internal static class CheckProtectPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
@@ -126,7 +122,7 @@ static class CheckProtectPatch
             else
             {
                 announceBuilder.AppendLine(ModTranslation.GetString("GhostRoleAbilityMissConditionNotMet"));
-                Logger.Error($"異常な {angel.name}({angelRole}) による守護が呼び出されました。(回数制限 : {limitCount.Item1}, 残り回数 : {limitCount.Item2})", "CheckProtectPatch");
+                Error($"異常な {angel.name}({angelRole}) による守護が呼び出されました。(回数制限 : {limitCount.Item1}, 残り回数 : {limitCount.Item2})", "CheckProtectPatch");
             }
         }
 

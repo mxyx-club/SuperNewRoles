@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
@@ -45,7 +41,7 @@ public class ReplayActionMakeVent : ReplayAction
     {
         Vent vent = ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == currentId);
         if (vent != null)
-            GameObject.Destroy(vent);
+            Object.Destroy(vent);
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionMakeVent Create(byte id, float x, float y, float z, bool chain)

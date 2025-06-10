@@ -1,30 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP.Utils;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.BattleRoyal;
-using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static GameData;
-using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
 
 namespace SuperNewRoles.Patches;
@@ -40,7 +29,7 @@ public class UsePlatformPlayerControlPatch
                 .EndMessage();
             return false;
         }
-        AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+        AirshipStatus airshipStatus = UObject.FindObjectOfType<AirshipStatus>();
         if (airshipStatus)
             airshipStatus.GapPlatform.Use(__instance);
         return false;
@@ -79,7 +68,7 @@ public static class NetworkTransformFixedUpdatePatch
 */
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckUseZipline))]
-static class PlayerControlCheckUseZiplinePatch
+internal static class PlayerControlCheckUseZiplinePatch
 {
     public static bool Prefix(PlayerControl target, ZiplineBehaviour ziplineBehaviour, bool fromTop)
     {
@@ -98,7 +87,7 @@ static class PlayerControlCheckUseZiplinePatch
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-static class PlayerControlSetCooldownPatch
+internal static class PlayerControlSetCooldownPatch
 {
     public static bool Prefix(PlayerControl __instance, float time)
     {
@@ -135,11 +124,11 @@ public static class PlayerControlAwakePatch
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
-class CompleteTask
+internal class CompleteTask
 {
     public static void Postfix(PlayerControl __instance, uint idx)
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.TaskComplete);
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Painter.Handle(Painter.ActionType.TaskComplete);
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
@@ -251,11 +240,11 @@ public static class LongBoiPlayerBodySetHeightFromColorPatch
 }
 //[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.PetPet))]
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleRpc))]
-class PlayerPhysicsPetPetPatch
+internal class PlayerPhysicsPetPetPatch
 {
     public static bool Prefix(PlayerPhysics __instance, byte callId)
     {
-        Logger.Info($"[PlayerPhysicsRpcCalled]{callId}.{(RpcCalls)callId}");
+        Info($"[PlayerPhysicsRpcCalled]{callId}.{(RpcCalls)callId}");
         if (callId == (byte)RpcCalls.Pet &&
             __instance.myPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
             !CustomRoles.OnPetPet(__instance.myPlayer))
@@ -266,7 +255,7 @@ class PlayerPhysicsPetPetPatch
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.TryPet))]
-class PlayerControlTryPetPatch
+internal class PlayerControlTryPetPatch
 {
     public static bool Prefix(PlayerControl __instance)
     {
@@ -278,7 +267,7 @@ class PlayerControlTryPetPatch
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
-class ReportDeadBodyPatch
+internal class ReportDeadBodyPatch
 {
     /// <summary>
     /// 会議が開かれた回数を記録する
@@ -292,7 +281,7 @@ class ReportDeadBodyPatch
         MeetingCount = (0, 0, 0);
     }
 
-    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
+    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerInfo target)
     {
         if (__instance.IsRole(RoleId.GM))
         {
@@ -378,12 +367,12 @@ class ReportDeadBodyPatch
         && !ModeHandler.IsMode(ModeId.BattleRoyal, ModeId.PantsRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
         && (ModeHandler.IsMode(ModeId.SuperHostRoles)
-            ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
+            ? ReportDeadBody.ReportDeadBodyPatch(__instance, target)
             : !ModeHandler.IsMode(ModeId.Zombie)
             && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));
     }
 
-    public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
+    public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerInfo target)
     {
         if (!AmongUsClient.Instance.AmHost) return; // ホスト以外此処は読まないが, バニラ側の使用が変更された時に問題が起きないように ホスト以外はreturnする。
 
@@ -422,7 +411,7 @@ public static class PlayerControlFixedUpdatePatch
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        ISystem.List<PlayerInfo> allPlayers = Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
             PlayerInfo playerInfo = allPlayers[i];
@@ -462,7 +451,7 @@ public static class PlayerControlFixedUpdatePatch
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        ISystem.List<PlayerInfo> allPlayers = Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
             PlayerInfo playerInfo = allPlayers[i];
@@ -505,12 +494,12 @@ public static class PlayerControlFixedUpdatePatch
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (!targetingPlayer.Data.IsDead)
         {
-            Logger.Info($"{targetingPlayer.name}は, 生存している為 幽霊役職用の対象取得を使用できません。");
+            Info($"{targetingPlayer.name}は, 生存している為 幽霊役職用の対象取得を使用できません。");
             return result; // ボタンの使用者が生きていたらnullを返す
         }
 
         Vector2 truePosition = targetingPlayer.GetTruePosition();
-        Il2CppSystem.Collections.Generic.List<PlayerInfo> allPlayers = Instance.AllPlayers;
+        ISystem.List<PlayerInfo> allPlayers = Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
             PlayerInfo playerInfo = allPlayers[i]; // ボタンの対象判定

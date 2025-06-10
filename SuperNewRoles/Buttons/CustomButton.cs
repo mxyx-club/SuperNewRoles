@@ -21,17 +21,17 @@ public class CustomButton
     public Vector3 PositionOffset;
     public Vector3 LocalScale = Vector3.one;
     public float MaxTimer = float.MaxValue;
-    public float Timer = 0f;
-    public bool effectCancellable = false;
+    public float Timer;
+    public bool effectCancellable;
     private readonly Action OnClick;
     private readonly Action OnMeetingEnds;
     private readonly Func<bool, RoleId, bool> HasButton;
     private readonly Func<bool> CouldUse;
     public readonly Action OnEffectEnds;
     public bool HasEffect;
-    public bool isEffectActive = false;
+    public bool isEffectActive;
     public bool showButtonText = true;
-    public string buttonText = null;
+    public string buttonText;
     public float EffectDuration;
     public Sprite Sprite;
     public Color? color;
@@ -60,7 +60,7 @@ public class CustomButton
         this.color = color;
         Timer = 16.2f;
         buttons.Add(this);
-        actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
+        actionButton = UObject.Instantiate(textTemplate, textTemplate.transform.parent);
         PassiveButton button = actionButton.GetComponent<PassiveButton>();
         button.OnClick = new Button.ButtonClickedEvent();
         button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
@@ -70,15 +70,15 @@ public class CustomButton
         LocalScale = actionButton.transform.localScale;
         if (textTemplate)
         {
-            UnityEngine.Object.Destroy(actionButton.buttonLabelText);
-            actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
+            UObject.Destroy(actionButton.buttonLabelText);
+            actionButton.buttonLabelText = UObject.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
         }
         SetActive(false);
     }
     public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "", bool isUseSecondButtonInfo = false, Color? color = null)
     : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText, color) { }
 
-    void OnClickEvent()
+    private void OnClickEvent()
     {
         if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
         {
@@ -191,7 +191,7 @@ public class CustomButton
 
         if (button.actionButton.isCoolingDown && timer < fillUpTime)
         {
-            button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 0.05f;
+            button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)URandom.insideUnitCircle * 0.05f;
         }
         else
         {

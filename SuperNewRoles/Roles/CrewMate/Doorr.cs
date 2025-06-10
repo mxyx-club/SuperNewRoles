@@ -1,11 +1,10 @@
-using System.Linq;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class Doorr
+internal class Doorr
 {
     public static void ResetCooldown()
     {
@@ -23,9 +22,9 @@ class Doorr
     }
     public static void DoorrBtn()
     {
-        Logger.Info("ボタンクリック", "DoorrBtn");
+        Info("ボタンクリック", "DoorrBtn");
         OpenableDoor door = GetDoor();
-        Logger.Info($"nullチェック:{door != null}", "DoorrBtn");
+        Info($"nullチェック:{door != null}", "DoorrBtn");
         if (door != null)
         {
             door.RpcSetDoorway(!door.IsOpen);
@@ -38,7 +37,7 @@ class Doorr
     }
     private static OpenableDoor GetDoor()
     {
-        return GameObject.FindObjectsOfType<DoorConsole>().FirstOrDefault(x =>
+        return Object.FindObjectsOfType<DoorConsole>().FirstOrDefault(x =>
         {
             if (x.MyDoor == null) return false;
             float num = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.transform.position);

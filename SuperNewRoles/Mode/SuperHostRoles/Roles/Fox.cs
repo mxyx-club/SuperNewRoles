@@ -1,12 +1,11 @@
-using HarmonyLib;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
-class Fox
+internal class Fox
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new System.Type[] { typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
-    class SetHudActivePatch
+    private class SetHudActivePatch
     {
         public static void Postfix(HudManager __instance)
         {

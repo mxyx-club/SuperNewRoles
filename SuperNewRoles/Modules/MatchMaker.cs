@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
@@ -18,7 +17,7 @@ public static class MatchMaker
         var data = new Dictionary<string, string>
         {
             ["friendcode"] = PlayerControl.LocalPlayer.Data.FriendCode,
-            ["roomid"] = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId)
+            ["roomid"] = GameCode.IntToGameName(AmongUsClient.Instance.GameId)
         };
         return data;
     }
@@ -125,7 +124,7 @@ public static class MatchMaker
                 (string[] tagKey, bool success) = ModTranslation.GetTranslateKey(tagName);
 
                 ActiveTags.Add($"{tagKey[0]}");
-                Logger.Info($"タグ情報 : {tagName}({option.id}) を送信します。");
+                Info($"タグ情報 : {tagName}({option.id}) を送信します。");
             }
         }
         string tagData = string.Join(',', ActiveTags);
@@ -146,10 +145,10 @@ public static class MatchMaker
         }
         string ActiveOptions = "";
         List<string> ActivateOptions = new();
-        foreach (CustomOption option in CustomOption.options)
+        foreach (CustomOption option in options)
         {
             bool enabled = true;
-            if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
+            if (AmongUsClient.Instance?.AmHost == false && hideSettings.GetBool())
             {
                 enabled = false;
             }

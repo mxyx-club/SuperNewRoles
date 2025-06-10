@@ -1,7 +1,4 @@
 using System;
-using System.Linq;
-using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -17,7 +14,7 @@ public static class RegionMenuOpenPatch
     public static void Postfix(RegionMenu __instance)
     {
         var template = FastDestroyableSingleton<JoinGameButton>.Instance;
-        var joinGameButtons = GameObject.FindObjectsOfType<JoinGameButton>();
+        var joinGameButtons = UObject.FindObjectsOfType<JoinGameButton>();
         foreach (var t in joinGameButtons)
         {  // The correct button has a background, the other 2 dont
             if (t.GameIdText != null && t.GameIdText.Background != null)
@@ -30,11 +27,11 @@ public static class RegionMenuOpenPatch
 
         if (ipField == null || ipField.gameObject == null)
         {
-            ipField = UnityEngine.Object.Instantiate(template.GameIdText, __instance.transform);
+            ipField = UObject.Instantiate(template.GameIdText, __instance.transform);
             ipField.gameObject.name = "IpTextBox";
             var arrow = ipField.transform.FindChild("arrowEnter");
             if (arrow == null || arrow.gameObject == null) return;
-            UnityEngine.Object.DestroyImmediate(arrow.gameObject);
+            UObject.DestroyImmediate(arrow.gameObject);
 
             ipField.transform.localPosition = new Vector3(0.225f, -1f, -100f);
             ipField.characterLimit = 30;
@@ -67,11 +64,11 @@ public static class RegionMenuOpenPatch
 
         if (portField == null || portField.gameObject == null)
         {
-            portField = UnityEngine.Object.Instantiate(template.GameIdText, __instance.transform);
+            portField = UObject.Instantiate(template.GameIdText, __instance.transform);
             portField.gameObject.name = "PortTextBox";
             var arrow = portField.transform.FindChild("arrowEnter");
             if (arrow == null || arrow.gameObject == null) return;
-            UnityEngine.Object.DestroyImmediate(arrow.gameObject);
+            UObject.DestroyImmediate(arrow.gameObject);
 
             portField.transform.localPosition = new Vector3(0.225f, -1.75f, -100f);
             portField.characterLimit = 5;
@@ -129,11 +126,11 @@ public static class RegionMenuOpenPatch
             };
 
         IRegionInfo currentRegion = serverManager.CurrentRegion;
-        Logger.Info($"Adding {regions.Length} regions");
+        Info($"Adding {regions.Length} regions");
         foreach (IRegionInfo region in regions)
         {
             if (region == null)
-                Logger.Error("Could not add region","CustomServer");
+                Error("Could not add region", "CustomServer");
             else
             {
                 if (currentRegion != null && region.Name.Equals(currentRegion.Name, StringComparison.OrdinalIgnoreCase))
@@ -145,7 +142,7 @@ public static class RegionMenuOpenPatch
         // AU remembers the previous region that was set, so we need to restore it
         if (currentRegion != null)
         {
-            Logger.Info("Resetting previous region");
+            Info("Resetting previous region");
             serverManager.SetRegion(currentRegion);
         }
     }

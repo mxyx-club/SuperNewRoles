@@ -1,7 +1,4 @@
-using System.Linq;
-using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomObject;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -68,7 +65,7 @@ public class Vulture
                     if (count != null)
                     {
                         count--;
-                        Logger.Info($"DeadBodyCount:{count}", "Vulture");
+                        Info($"DeadBodyCount:{count}", "Vulture");
                     }
                     break;
                 }

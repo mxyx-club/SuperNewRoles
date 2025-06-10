@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionUpdateSystem : ReplayAction
@@ -33,7 +30,7 @@ public class ReplayActionUpdateSystem : ReplayAction
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
         {
-            Logger.Info("エラー");
+            Info("エラー");
             return;
         }
         ShipStatus.Instance.UpdateSystem((SystemTypes)systemType, source, amount);

@@ -1,19 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Il2CppSystem.Dynamic.Utils;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Replay.ReplayActions;
-using SuperNewRoles.Roles.Impostor;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using static GameData;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Replay;
 public static class ReplayLoader
@@ -34,7 +27,7 @@ public static class ReplayLoader
             Bot.RpcSetSkin(player.SkinId);
             if (player.IsBot)
                 BotManager.SetBot(Bot);
-            Bot.Data.Tasks = new Il2CppSystem.Collections.Generic.List<TaskInfo>(player.Tasks.Count);
+            Bot.Data.Tasks = new ISystem.List<TaskInfo>(player.Tasks.Count);
             for (int i = 0; i < player.Tasks.Count; i++)
             {
                 Bot.Data.Tasks.Add(new TaskInfo(player.Tasks[i].Item2, player.Tasks[i].Item1));
@@ -57,7 +50,7 @@ public static class ReplayLoader
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             if (p == PlayerControl.LocalPlayer) continue;
-            Logger.Info(p.Data.PlayerName + ":" + p.PlayerId.ToString());
+            Info(p.Data.PlayerName + ":" + p.PlayerId.ToString());
             if (p.PlayerId > id)
             {
                 id = p.PlayerId;
@@ -107,7 +100,7 @@ public static class ReplayLoader
         ElectricalDoors electrical = ShipStatus.Instance?.transform?.Find("Electrical")?.GetComponent<ElectricalDoors>();
         if (electrical == null)
         {
-            Logger.Info("ドアたちがいない...");
+            Info("ドアたちがいない...");
         }
         else
         {
@@ -153,7 +146,7 @@ public static class ReplayLoader
         SpriteRenderer MTNM = CreateItem("Play", 2, (UnityAction)MoveToNextMeeting, "MoveToNextMeeting");
         MTNM.transform.localScale = new(1.95f, 4.7f, 4.7f);
         MTNM.transform.localPosition = new(1.5f, 0, 0);
-        SpriteRenderer SubMTNMRender = GameObject.Instantiate(MTNM, MTNM.transform.parent);
+        SpriteRenderer SubMTNMRender = UObject.Instantiate(MTNM, MTNM.transform.parent);
         SubMTNMRender.transform.localScale = new(0.6f, 1.2f, 1);
         SubMTNMRender.transform.localPosition = new(-1.5f, 0, 0);
         SubMTNMRender.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Replay.ReplayGUIButton.png", 110f);
@@ -174,7 +167,7 @@ public static class ReplayLoader
             case ReplayState.Pause:
                 if (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.Pause)
                 {
-                    mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    mpb = UObject.FindObjectOfType<MovingPlatformBehaviour>();
                     if (mpb != null && mpb.Target != null)
                     {
                         mpb.Target.MyPhysics.body.velocity = Vector2.zero;
@@ -195,7 +188,7 @@ public static class ReplayLoader
             case ReplayState.Play:
                 if (ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.Pause)
                 {
-                    mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    mpb = UObject.FindObjectOfType<MovingPlatformBehaviour>();
                     if (mpb != null && mpb.Target != null)
                     {
                         mpb.IsLeft = !mpb.IsLeft;
@@ -221,7 +214,7 @@ public static class ReplayLoader
             }
             if (ReplayManager.CurrentReplay.CurrentPlayState != ReplayState.PlayRewind && state == ReplayState.PlayRewind)
             {
-                mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                mpb = UObject.FindObjectOfType<MovingPlatformBehaviour>();
                 if (mpb != null && mpb.Target != null)
                 {
                     mpb.Target.MyPhysics.body.velocity = Vector2.zero;
@@ -248,7 +241,7 @@ public static class ReplayLoader
             }
             else
             {
-                mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                mpb = UObject.FindObjectOfType<MovingPlatformBehaviour>();
                 if (mpb != null && mpb.Target != null)
                 {
                     ReplayManager.CurrentReplay.MovingPlatformFrameCount = ((int)(mpb.Target.MyPhysics.Speed * 60)) - ReplayManager.CurrentReplay.MovingPlatformFrameCount;
@@ -405,7 +398,7 @@ public static class ReplayLoader
         return itemrender;
     }
     public static GameObject GUIObject;
-    static bool IsStarted;
+    private static bool IsStarted;
     public static void AllRoleSet()
     {
         if (ReplayManager.IsReplayMode)
@@ -423,7 +416,7 @@ public static class ReplayLoader
                         roleid = rp.RoleId;
                     }
                     else
-                        Logger.Info(p.PlayerId + "の役職が参照できませんでした。");
+                        Info(p.PlayerId + "の役職が参照できませんでした。");
                 }
                 p.SetRole(role);
                 p.SetRole(roleid);
@@ -437,17 +430,17 @@ public static class ReplayLoader
         {
             PlayerNameColor.Set(pc);
         }));
-        ((MonoBehaviour)PlayerControl.LocalPlayer).StopAllCoroutines();
-        ((MonoBehaviour)DestroyableSingleton<HudManager>.Instance).StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoShowIntro());
+        PlayerControl.LocalPlayer.StopAllCoroutines();
+        DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoShowIntro());
         FastDestroyableSingleton<HudManager>.Instance.HideGameLoader();
     }
     public static void SetOptions()
     {
         GameOptionsManager.Instance.CurrentGameOptions = ReplayManager.CurrentReplay.GameOptions;
         GameManager.Instance.LogicOptions.SetGameOptions(ReplayManager.CurrentReplay.GameOptions);
-        Logger.Info(ReplayManager.CurrentReplay.GameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
-        Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
-        Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
+        Info(ReplayManager.CurrentReplay.GameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
+        Info(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
+        Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "CurrentReplay");
         ReplayManager.CurrentReplay.UpdateCustomOptionByData();
     }
     public static void GetPosAndActionsThisTurn()
@@ -463,8 +456,8 @@ public static class ReplayLoader
             Actions = new()
         };
         var reader = ReplayManager.CurrentReplay.binaryReader;
-        Logger.Info(reader.BaseStream.Length.ToString());
-        Logger.Info(reader.BaseStream.Position.ToString());
+        Info(reader.BaseStream.Length.ToString());
+        Info(reader.BaseStream.Position.ToString());
         bool IsPosFloat = ReplayManager.CurrentReplay.IsPosFloat;
         int playercount = reader.ReadInt32();
         for (int i = 0; i < playercount; i++)
@@ -472,7 +465,7 @@ public static class ReplayLoader
             byte playerId = reader.ReadByte();
             turn.Positions.Add(playerId, new());
             int poscount = reader.ReadInt32();
-            Logger.Info(poscount.ToString(), "poscount");
+            Info(poscount.ToString(), "poscount");
             for (int i2 = 0; i2 < poscount; i2++)
             {
                 if (IsPosFloat)
@@ -488,23 +481,23 @@ public static class ReplayLoader
             }
         }
         int actioncount = reader.ReadInt32();
-        Logger.Info("アクション数:" + actioncount.ToString());
+        Info("アクション数:" + actioncount.ToString());
         for (int i = 0; i < actioncount; i++)
         {
             ReplayActionId replayActionId = (ReplayActionId)reader.ReadByte();
-            Logger.Info(i.ToString() + ":" + actioncount.ToString(), "今の数");
+            Info(i.ToString() + ":" + actioncount.ToString(), "今の数");
             if (replayActionId != ReplayActionId.None)
             {
-                Logger.Info(replayActionId + "追加:" + reader.BaseStream.Position.ToString());
+                Info(replayActionId + "追加:" + reader.BaseStream.Position.ToString());
                 ReplayAction action = ReplayAction.CreateReplayAction(replayActionId);
                 action.Init();
                 action.ReadReplayFile(reader);
                 turn.Actions.Add(action);
-                Logger.Info(replayActionId + "終わり:" + reader.BaseStream.Position.ToString());
+                Info(replayActionId + "終わり:" + reader.BaseStream.Position.ToString());
             }
             else
             {
-                Logger.Info(replayActionId + "だったのでパス");
+                Info(replayActionId + "だったのでパス");
             }
         }
         turn.IsGameEnd = reader.ReadBoolean();
@@ -571,12 +564,12 @@ public static class ReplayLoader
         return true;
     }
     public static List<ReplayTurn> ReplayTurns;
-    static float postime;
-    static float actiontime;
+    private static float postime;
+    private static float actiontime;
     public static int CurrentTurn;
     public static int posindex;
-    static int actionindex;
-    static int currentwrapupposindex;
+    private static int actionindex;
+    private static int currentwrapupposindex;
     public static void OnWrapUp()
     {
         currentwrapupposindex = posindex;
@@ -589,9 +582,9 @@ public static class ReplayLoader
         static void Createbtn(string name, string text, Vector3 pos, Action action)
         {
             GameObject btntemplate = DiscordManager.Instance.discordPopup.transform.FindChild("ExitGame").gameObject;
-            GameObject RewindTurnBtn = GameObject.Instantiate(btntemplate, HudManager.Instance.transform.FindChild("GenericDialogue"));
+            GameObject RewindTurnBtn = UObject.Instantiate(btntemplate, HudManager.Instance.transform.FindChild("GenericDialogue"));
             TextMeshPro RewindTurnTex = RewindTurnBtn.GetComponentInChildren<TextMeshPro>();
-            GameObject.Destroy(RewindTurnTex.GetComponent<TextTranslatorTMP>());
+            UObject.Destroy(RewindTurnTex.GetComponent<TextTranslatorTMP>());
             RewindTurnTex.text = text;
             RewindTurnBtn.transform.localPosition = pos;
             RewindTurnBtn.name = name;
@@ -601,8 +594,8 @@ public static class ReplayLoader
         }
         static void Reset()
         {
-            GameObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/ThisPosStartButton").gameObject);
-            GameObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/RewindTurnButton").gameObject);
+            UObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/ThisPosStartButton").gameObject);
+            UObject.Destroy(HudManager.Instance.transform.FindChild("GenericDialogue/RewindTurnButton").gameObject);
             HudManager.Instance.transform.FindChild("GenericDialogue/Background/FullScreen").GetComponent<BoxCollider2D>().enabled = true;
             HudManager.Instance.transform.FindChild("GenericDialogue/CloseButton").gameObject.SetActive(true);
             HudManager.Instance.transform.FindChild("GenericDialogue").GetComponent<DialogueBox>().enabled = true;
@@ -611,7 +604,7 @@ public static class ReplayLoader
         Createbtn("RewindTurnButton", "前のターンの終わりから巻き戻す", new(-0.875f, -0.6f, -0.5f), () =>
         {
             CurrentTurn--;
-            Logger.Info(ReplayTurns[CurrentTurn].Positions.Values.FirstOrDefault().Count.ToString(), "Count");
+            Info(ReplayTurns[CurrentTurn].Positions.Values.FirstOrDefault().Count.ToString(), "Count");
             posindex = ReplayTurns[CurrentTurn].Positions.Values.FirstOrDefault().Count - 1;
             actionindex = ReplayTurns[CurrentTurn].Actions.Count - 1;
             postime = ReplayManager.CurrentReplay.RecordRate;
@@ -620,7 +613,7 @@ public static class ReplayLoader
             UpdateButton();
             if (MeetingHud.Instance != null)
             {
-                GameObject.Destroy(MeetingHud.Instance.gameObject);
+                UObject.Destroy(MeetingHud.Instance.gameObject);
                 MeetingHud.Instance = null;
             }
             Reset();
@@ -629,7 +622,7 @@ public static class ReplayLoader
             PlayerControl.LocalPlayer.moveable = true;
             Camera.main.GetComponent<FollowerCamera>().Locked = false;
             currentwrapupposindex = 999999;
-            Logger.Info("Click Rewind Turn Button");
+            Info("Click Rewind Turn Button");
         });
         Createbtn("ThisPosStartButton", "ここからはじめる", new(0.875f, -0.6f, -0.5f), () =>
         {
@@ -640,7 +633,7 @@ public static class ReplayLoader
         HudManager.Instance.ShowPopUp("会議を跨いでの巻き戻しはできません。");
         ReplayManager.CurrentReplay.CurrentUIState = UIState.HideAllUI;
         UpdateUIByState();
-        Logger.Info("Commed UI");
+        Info("Commed UI");
     }
     public static void HudUpdate()
     {
@@ -705,7 +698,7 @@ public static class ReplayLoader
                 }
                 catch (Exception e)
                 {
-                    Logger.Info(e.ToString());
+                    Info(e.ToString());
                 }
             }
             if (targetindex >= 0)
@@ -723,7 +716,7 @@ public static class ReplayLoader
                 if (moving != null)
                 {
                     ReplayActionMovingPlatform ramp = moving as ReplayActionMovingPlatform;
-                    MovingPlatformBehaviour mpb = GameObject.FindObjectOfType<MovingPlatformBehaviour>();
+                    MovingPlatformBehaviour mpb = UObject.FindObjectOfType<MovingPlatformBehaviour>();
                     PlayerControl movingtarget = ModHelpers.PlayerById(ramp.sourcePlayer);
                     movingtarget.MyPhysics.body.velocity = Vector2.zero;
                     mpb.StopAllCoroutines();
@@ -731,7 +724,7 @@ public static class ReplayLoader
                     mpb.StartCoroutine(ReplayActionMovingPlatform.UseMovingPlatform(mpb, movingtarget).WrapToIl2Cpp());
                 }
             }
-            Logger.Info(posindex.ToString(), "POSINDEXXXXX");
+            Info(posindex.ToString(), "POSINDEXXXXX");
             postime = ReplayManager.CurrentReplay.CurrentPlayState == ReplayState.PlayRewind ? 0 : ReplayManager.CurrentReplay.RecordRate;
         }
         //Logger.Info("actiontime:"+actiontime.ToString());
@@ -741,7 +734,7 @@ public static class ReplayLoader
             {
                 if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 {
-                    Logger.Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex - 1].GetActionId());
+                    Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex - 1].GetActionId());
                     ReplayTurns[CurrentTurn].Actions[actionindex - 1].OnReplay();
                     actionindex--;
                     if (ReplayTurns[CurrentTurn].Actions.Count > actionindex && actionindex >= 0) actiontime = 0;//ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
@@ -754,7 +747,7 @@ public static class ReplayLoader
             {
                 if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 {
-                    Logger.Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex].GetActionId());
+                    Info("アクション！:" + ReplayTurns[CurrentTurn].Actions[actionindex].GetActionId());
                     ReplayTurns[CurrentTurn].Actions[actionindex].OnAction();
                     actionindex++;
                     if (ReplayTurns[CurrentTurn].Actions.Count > actionindex) actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
@@ -815,19 +808,19 @@ public static class ReplayLoader
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateButtons))]
-class MeetingHudPopulateButtons
+internal class MeetingHudPopulateButtons
 {
     public static void Postfix(MeetingHud __instance, byte reporter)
     {
-        Logger.Info("Commed pop");
+        Info("Commed pop");
         if (ReplayManager.IsReplayMode)
         {
-            Logger.Info("Commed popRep:" + __instance.playerStates.Count.ToString());
+            Info("Commed popRep:" + __instance.playerStates.Count.ToString());
             var states = __instance.playerStates.ToList();
-            GameObject.Destroy(states.FirstOrDefault(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId)?.gameObject);
+            UObject.Destroy(states.FirstOrDefault(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId)?.gameObject);
             states.RemoveAll(x => x.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId);
             __instance.playerStates = states.ToArray();
-            Logger.Info("Commed popRepens:" + __instance.playerStates.Count.ToString());
+            Info("Commed popRepens:" + __instance.playerStates.Count.ToString());
             __instance.SortButtons();
         }
     }

@@ -5,7 +5,7 @@ namespace SuperNewRoles.MapCustoms;
 public class SpecimenVital
 {
     public static Vector3 pos = new(35.39f, -22.10f, 1.0f);
-    public static bool flag = false;
+    public static bool flag;
     public static void ClearAndReload()
     {
         flag = false;

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -49,7 +47,7 @@ public class Garbage
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.WellBehaver) || PlayerControl.LocalPlayer.IsDead()) return;
             if (Vector2.Distance(GarbageObject.transform.position, PlayerControl.LocalPlayer.GetTruePosition()) <= Distance)
             {
-                Logger.Info($"{GarbageObject.name}を削除", "Garbage");
+                Info($"{GarbageObject.name}を削除", "Garbage");
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.DestroyGarbage);
                 writer.Write(GarbageObject.name);
                 writer.EndRPC();

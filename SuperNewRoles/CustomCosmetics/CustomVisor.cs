@@ -1,14 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Il2CppInterop.Runtime;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
 namespace SuperNewRoles.CustomCosmetics;
@@ -17,19 +10,19 @@ public class CustomVisor
 {
     public static Material VisorShader;
 
-    public static bool isAdded = false;
-    static readonly List<VisorData> visorData = new();
+    public static bool isAdded;
+    private static readonly List<VisorData> visorData = new();
     public static readonly List<CustomVisorData> customVisorData = new();
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetVisorById))]
-    class UnlockedVisorPatch
+    private class UnlockedVisorPatch
     {
         private static bool LOADED;
-        private static bool SPRITELOADED = false;
-        private static bool RUNNING = false;
-        public static bool IsLoadingnow = false;
+        private static bool SPRITELOADED;
+        private static bool RUNNING;
+        public static bool IsLoadingnow;
         public static List<VisorData> visordata = new();
 
-        static void Prefix(HatManager __instance)
+        private static void Prefix(HatManager __instance)
         {
             if (RUNNING) return;
             if (IsLoadingnow) return;
@@ -43,7 +36,7 @@ public class CustomVisor
                     string visorres = $"{assembly.GetName().Name}.Resources.CustomVisors";
                     string[] visors = (from r in assembly.GetManifestResourceNames()
                                        where r.StartsWith(visorres) && r.EndsWith(".png")
-                                       select r).ToArray<string>();
+                                       select r).ToArray();
 
                     List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
                     foreach (CustomVisors.CustomVisor cv in customvisors)
@@ -61,7 +54,7 @@ public class CustomVisor
                 var data = __instance.allVisors.ToList();
                 data.AddRange(customVisorData);
                 visordata = data;
-                __instance.allVisors = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<VisorData>(data.ToArray());
+                __instance.allVisors = new Il2CppReferenceArray<VisorData>(data.ToArray());
                 IsLoadingnow = false;
             }
             else
@@ -71,7 +64,7 @@ public class CustomVisor
             }
         }
 
-        static IEnumerator LoadVisorSprite()
+        private static IEnumerator LoadVisorSprite()
         {
             IsLoadingnow = true;
             if (!LOADED)
@@ -80,7 +73,7 @@ public class CustomVisor
                 string visorres = $"{assembly.GetName().Name}.Resources.CustomVisors";
                 string[] visors = (from r in assembly.GetManifestResourceNames()
                                    where r.StartsWith(visorres) && r.EndsWith(".png")
-                                   select r).ToArray<string>();
+                                   select r).ToArray();
 
                 List<CustomVisors.CustomVisor> customvisors = CustomVisors.CreateCustomVisorDetails(visors);
                 foreach (CustomVisors.CustomVisor cv in customvisors)
@@ -165,7 +158,7 @@ public class CustomVisor
         return null;
     }
 
-    static readonly Dictionary<string, Sprite> VisorSprites = new();
+    private static readonly Dictionary<string, Sprite> VisorSprites = new();
 
     private static CustomVisorData CreateVisorData(CustomVisors.CustomVisor cv, bool fromDisk = false, bool testOnly = false)
     {
@@ -215,7 +208,7 @@ public class CustomVisor
 
 public class VisorTabPatch
 {
-    private static readonly List<TMPro.TMP_Text> visorsTabCustomTexts = new();
+    private static readonly List<TMP_Text> visorsTabCustomTexts = new();
     private const string innerslothPackageName = "Innersloth Visors";
     private const float headerSize = 0.8f;
     private const float headerX = 0.8f;
@@ -232,7 +225,7 @@ public class VisorTabPatch
     [HarmonyPatch(typeof(VisorsTab), nameof(VisorsTab.OnEnable))]
     public class VisorsTabOnEnablePatch
     {
-        public static TMPro.TMP_Text textTemplate;
+        public static TMP_Text textTemplate;
         public static List<ColorChip> Chips;
 
         public static float CreateVisorPackage(List<System.Tuple<VisorData, CustomVisors.VisorExtension>> visors, string packageName, float YStart, VisorsTab __instance)
@@ -240,12 +233,12 @@ public class VisorTabPatch
             float offset = YStart;
             if (textTemplate != null)
             {
-                TMPro.TMP_Text title = UnityEngine.Object.Instantiate<TMPro.TMP_Text>(textTemplate, __instance.scroller.Inner);
+                TMP_Text title = Object.Instantiate(textTemplate, __instance.scroller.Inner);
                 title.transform.parent = __instance.scroller.Inner;
                 title.transform.localPosition = new Vector3(headerX, YStart, inventoryZ);
-                title.alignment = TMPro.TextAlignmentOptions.Center;
+                title.alignment = TextAlignmentOptions.Center;
                 title.fontSize *= 1.25f;
-                title.fontWeight = TMPro.FontWeight.Thin;
+                title.fontWeight = FontWeight.Thin;
                 title.enableAutoSizing = false;
                 title.autoSizeTextContainer = true;
                 title.text = ModTranslation.GetString(packageName); // 渡されたパッケージ名に翻訳があれば取得
@@ -264,7 +257,7 @@ public class VisorTabPatch
 
                 float xpos = __instance.XRange.Lerp((i2 % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
                 float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
-                ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
+                ColorChip colorChip = Object.Instantiate(__instance.ColorTabPrefab, __instance.scroller.Inner);
 
                 int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : DataManager.Player.Customization.Color;
 
@@ -351,7 +344,7 @@ public class VisorTabPatch
     {
         public static bool Prefix()
         {
-            foreach (TMPro.TMP_Text customText in visorsTabCustomTexts)
+            foreach (TMP_Text customText in visorsTabCustomTexts)
             {
                 if (customText != null && customText.transform != null && customText.gameObject != null)
                 {

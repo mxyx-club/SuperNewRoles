@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionSetRole : ReplayAction
@@ -30,7 +27,7 @@ public class ReplayActionSetRole : ReplayAction
         PlayerControl target = ModHelpers.PlayerById(sourcePlayer);
         if (target == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{RoleId}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{RoleId}");
             return;
         }
         target.SetRole(RoleId);
@@ -40,7 +37,7 @@ public class ReplayActionSetRole : ReplayAction
         PlayerControl target = ModHelpers.PlayerById(sourcePlayer);
         if (target == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{RoleId}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{RoleId}");
             return;
         }
         ReplayAction action = GetLastAction(this, (ReplayAction act) => (act as ReplayActionSetRole).sourcePlayer == sourcePlayer);

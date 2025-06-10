@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -65,7 +62,7 @@ public class WellBehaver
                     }
                 }
                 if (garbage == null) return;
-                Logger.Info($"{garbage.GarbageObject.name}が拾われた", "Garbage");
+                Info($"{garbage.GarbageObject.name}が拾われた", "Garbage");
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.DestroyGarbage);
                 writer.Write(garbage.GarbageObject.name);
                 writer.EndRPC();

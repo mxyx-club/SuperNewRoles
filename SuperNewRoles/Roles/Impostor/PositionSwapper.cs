@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class PositionSwapper
+internal class PositionSwapper
 {
     public static void ResetCooldown()
     {
@@ -29,7 +28,7 @@ class PositionSwapper
             }
             SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.IsAlive());
         }
-        var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
+        var RandomPlayer = ModHelpers.GetRandom(AlivePlayer);
         var PushSwapper = PlayerControl.LocalPlayer;
         RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
 

@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Attribute;
@@ -75,7 +70,7 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, I
         else
         {
             DisableInvisible(isRpcSend);
-            Logger.Error($"透明化の過程で異常なリクエストが行われた為, 初期化します。 Role : {this.Player.GetRole()}", "InvisibleRoleBase");
+            Error($"透明化の過程で異常なリクエストが行われた為, 初期化します。 Role : {this.Player.GetRole()}", "InvisibleRoleBase");
         }
     }
     /// <summary>
@@ -147,7 +142,7 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, I
         RpcType type = (RpcType)typeId;
         PlayerControl target = ModHelpers.PlayerById(targetId);
 
-        Logger.Info($"RpcType : {type}, 透明化処理を呼び出したプレイヤー : {invisibleRoleBase.Player.name} ({invisibleRoleBase.Player.GetRole()}), 透明化の対象 : {(target != null ? target.name : "null")}", "RpcSetInvisible");
+        Info($"RpcType : {type}, 透明化処理を呼び出したプレイヤー : {invisibleRoleBase.Player.name} ({invisibleRoleBase.Player.GetRole()}), 透明化の対象 : {(target != null ? target.name : "null")}", "RpcSetInvisible");
 
         switch (type)
         {
@@ -158,7 +153,7 @@ public class InvisibleRoleBase : RoleBase, IMeetingHandler, IHandleChangeRole, I
                 invisibleRoleBase.DisableInvisible();
                 break;
             default:
-                Logger.Error($"RpcTypeが異常なリクエストが行われた為, 初期化します。", "TransparentRoleBase");
+                Error($"RpcTypeが異常なリクエストが行われた為, 初期化します。", "TransparentRoleBase");
                 invisibleRoleBase.DisableInvisible();
                 break;
         }
@@ -200,7 +195,7 @@ public class InvisibleRole
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate)), HarmonyPostfix]
     public static void PlayerPhysics_Postfix(PlayerPhysics __instance)
     {
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started || !GameData.Instance) return;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started || !GameData.Instance) return;
         if (!ModeHandler.IsMode(ModeId.Default)) return;
         if (__instance.myPlayer == null || __instance.myPlayer.IsDead()) return;
 

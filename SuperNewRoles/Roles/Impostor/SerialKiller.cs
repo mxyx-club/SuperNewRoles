@@ -1,4 +1,3 @@
-using Hazel;
 using SuperNewRoles.Mode;
 using UnityEngine;
 

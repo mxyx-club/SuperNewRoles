@@ -10,7 +10,7 @@ public interface IHijackingWinner
     /// <summary>
     /// Rank5が最優先
     /// </summary>
-    public enum Rank
+    enum Rank
     {
         Rank1,
         Rank2,
@@ -22,17 +22,17 @@ public interface IHijackingWinner
     /// <summary>
     /// 勝利優先度
     /// </summary>
-    public Rank Priority => Rank.Rank2;
+    Rank Priority => Rank.Rank2;
 
     /// <summary>
     /// 追加勝利陣営も勝利にする
     /// </summary>
-    public bool AllowAdditionalWins => true;
+    bool AllowAdditionalWins => true;
 
     /// <summary>
     /// 勝利した陣営
     /// </summary>
-    public WinCondition Condition => WinCondition.Default;
+    WinCondition Condition => WinCondition.Default;
 
-    public bool CanWin(GameOverReason gameOverReason, WinCondition winCondition) => false;
+    bool CanWin(GameOverReason gameOverReason, WinCondition winCondition) => false;
 }

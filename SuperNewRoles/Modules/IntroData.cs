@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -21,7 +20,7 @@ public class TeamData
     public Color BackGround;
     public List<RoleId> RoleIds;
 
-    TeamData(string NameKey, Color color, Color BackGround, List<RoleId> RoleId)
+    private TeamData(string NameKey, Color color, Color BackGround, List<RoleId> RoleId)
     {
         this.color = color;
         this.BackGround = BackGround;
@@ -55,7 +54,7 @@ public class IntroData
     {
         get
         {
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
             {
                 return _titleDesc;
             }
@@ -71,7 +70,7 @@ public class IntroData
     public QuoteMod QuoteMod;
     public bool IsGhostRole;
     public RoleTypes IntroSound;
-    IntroData(string NameKey, Color color, Int16 TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate, QuoteMod quoteMod = QuoteMod.SuperNewRoles, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
+    private IntroData(string NameKey, Color color, Int16 TitleNum, RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, TeamType teamType = TeamType.Crewmate, QuoteMod quoteMod = QuoteMod.SuperNewRoles, bool IsGhostRole = false, RoleTypes IntroSound = RoleTypes.Crewmate)
     {
         this.color = color;
         this.NameKey = NameKey;
@@ -93,7 +92,7 @@ public class IntroData
             GhostRoleData.Add(this);
         }
         if (!Intros.TryAdd(RoleId, this))
-            Logger.Info(RoleId.ToString() + "が追加されませんでした。");
+            Info(RoleId.ToString() + "が追加されませんでした。");
     }
     [Obsolete]
     public static IntroData GetIntrodata(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)

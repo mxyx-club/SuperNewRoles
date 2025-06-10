@@ -1,9 +1,5 @@
 using System;
-using AmongUs.Data;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.Helpers;
 using static System.Int32;
 
@@ -12,7 +8,7 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
 public static class SendChatPatch
 {
-    static bool Prefix(ChatController __instance)
+    private static bool Prefix(ChatController __instance)
     {
         string text = __instance.freeChatField.textArea.text;
         bool handled = false;
@@ -104,11 +100,6 @@ public static class SendChatPatch
                 .Replace("/savelog", "")
                 .Replace(" ", "")
                 .Replace("　", "");
-
-            // memoが空なら ファイル名をChatCommandViaにする。
-            if (memo == "") Logger.SaveLog(via, via);
-            // memoの中身があるなら ファイル名を任意の文字列にする。
-            else Logger.SaveLog(memo, via);
         }
         else if (text.ToLower().StartsWith("/lp"))
         {
@@ -118,7 +109,7 @@ public static class SendChatPatch
                 .Replace("/lp ", "")
                 .Replace("/lp", "");
 
-            Logger.Info(print, "任意ログ印字");
+            Info(print, "任意ログ印字");
             __instance.AddChat(PlayerControl.LocalPlayer, $"このチャットは貴方にのみ表示されています。\nLogに以下の内容を印字しました。\n「{print}」");
         }
         if (handled)

@@ -1,6 +1,4 @@
 using AmongUs.GameOptions;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -61,7 +59,7 @@ public static class Helpers
     {
         if (shower.IsMod())
         {// mod導入者ならCustomRpcSenderを使用しなくても正しくRpcを送れる。
-            Logger.Info($"Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
+            Info($"Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ShowGuardEffect);
             writer.Write(shower.PlayerId);
             writer.Write(target.PlayerId);
@@ -72,7 +70,7 @@ public static class Helpers
         {
             var crs = CustomRpcSender.Create("RpcShowGuardEffect");
             var clientId = shower.GetClientId();
-            Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
+            Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
             MurderHelpers.RpcForceGuard(shower, target, shower);
         }
     }

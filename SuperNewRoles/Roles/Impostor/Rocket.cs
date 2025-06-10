@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using UnityEngine;

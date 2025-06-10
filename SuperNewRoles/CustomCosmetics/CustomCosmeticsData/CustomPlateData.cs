@@ -1,17 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmongUs.Data;
-using HarmonyLib;
 using Innersloth.Assets;
-using PowerTools;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Events;
-using static SuperNewRoles.CustomCosmetics.CustomHats;
-using static SuperNewRoles.Modules.Blacklist;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 public class CustomPlateData : NamePlateData
@@ -31,8 +21,8 @@ public class CustomPlateData : NamePlateData
             }
         }
     };
-    static Dictionary<string, NamePlateViewData> cache = new();
-    static NamePlateViewData getbycache(string id)
+    private static Dictionary<string, NamePlateViewData> cache = new();
+    private static NamePlateViewData getbycache(string id)
     {
         if (!cache.ContainsKey(id) || cache[id] == null)
         {
@@ -49,7 +39,7 @@ public class CustomPlateData : NamePlateData
         return cache[id];
     }
     [HarmonyPatch(typeof(CosmeticsCache), nameof(CosmeticsCache.GetNameplate))]
-    class CosmeticsCacheGetPlatePatch
+    private class CosmeticsCacheGetPlatePatch
     {
         public static bool Prefix(CosmeticsCache __instance, string id, ref NamePlateViewData __result)
         {
@@ -61,9 +51,9 @@ public class CustomPlateData : NamePlateData
         }
     }
     [HarmonyPatch(typeof(NameplatesTab), nameof(NameplatesTab.OnEnable))]
-    class NameplatesTabOnEnablePatch
+    private class NameplatesTabOnEnablePatch
     {
-        static void makecoro(NameplatesTab __instance, NameplateChip chip)
+        private static void makecoro(NameplatesTab __instance, NameplateChip chip)
         {
             __instance.StartCoroutine(AddressableAssetExtensions.CoLoadAssetAsync<NamePlateViewData>(__instance, FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById(chip.ProductId).ViewDataRef, (Action<NamePlateViewData>)delegate (NamePlateViewData viewData)
             {
@@ -88,7 +78,7 @@ public class CustomPlateData : NamePlateData
         }
     }
     [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.PreviewNameplate))]
-    class VisorLayerUpdateMaterialPatch
+    private class VisorLayerUpdateMaterialPatch
     {
         public static void Postfix(PlayerVoteArea __instance, string plateID)
         {

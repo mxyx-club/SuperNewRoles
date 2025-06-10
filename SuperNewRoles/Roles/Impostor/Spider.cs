@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;

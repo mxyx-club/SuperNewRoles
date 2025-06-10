@@ -1,15 +1,12 @@
 using System;
 using Assets.CoreScripts;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
 
 namespace SuperNewRoles.Helpers;
 
-class AntiHackingBan
+internal class AntiHackingBan
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetSkin))]
-    class Setcolorskin
+    private class Setcolorskin
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] ref string skinId)
         {
@@ -25,7 +22,7 @@ class AntiHackingBan
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetHat))]
-    class Sethat
+    private class Sethat
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] ref string hatId)
         {
@@ -41,7 +38,7 @@ class AntiHackingBan
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetVisor))]
-    class SetVisor
+    private class SetVisor
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] ref string visorId)
         {
@@ -57,7 +54,7 @@ class AntiHackingBan
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetPet))]
-    class SetPet
+    private class SetPet
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] ref string petId)
         {
@@ -72,7 +69,7 @@ class AntiHackingBan
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcShapeshift))]
-    class RpcShapeShiftPatch
+    private class RpcShapeShiftPatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
@@ -88,7 +85,7 @@ class AntiHackingBan
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcMurderPlayer))]
-    class RpcMurderPlayer
+    private class RpcMurderPlayer
     {
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
@@ -106,7 +103,7 @@ class AntiHackingBan
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-    class RpcSendChatPatch
+    private class RpcSendChatPatch
     {
         public static bool Prefix(PlayerControl __instance, ref bool __result, [HarmonyArgument(0)] string chatText)
         {

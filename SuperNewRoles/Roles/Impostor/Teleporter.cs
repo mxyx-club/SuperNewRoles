@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles;
 
-class Teleporter
+internal class Teleporter
 {
     public static void ResetCooldown()
     {

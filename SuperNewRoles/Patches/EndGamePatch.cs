@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using HarmonyLib;
-using Hazel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -104,7 +100,7 @@ public enum WinCondition
     FrankensteinWin,
     OwlWin,
 }
-class FinalStatusPatch
+internal class FinalStatusPatch
 {
     public static class FinalStatusData
     {
@@ -133,7 +129,7 @@ public static class ShipStatusPatch
         __result = false;
     }
 }
-static class AdditionalTempData
+internal static class AdditionalTempData
 {
     // Should be implemented using a proper GameOverReason in the future
     public static List<PlayerRoleInfo> playerRoles = new();
@@ -170,8 +166,8 @@ static class AdditionalTempData
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
 public class EndGameManagerSetUpPatch
 {
-    public static bool IsHaison = false;
-    public static TMPro.TMP_Text textRenderer;
+    public static bool IsHaison;
+    public static TMP_Text textRenderer;
     [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.ShowProgression))]
     public class ShowProgressionPatch
     {
@@ -189,7 +185,7 @@ public class EndGameManagerSetUpPatch
 
         foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
         {
-            UnityEngine.Object.Destroy(pb.gameObject);
+            UObject.Destroy(pb.gameObject);
         }
         int num = Mathf.CeilToInt(7.5f);
         List<WinningPlayerData> list = TempData.winners.ToList().OrderBy(delegate (WinningPlayerData b)
@@ -201,11 +197,11 @@ public class EndGameManagerSetUpPatch
             WinningPlayerData winningPlayerData2 = list[i];
             int num2 = (i % 2 == 0) ? -1 : 1;
             int num3 = (i + 1) / 2;
-            float num4 = (float)num3 / (float)num;
+            float num4 = num3 / (float)num;
             float num5 = Mathf.Lerp(1f, 0.75f, num4);
-            float num6 = (float)((i == 0) ? -8 : -1);
-            PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
-            poolablePlayer.transform.localPosition = new Vector3(1f * (float)num2 * (float)num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + (float)num3 * 0.01f) * 0.9f;
+            float num6 = (i == 0) ? -8 : -1;
+            PoolablePlayer poolablePlayer = UObject.Instantiate(__instance.PlayerPrefab, __instance.transform);
+            poolablePlayer.transform.localPosition = new Vector3(1f * num2 * num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + num3 * 0.01f) * 0.9f;
             float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
             Vector3 vector = new(num7, num7, 1f);
             poolablePlayer.transform.localScale = vector;
@@ -218,7 +214,7 @@ public class EndGameManagerSetUpPatch
             {
                 poolablePlayer.SetFlipX(i % 2 == 0);
             }
-            poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.None, winningPlayerData2.IsDead, true);
+            poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, PlayerMaterial.MaskType.None, winningPlayerData2.IsDead, true);
             poolablePlayer.cosmetics.nameText.color = Color.white;
             poolablePlayer.cosmetics.nameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
             poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
@@ -233,7 +229,7 @@ public class EndGameManagerSetUpPatch
                     continue;
 
                 var prefab = BodyBuilder.getPrefab((byte)BodyBuilder.PosingIdRange.Next());
-                var pose = UnityEngine.Object.Instantiate(prefab, poolablePlayer.transform);
+                var pose = UObject.Instantiate(prefab, poolablePlayer.transform);
                 pose.gameObject.transform.position = poolablePlayer.transform.position;
                 pose.transform.localPosition = new(0f, 1f, 0f);
                 pose.transform.localScale *= 1.5f;
@@ -249,10 +245,10 @@ public class EndGameManagerSetUpPatch
             }
         }
 
-        GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
+        GameObject bonusTextObject = UObject.Instantiate(__instance.WinText.gameObject);
         bonusTextObject.transform.position = new Vector3(__instance.WinText.transform.position.x, __instance.WinText.transform.position.y - 0.8f, __instance.WinText.transform.position.z);
         bonusTextObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
-        textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
+        textRenderer = bonusTextObject.GetComponent<TMP_Text>();
         textRenderer.text = "";
         var text = "";
         var RoleColor = Color.white;
@@ -294,7 +290,7 @@ public class EndGameManagerSetUpPatch
             { WinCondition.FrankensteinWin, ("FrankensteinName",Frankenstein.color) },
             { WinCondition.OwlWin, ("OwlName", Owl.Roleinfo.RoleColor) },
         };
-        Logger.Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
+        Info(AdditionalTempData.winCondition.ToString(), "WINCOND");
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
             text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
@@ -415,7 +411,7 @@ public class EndGameManagerSetUpPatch
                 }
             }
         }
-        Logger.Info("WINCOND:" + AdditionalTempData.winCondition.ToString());
+        Info("WINCOND:" + AdditionalTempData.winCondition.ToString());
         if (haison || AdditionalTempData.winCondition is WinCondition.PantsRoyalWin or WinCondition.SaunerWin) textRenderer.text = text;
         else if (text == ModTranslation.GetString("NoWinner")) textRenderer.text = ModTranslation.GetString("NoWinnerText");
         else if (text == ModTranslation.GetString("GodName")) textRenderer.text = text + " " + ModTranslation.GetString("GodWinText");
@@ -423,7 +419,7 @@ public class EndGameManagerSetUpPatch
         try
         {
             var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
-            GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
+            GameObject roleSummary = UObject.Instantiate(__instance.WinText.gameObject);
             roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
             roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -449,8 +445,8 @@ public class EndGameManagerSetUpPatch
                 roleSummaryText.AppendLine(result);
             }
 
-            TMPro.TMP_Text roleSummaryTextMesh = roleSummary.GetComponent<TMPro.TMP_Text>();
-            roleSummaryTextMesh.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            TMP_Text roleSummaryTextMesh = roleSummary.GetComponent<TMP_Text>();
+            roleSummaryTextMesh.alignment = TextAlignmentOptions.TopLeft;
             roleSummaryTextMesh.color = Color.white;
             roleSummaryTextMesh.outlineWidth *= 1.2f;
             roleSummaryTextMesh.fontSizeMin = 1.25f;
@@ -515,8 +511,8 @@ public class CustomPlayerData
 public static class OnGameEndPatch
 {
     public static PlayerControl WinnerPlayer;
-    public static CustomGameOverReason? EndData = null;
-    public static List<CustomPlayerData> PlayerData = null;
+    public static CustomGameOverReason? EndData;
+    public static List<CustomPlayerData> PlayerData;
     public static string WinText;
     public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
     {
@@ -541,7 +537,7 @@ public static class OnGameEndPatch
             }
             catch (Exception e)
             {
-                Logger.Info(e.ToString(), "解析エラー");
+                Info(e.ToString(), "解析エラー");
             }
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
@@ -770,7 +766,7 @@ public static class OnGameEndPatch
                         WinnerPlayer = p;
                 if (WinnerPlayer == null)
                 {
-                    Logger.Error("エラー:殺し屋が生存していませんでした", "HitmanWin");
+                    Error("エラー:殺し屋が生存していませんでした", "HitmanWin");
                     WinnerPlayer = PlayerControl.LocalPlayer;
                 }
             }
@@ -843,7 +839,7 @@ public static class OnGameEndPatch
         }
         else if (OwlWin)
         {
-            Logger.Info($"Owl Win : WinnerPlayer : {WinnerPlayer.PlayerId}", "Owl");
+            Info($"Owl Win : WinnerPlayer : {WinnerPlayer.PlayerId}", "Owl");
             (winners = new()).Add(WinnerPlayer.Data);
             winCondition = WinCondition.OwlWin;
         }
@@ -1222,7 +1218,7 @@ public static class OnGameEndPatch
                 spereseted = true;
                 foreach (var winner in crookWinners)
                 {
-                    Logger.Info($"{winner.name}は勝利リストに入った", "EndGame CrookWin");
+                    Info($"{winner.name}は勝利リストに入った", "EndGame CrookWin");
                     winners.Add(winner.Data);
                 }
                 winCondition = WinCondition.CrookWin;
@@ -1259,7 +1255,7 @@ public static class OnGameEndPatch
         foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
         {
             if (p.IsDead() || !RoleClass.Tuna.IsTunaAddWin)
-                    continue;
+                continue;
             winners.Add(p.Data);
         }
         foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
@@ -1419,11 +1415,11 @@ public static class OnGameEndPatch
 
         if (ReplayManager.IsReplayMode)
         {
-            Logger.Info("ComeEndReplay");
+            Info("ComeEndReplay");
             var ReplayEndGameData = ReplayLoader.ReplayTurns[ReplayLoader.CurrentTurn].CurrentEndGameData;
             if (ReplayEndGameData == null) return;
-            Logger.Info("EndNullReplay");
-            Il2CppSystem.Collections.Generic.List<WinningPlayerData> WinningPlayers = new();
+            Info("EndNullReplay");
+            ISystem.List<WinningPlayerData> WinningPlayers = new();
             foreach (byte winnerid in ReplayEndGameData.WinnerPlayers)
             {
                 WinningPlayers.Add(new(GameData.Instance.GetPlayerById(winnerid)));
@@ -1461,9 +1457,9 @@ public static class OnGameEndPatch
     }
 }
 [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
-class ExileControllerMessagePatch
+internal class ExileControllerMessagePatch
 {
-    static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
+    private static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
     {
         if (id is StringNames.GameDiscussTime && ModeHandler.IsMode(ModeId.Werewolf, false)) __result = ModTranslation.GetString("WerewolfAbilityTimeSetting");
         try
@@ -1487,7 +1483,7 @@ class ExileControllerMessagePatch
     }
 }
 [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
-class ExileControllerReEnableGameplayPatch
+internal class ExileControllerReEnableGameplayPatch
 {
     public static void Postfix(ExileController __instance)
     {
@@ -1815,7 +1811,8 @@ public static class CheckGameEndPatch
                 CustomEndGame((GameOverReason)CustomGameOverReason.FoxWin, false);
             }
             return true;
-        };
+        }
+        ;
         return false;
     }
     public static bool CheckAndEndGameForSuicidalIdeationWin(ShipStatus __instance)
@@ -1972,7 +1969,7 @@ public static class CheckGameEndPatch
                                 numOwlAlive++;
                             }
                         }
-                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.TryGetRoleBase<Cupid>(out Cupid cupid) && cupid.Created)) numLoversAlive++;
+                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.TryGetRoleBase(out Cupid cupid) && cupid.Created)) numLoversAlive++;
                     }
                 }
             }

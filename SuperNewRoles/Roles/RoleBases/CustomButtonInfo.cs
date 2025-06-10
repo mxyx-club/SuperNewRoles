@@ -1,16 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using TMPro;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.RoleBases;
 public enum CustomButtonCouldType
@@ -150,7 +143,7 @@ public class CustomButtonInfo
                 this.AbilityCountTextFormat = ModTranslation.GetString("AbilityButtonCountTextFormater");
             else
                 this.AbilityCountTextFormat = ModTranslation.GetString(AbilityCountTextFormat);
-            AbilityCountText = GameObject.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
+            AbilityCountText = UObject.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
             AbilityCountText.text = "";
             AbilityCountText.enableWordWrapping = false;
             AbilityCountText.transform.localScale = Vector3.one * 0.5f;
@@ -158,7 +151,7 @@ public class CustomButtonInfo
         }
         if (hasSecondButtonInfo)
         {
-            SecondButtonInfoText = GameObject.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
+            SecondButtonInfoText = UObject.Instantiate(customButton.actionButton.cooldownTimerText, customButton.actionButton.cooldownTimerText.transform.parent);
             SecondButtonInfoText.text = "";
             SecondButtonInfoText.enableWordWrapping = false;
             SecondButtonInfoText.transform.localScale = Vector3.one * 0.5f;

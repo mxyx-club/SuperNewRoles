@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -18,7 +14,7 @@ public static class CustomSpores
         Dictionary<int, Mushroom> mushrooms = mushRooms;
         Vector3 position3 = position;
         position3.z = 1;
-        Il2CppSystem.Collections.Generic.Dictionary<int, Mushroom> mushroomsShip = null;
+        ISystem.Dictionary<int, Mushroom> mushroomsShip = null;
         if (ModHelpers.IsMap(MapNames.Fungle))
         {
             mushroomsShip = ShipStatus.Instance.TryCast<FungleShipStatus>().sporeMushrooms;
@@ -29,7 +25,7 @@ public static class CustomSpores
                 id = mushrooms.Count <= 0 ? 0 : mushrooms.Max(x => x.Key) + 1;
             else
                 id = mushroomsShip.entries.Max(x => x.hashCode) + 1;
-        Mushroom newmushRoom = GameObject.Instantiate(Agartha.MapLoader.FungleObject.GetComponentInChildren<Mushroom>(), ShipStatus.Instance.transform);
+        Mushroom newmushRoom = Object.Instantiate(Agartha.MapLoader.FungleObject.GetComponentInChildren<Mushroom>(), ShipStatus.Instance.transform);
         newmushRoom.transform.position = position3;
         newmushRoom.id = id;
         newmushRoom.origPosition = position;

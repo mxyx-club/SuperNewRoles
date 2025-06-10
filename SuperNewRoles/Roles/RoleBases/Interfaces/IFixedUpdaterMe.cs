@@ -7,25 +7,25 @@ public interface IFixedUpdaterMe
     /// <summary>
     /// Defaultモードで、自分が生きているときのFixedUpdate
     /// </summary>
-    public void FixedUpdateMeDefaultAlive();
+    void FixedUpdateMeDefaultAlive();
     /// <summary>
     /// Defaultモードで、自分が死んでいるときのFixedUpdate
     /// </summary>
-    public virtual void FixedUpdateMeDefaultDead() { }
+    virtual void FixedUpdateMeDefaultDead() { }
     /// <summary>
     /// Defaultモードで、生存状況に関わらず呼ばれるFixedUpdate
     /// </summary>
-    public virtual void FixedUpdateMeDefault() { }
+    virtual void FixedUpdateMeDefault() { }
     /// <summary>
     /// SHRモードで、生存状況に関わらず呼ばれるFixedUpdate
     /// </summary>
-    public virtual void FixedUpdateMeSHR() { }
+    virtual void FixedUpdateMeSHR() { }
     /// <summary>
     /// SHRモードで、自分が生きているときのFixedUpdate
     /// </summary>
-    public virtual void FixedUpdateMeSHRAlive() { }
+    virtual void FixedUpdateMeSHRAlive() { }
     /// <summary>
     /// SHRモードで、自分が死んでいるときのFixedUpdate
     /// </summary>
-    public virtual void FixedUpdateMeSHRDead() { }
+    virtual void FixedUpdateMeSHRDead() { }
 }

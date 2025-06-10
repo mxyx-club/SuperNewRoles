@@ -1,16 +1,7 @@
-using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
-using Il2CppSystem.Linq.Expressions.Interpreter;
-using Il2CppSystem.Runtime.Remoting.Messaging;
 using SuperNewRoles.Roles.Impostor.DimensionWalker;
-using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.Roles.RoleBases.Interfaces;
-using TMPro;
 using UnityEngine;
-using UnityEngine.ResourceManagement.Util;
 
 namespace SuperNewRoles.CustomObject;
 
@@ -18,7 +9,7 @@ namespace SuperNewRoles.CustomObject;
 ディメンションウォーカー用のワームホール
 **/
 [HarmonyPatch]
-class WormHole : CustomAnimation
+internal class WormHole : CustomAnimation
 {
     public static List<WormHole> AllWormHoles = new();
     public int Id { get; private set; }
@@ -46,11 +37,11 @@ class WormHole : CustomAnimation
 
         Owner = owner;
         ActivateTimer = DimensionWalker.ActivateWormHoleTime.GetInt();
-        TimerText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.buttonLabelText, gameObject.transform);
+        TimerText = Instantiate(FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.buttonLabelText, gameObject.transform);
         IsActivating = false;
 
-        var tempVent = UnityEngine.Object.FindObjectOfType<Vent>();
-        _vent = UnityEngine.Object.Instantiate<Vent>(tempVent, gameObject.transform);
+        var tempVent = FindObjectOfType<Vent>();
+        _vent = Instantiate(tempVent, gameObject.transform);
         //_vent.transform.localScale = Vector3.Scale(ShipStatus.Instance.transform.lossyScale, tempVent.transform.lossyScale);
         _vent.gameObject.transform.position = gameObject.transform.position;
         _vent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
@@ -68,7 +59,8 @@ class WormHole : CustomAnimation
         spriteRenderer.color = Palette.DisabledClear;
         Id = _vent.Id;
 
-        if (!PlayerControl.LocalPlayer.IsImpostor()) {
+        if (!PlayerControl.LocalPlayer.IsImpostor())
+        {
             TimerText.gameObject.SetActive(false);
             spriteRenderer.enabled = false;
         }
@@ -96,7 +88,7 @@ class WormHole : CustomAnimation
             return;
 
         if (TimerText != null)
-            TimerText.text = System.Math.Clamp(Mathf.CeilToInt(ActivateTimer), 0, DimensionWalker.ActivateWormHoleTime.GetInt()).ToString();
+            TimerText.text = Math.Clamp(Mathf.CeilToInt(ActivateTimer), 0, DimensionWalker.ActivateWormHoleTime.GetInt()).ToString();
 
         if (ActivateTimer <= 0)
             Activate();
@@ -138,7 +130,8 @@ class WormHole : CustomAnimation
         if (myHoles is null)
             return;
 
-        for (var i = 0; i < myHoles.Count - 1; i++) {
+        for (var i = 0; i < myHoles.Count - 1; i++)
+        {
             var left = myHoles[i];
             var right = myHoles[i + 1];
             left._vent.Right = right._vent;
@@ -157,18 +150,20 @@ class WormHole : CustomAnimation
 
     // Useボタンのターゲットがあるときにベントに入るとそのままUseボタンが押せてしまう問題を強引に修正
     [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick)), HarmonyPostfix]
-    static void useButtonTargetReset()
+    private static void useButtonTargetReset()
         => HudManager.Instance.UseButton.currentTarget = null;
 
     [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent)), HarmonyPostfix]
-    static void enterVent(Vent __instance, [HarmonyArgument(0)] PlayerControl pc) {
+    private static void enterVent(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+    {
         if (!IsWormHole(__instance))
             return;
         GetWormHoleById(__instance.Id).playUseAnimation(pc);
     }
 
     [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent)), HarmonyPostfix]
-    static void exitVent(Vent __instance, [HarmonyArgument(0)] PlayerControl pc) {
+    private static void exitVent(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+    {
         if (!IsWormHole(__instance))
             return;
         GetWormHoleById(__instance.Id).playUseAnimation(pc);
@@ -178,6 +173,6 @@ class WormHole : CustomAnimation
     {
         if (!DimensionWalker.DoPlayWormHoleAnimation.GetBool() && !user.AmOwner)
             return;
-        Init(new CustomAnimationOptions(GetSprites(ResourcePath_Use, 15, 2), 30, false, OnEndAnimation:(anim, option) => base.Init(animOption_Idle), IsMeetingDestroy: false));
+        Init(new CustomAnimationOptions(GetSprites(ResourcePath_Use, 15, 2), 30, false, OnEndAnimation: (anim, option) => base.Init(animOption_Idle), IsMeetingDestroy: false));
     }
 }

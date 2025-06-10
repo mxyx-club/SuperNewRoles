@@ -1,5 +1,3 @@
-using HarmonyLib;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -7,9 +5,9 @@ using UnityEngine;
 namespace SuperNewRoles.Patches;
 
 [HarmonyPatch(typeof(MapBehaviour), "get_IsOpenStopped")]
-class MapBehaviorGetIsOpenStoppedPatch
+internal class MapBehaviorGetIsOpenStoppedPatch
 {
-    static bool Prefix(ref bool __result)
+    private static bool Prefix(ref bool __result)
     { // イビルハッカーがアドミン使用中に移動できる
         if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilHacker) && EvilHacker.CanMoveWhenUsesAdmin.GetBool())
         {

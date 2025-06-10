@@ -1,8 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.Crewmate.Knight;
@@ -56,7 +52,7 @@ public static class Knight
     }
 }
 
-class KnightProtected_Patch
+internal class KnightProtected_Patch
 {
     internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
@@ -68,7 +64,7 @@ class KnightProtected_Patch
     /// <summary>
     /// 護衛ボタンを押したときの動作。
     /// </summary>
-    static void KnightOnClick(int Index, MeetingHud __instance)
+    private static void KnightOnClick(int Index, MeetingHud __instance)
     {
         var Target = ModHelpers.PlayerById((byte)Index);
         var TargetID = Target.PlayerId;
@@ -97,7 +93,7 @@ class KnightProtected_Patch
             KnightProtectButtonDestroy(__instance);
         }
     }
-    static void Event(MeetingHud __instance)
+    private static void Event(MeetingHud __instance)
     {
         //もし　プレーヤーが護衛可能な状態の生きている[騎士]であり　且つ
         //護衛可能回数に上限がない状態　又は　護衛可能回数に条件があるが上限に達していない場合なら
@@ -132,7 +128,7 @@ class KnightProtected_Patch
     /// <summary>
     /// 護衛ボタンを削除します。
     /// </summary>
-    static void KnightProtectButtonDestroy(MeetingHud __instance)
+    private static void KnightProtectButtonDestroy(MeetingHud __instance)
     {
         __instance.playerStates.ForEach(x => { if (x.transform.FindChild("KnightProtectButton") != null) Object.Destroy(x.transform.FindChild("KnightProtectButton").gameObject); });
         SuperNewRolesPlugin.Logger.LogInfo("[Knight] 護衛可能な条件を満たしていない為、護衛ボタンを消去しました。");

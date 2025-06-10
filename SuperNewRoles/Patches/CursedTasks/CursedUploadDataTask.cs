@@ -1,6 +1,4 @@
 using System;
-using AmongUs.Data;
-using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -44,18 +42,18 @@ public class CursedUploadDataTask
             sound.Stop();
             if (!BlueScreen || !__instance)
             {
-                Logger.Info("ブルスクを出せませんでした", "CursedUploadDataTask");
+                Info("ブルスクを出せませんでした", "CursedUploadDataTask");
                 return;
 
             }
             bool active = Random.RandomRangeInt(1, 4) != 3;
             float time = Random.RandomRange(0.5f, 2f);
-            Logger.Info($"ブルスク : {active}, time : {time}", "CursedUploadDataTask");
+            Info($"ブルスク : {active}, time : {time}", "CursedUploadDataTask");
             new LateTask(() =>
             {
                 if (active)
                 {
-                    Logger.Info("ブルスク出現!", "CursedUploadDataTask");
+                    Info("ブルスク出現!", "CursedUploadDataTask");
                     BlueScreen.SetActive(true);
                     sound.volume = DataManager.Settings.Audio.SfxVolume >= 0.2f ? DataManager.Settings.Audio.SfxVolume : 0.2f;
                     sound.Play();

@@ -1,7 +1,5 @@
 using System;
 using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles.Role;
@@ -51,7 +49,7 @@ public class Conjurer : RoleBase, IImpostor, IWrapUpHandler, ICustomButton
     //ボタン
     public void BeaconButtonOnClick()
     {
-        Logger.Info($"Now:{Count}", "Conjurer Add");
+        Info($"Now:{Count}", "Conjurer Add");
         byte[] buff = new byte[sizeof(float) * 2];
         Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
         Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
@@ -62,7 +60,7 @@ public class Conjurer : RoleBase, IImpostor, IWrapUpHandler, ICustomButton
         Positions[Count] = PlayerControl.LocalPlayer.transform.position;
 
         Count++;
-        Logger.Info($"Now:{Count}", "Conjurer Added");
+        Info($"Now:{Count}", "Conjurer Added");
 
         CustomButtonInfos[0].ResetCoolTime();
     }
@@ -140,7 +138,7 @@ public class Conjurer : RoleBase, IImpostor, IWrapUpHandler, ICustomButton
     /// <param name="p">調べたい点</param>
     /// <param name="poly">多角形の頂点</param>
     /// <returns>多角形の中にある</returns>
-    static bool PointInPolygon(Vector2 p, Vector2[] poly)
+    private static bool PointInPolygon(Vector2 p, Vector2[] poly)
     {
         Vector2 p1, p2;
         bool inside = false;

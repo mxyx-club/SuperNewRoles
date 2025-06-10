@@ -1,6 +1,4 @@
-using System.Linq;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Role;
@@ -101,7 +99,7 @@ public class Owl : RoleBase, INeutral, IKiller, IVentAvailable, ICustomButton, I
             return;
         }
         NestVentId = vent.Id;
-        Logger.Info($"フクロウが巣を作成しました VentId : {NestVentId}", "Owl");
+        Info($"フクロウが巣を作成しました VentId : {NestVentId}", "Owl");
     }
 
     public void TransportButtonClick()

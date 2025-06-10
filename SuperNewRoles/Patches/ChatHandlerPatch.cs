@@ -1,14 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
-using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static System.String;
 
@@ -37,7 +32,7 @@ internal class AddChatPatch
     public static bool Prefix(PlayerControl sourcePlayer, string chatText)
     {
         if (Mode.Werewolf.Main.IsChatBlock(sourcePlayer, chatText)) return false;
-        if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
         {
             if (AmongUsClient.Instance.AmHost)
             {
@@ -63,7 +58,7 @@ internal class AddChatPatch
         return true;
     }
 
-    static string GetChildText(List<CustomOption> options, string indent)
+    private static string GetChildText(List<CustomOption> options, string indent)
     {
         string text = "";
         foreach (CustomOption option in options)
@@ -89,7 +84,7 @@ internal class AddChatPatch
     }
     internal static string GetOptionText(CustomRoleOption RoleOption)
     {
-        Logger.Info("GetOptionText", "ChatHandler");
+        Info("GetOptionText", "ChatHandler");
         string text = "";
         text += GetChildText(RoleOption.children, "  ");
         return text;
@@ -105,9 +100,9 @@ internal class AddChatPatch
             _ => "",
         };
     }
-    static string GetText(CustomRoleOption option)
+    private static string GetText(CustomRoleOption option)
     {
-        Logger.Info("GetText", "Chathandler");
+        Info("GetText", "Chathandler");
         string text = "\n";
         text += GetTeamText(CustomRoles.GetRoleTeamType(option.RoleId)) + "\n";
         text += "「" + CustomRoles.GetRoleIntro(option.RoleId) + "」\n";
@@ -218,7 +213,7 @@ internal class AddChatPatch
             target.SetName(originalName);
         }
     }
-    static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
+    private static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
     {
         if (time > 0)
         {
@@ -245,7 +240,7 @@ internal class AddChatPatch
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sender, command);
         sender.SetName(name);
     }
-    static IEnumerator PrivateSend(PlayerControl target, string SendName, string command, float time = 0)
+    private static IEnumerator PrivateSend(PlayerControl target, string SendName, string command, float time = 0)
     {
         if (time > 0)
         {

@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
-using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -133,7 +131,7 @@ public static class OrientalShaman
                         min_distance = distance;
                         vent.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
                         if (canUse) inVent = vent;
-                        Logger.Info($"選択されたベント : {vent.gameObject.name}, vent.UsableDistance : {vent.UsableDistance}", "OrientalShaman Vent Button");
+                        Info($"選択されたベント : {vent.gameObject.name}, vent.UsableDistance : {vent.UsableDistance}", "OrientalShaman Vent Button");
                     }
                 }
                 if (!inVent) return;

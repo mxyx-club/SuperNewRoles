@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using InnerNet;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -42,7 +39,7 @@ public static class Blacklist
         public string ReasonCode = "NoneCode";
         public string ReasonTitle = "";
         public string ReasonDescription = "None";
-        public DateTime? EndBanTime = null;
+        public DateTime? EndBanTime;
         public bool IsPUID;
         public BlackPlayer(string Code, string AddedMod, string ReasonCode,
             string ReasonTitle, string ReasonDescription, bool IsPUID, DateTime? EndBanTime = null)
@@ -58,7 +55,7 @@ public static class Blacklist
         }
     }
     public const string BlacklistServerURL = "https://blacklist.supernewroles.com/api/get_list?hash=true";
-    static bool downloaded = false;
+    private static bool downloaded;
     /// <summary>
     /// 起動時などで予め取得しておく
     /// </summary>
@@ -76,7 +73,7 @@ public static class Blacklist
         if (request.isNetworkError || request.isHttpError)
         {
             downloaded = false;
-            Logger.Info("Blacklist Error Fetch:" + request.responseCode.ToString());
+            Info("Blacklist Error Fetch:" + request.responseCode.ToString());
             yield break;
         }
         var json = JObject.Parse(request.downloadHandler.text);
@@ -158,7 +155,7 @@ internal class DisconnectPopupClosePatch
         }
         catch (Exception e)
         {
-            Logger.Info(e.ToString());
+            Info(e.ToString());
 
         }
     }

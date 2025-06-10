@@ -1,14 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -20,7 +17,7 @@ public static class Penguin
     {
         public static void Postfix(PlayerPhysics __instance)
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (SpiderTrap.CatchingPlayers.ContainsKey(__instance.myPlayer.PlayerId) ||

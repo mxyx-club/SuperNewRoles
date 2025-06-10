@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class Moving
+internal class Moving
 {
     public static void ResetCooldown()
     {

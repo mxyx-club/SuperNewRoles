@@ -1,13 +1,11 @@
-using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.Replay;
 
 namespace SuperNewRoles.Patches;
 
-class Chat
+internal class Chat
 {
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChatNote))]
-    class ChatControllerAddChatNote
+    private class ChatControllerAddChatNote
     {
         public static void Postfix(ChatController __instance, GameData.PlayerInfo srcPlayer, ChatNoteTypes noteType)
         {

@@ -1,5 +1,3 @@
-using HarmonyLib;
-
 namespace SuperNewRoles.MapOption;
 
 public class LadderZiplineCool

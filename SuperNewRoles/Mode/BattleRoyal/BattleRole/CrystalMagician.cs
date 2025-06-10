@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using LibCpp2IL;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static SuperNewRoles.Roles.Crewmate.Squid;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole;
 public class CrystalMagician : BattleRoyalRole

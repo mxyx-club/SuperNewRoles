@@ -3,7 +3,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Mode.NotImpostorCheck;
 
-class SelectRolePatch
+internal class SelectRolePatch
 {
     public static void SetDesync()
     {

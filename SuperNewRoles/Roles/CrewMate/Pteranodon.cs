@@ -1,12 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static Il2CppSystem.Uri;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -144,7 +139,7 @@ public static class Pteranodon
     }
     public static void SetStatus(PlayerControl player, bool Status, bool IsRight, float tarpos, Vector3 pos)
     {
-        Logger.Info($"SetStatus:{Status}");
+        Info($"SetStatus:{Status}");
         if (Status)
         {
             AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();

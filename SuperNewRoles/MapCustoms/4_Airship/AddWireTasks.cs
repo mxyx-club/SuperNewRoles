@@ -1,13 +1,9 @@
-
-using System.Linq;
-using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
 namespace SuperNewRoles.MapCustoms;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
-class OptimizeMapPatch
+internal class OptimizeMapPatch
 {
     public static void Postfix()
     {

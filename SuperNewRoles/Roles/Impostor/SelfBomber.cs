@@ -2,7 +2,7 @@ using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class SelfBomber
+internal class SelfBomber
 {
     public static void ResetCooldown()
     {

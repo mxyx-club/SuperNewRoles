@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.UI.Button;
@@ -142,7 +140,7 @@ public static class ClientModOptionsPatch
     {
         ReplayPopup.gameObject.SetActive(false);
         ReplayPopup.gameObject.SetActive(true);
-        Transform obj = GameObject.FindObjectOfType<OptionsMenuBehaviour>()?.transform;
+        Transform obj = Object.FindObjectOfType<OptionsMenuBehaviour>()?.transform;
         if (obj?.parent && obj?.parent == FastDestroyableSingleton<HudManager>.Instance.transform)
         {
             ReplayPopup.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
@@ -245,7 +243,7 @@ public static class ClientModOptionsPatch
         new SelectionBehaviour("ReplayOptionsQualityMedium",()=>UpdateReplayQuality(ReplayQualityMediumTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityMediumTime,pos:new(0, -0.1f, -0.5f),scale:Vector3.one*0.75f),
         new SelectionBehaviour("ReplayOptionsQualityHigh",()=>UpdateReplayQuality(ReplayQualityHighTime),ConfigRoles.ReplayQualityTime.Value == ReplayQualityHighTime,pos:new(1.75f, -0.1f, -0.5f),scale:Vector3.one*0.75f)};
 
-    static bool UpdateReplayQuality(float timer)
+    private static bool UpdateReplayQuality(float timer)
     {
         ConfigRoles.ReplayQualityTime.Value = timer;
         UpdateState(ReplayOptions[1].Button, timer == ReplayQualityLowTime);
@@ -253,7 +251,7 @@ public static class ClientModOptionsPatch
         UpdateState(ReplayOptions[3].Button, timer == ReplayQualityHighTime);
         return true;
     }
-    static List<GameObject> ReplayEnableObjects;
+    private static List<GameObject> ReplayEnableObjects;
     public static void ReplaySetUpOptions()
     {
         if (ReplayPopup.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;

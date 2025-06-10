@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Timers;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
@@ -84,7 +79,7 @@ public static class Crook
 
             // 条件判定タイミング(会議開始時)に, 条件を誰も満たしていなかったら以下を読まない。
             if (!(AmongUsClient.Instance.AmHost && RoleData.FirstWinFlag)) return;
-            Logger.Info($"勝利条件を満たした 詐欺師が存在した", "FirstWinFlag");
+            Info($"勝利条件を満たした 詐欺師が存在した", "FirstWinFlag");
 
             if (DecisionOfVictory.GetTheLastDecisionAndWinners().Item1) // 受領判定時に勝利条件を満たしていたら, 勝利処理を実行する。
             {
@@ -128,8 +123,8 @@ public static class Crook
                 winners.Add(crook);
             }
 
-            if (winFlag) Logger.Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "FinalWinFlag");
-            else Logger.Info($"最後の保険金の受給にどの詐欺師もたどり着けなかった。", "FinalWinFlag");
+            if (winFlag) Info($"最後の保険金の受給にたどり着いた 詐欺師が存在した", "FinalWinFlag");
+            else Info($"最後の保険金の受給にどの詐欺師もたどり着けなかった。", "FinalWinFlag");
 
             return (winFlag, winners);
         }
@@ -244,7 +239,7 @@ public static class Crook
                     AddChatPatch.ChatInformation(p, ModTranslation.GetString("CrookName"), announce, "#60a1bd");
                 }
             }
-            Logger.Info(announce, "CrookAbility");
+            Info(announce, "CrookAbility");
         }
 
         /// <summary>
@@ -287,7 +282,7 @@ public static class Crook
                 bool privateWinFlag = times >= RoleData.NumberNeededWin; // 詐欺師個人の勝利判定の取得
                 if (privateWinFlag) RoleData.FirstWinFlag = true;
                 var remainingNumber = RoleData.NumberNeededWin - times;
-                Logger.Info($"{crook.name} => 現在{times}回目の取得, 勝利に必要な回数は残り{remainingNumber}回", "crook");
+                Info($"{crook.name} => 現在{times}回目の取得, 勝利に必要な回数は残り{remainingNumber}回", "crook");
 
                 if (AmongUsClient.Instance.AmHost) // 追放画面で保険金受給の有無をチャット通知
                 {
@@ -431,7 +426,7 @@ public static class Crook
                     if (player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
 
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-                    GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+                    GameObject targetBox = UObject.Instantiate(template, playerVoteArea.transform);
                     targetBox.name = "CrookButton";
                     targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
                     SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
@@ -441,7 +436,7 @@ public static class Crook
                     button.OnClick.RemoveAllListeners();
                     byte TargetPlayerId = player.PlayerId;
                     button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClick(TargetPlayerId, __instance)));
-                    Logger.Info($"{player.name}に[保険をかける]ボタンを作成します。", "CrookButton");
+                    Info($"{player.name}に[保険をかける]ボタンを作成します。", "CrookButton");
                 }
             }
 
@@ -471,7 +466,7 @@ public static class Crook
                 writer.Write(TargetId);
                 writer.EndRPC();
 
-                __instance.playerStates.ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); }); // ボタン削除
+                __instance.playerStates.ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UObject.Destroy(x.transform.FindChild("CrookButton").gameObject); }); // ボタン削除
             }
 
             /// <summary>
@@ -485,7 +480,7 @@ public static class Crook
 
                 if (PlayerControl.LocalPlayer.IsDead() || AbilityCountDown == 0)
                 {
-                    __instance.playerStates.ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject); });
+                    __instance.playerStates.ForEach(x => { if (x.transform.FindChild("CrookButton") != null) UObject.Destroy(x.transform.FindChild("CrookButton").gameObject); });
                     AllladyDead = true;
                 }
                 else // 自身が生存しているなら
@@ -497,7 +492,7 @@ public static class Crook
                                 var p = ModHelpers.PlayerById(x.TargetPlayerId);
                                 if (p.IsDead())
                                 {
-                                    UnityEngine.Object.Destroy(x.transform.FindChild("CrookButton").gameObject);
+                                    UObject.Destroy(x.transform.FindChild("CrookButton").gameObject);
                                 }
                             }
                         });
@@ -612,7 +607,7 @@ public static class Crook
                         float second = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - RoleData.TimeForAbilityUse - 3f;
                         string warningStr = string.Format(ModTranslation.GetString("CrookErrorTimeout"), "#FF4B00", second);
 
-                        Logger.Info($"{crook.name}は, 能力使用時間内に保険を契約させられず, 猶予時間以内に投票しました。[バニラ会議時間 : {GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime)}, 能力使用可能時間 {RoleData.TimeForAbilityUse - 7f}, 猶予時間終了時間{second}]", "Crook Vote");
+                        Info($"{crook.name}は, 能力使用時間内に保険を契約させられず, 猶予時間以内に投票しました。[バニラ会議時間 : {GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime)}, 能力使用可能時間 {RoleData.TimeForAbilityUse - 7f}, 猶予時間終了時間{second}]", "Crook Vote");
                         AddChatPatch.ChatInformation(crook, ModTranslation.GetString("CrookName"), warningStr, "#60a1bd");
                         return false; // 無効票を返す。
                     }

@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
-using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -23,7 +19,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class WrapUpPatch
+internal class WrapUpPatch
 {
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class ExileControllerWrapUpPatch
@@ -44,7 +40,7 @@ class WrapUpPatch
                 yield return ShipStatus.Instance.PrespawnStep();
                 __instance.ReEnableGameplay();
             }
-            GameObject.Destroy(__instance.gameObject);
+            Object.Destroy(__instance.gameObject);
         }
         public static bool Prefix(ExileController __instance)
         {
@@ -74,7 +70,7 @@ class WrapUpPatch
                     }
                     __instance.exiled.IsDead = true;
                 }
-                GameObject.Destroy(__instance.gameObject);
+                Object.Destroy(__instance.gameObject);
 
                 // 暗転をごり押しで解決
                 if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship, false) && MapCustom.AirshipRandomSpawn.GetBool())
@@ -183,8 +179,8 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         SeerHandler.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
-        Roles.Crewmate.Celebrity.AbilityOverflowingBrilliance.WrapUp();
-        Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
+        Celebrity.AbilityOverflowingBrilliance.WrapUp();
+        TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         BlackHatHacker.WrapUp();
         Moira.WrapUp(exiled);
         WellBehaver.WrapUp();
@@ -198,7 +194,7 @@ class WrapUpPatch
 
         FixAfterMeetingVent();
 
-        Logger.Info("[追放の有無問わず 会議終了時に行う処理] 通過", "WrapUp");
+        Info("[追放の有無問わず 会議終了時に行う処理] 通過", "WrapUp");
 
         // |:========== 追放が発生していた場合のみ 会議終了時に行う処理 開始 ==========:|
 
@@ -258,7 +254,7 @@ class WrapUpPatch
             if (Player.IsRole(RoleId.Jester))
             {
 
-                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                 {
                     RPCProcedure.ShareWinner(Player.PlayerId);
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
@@ -289,9 +285,9 @@ class WrapUpPatch
         }
         Mode.SuperHostRoles.Main.RealExiled = null;
 
-        Logger.Info("[追放が発生していた場合のみ 会議終了時に行う処理] 通過", "WrapUp");
+        Info("[追放が発生していた場合のみ 会議終了時に行う処理] 通過", "WrapUp");
     }
-    static void FixAfterMeetingVent()
+    private static void FixAfterMeetingVent()
     {
         //ベントがなければ帰れ！！！
         if (!ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out ISystemType vent))

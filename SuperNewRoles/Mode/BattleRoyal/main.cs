@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -10,7 +8,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal;
 
-class Main
+internal class Main
 {
     public static Dictionary<byte, int> KillCount;
     public static bool IsRoleSetted;
@@ -146,7 +144,7 @@ class Main
         KillCount[source.PlayerId]++;
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
-    class CoExitVentPatch
+    private class CoExitVentPatch
     {
         public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
         {
@@ -157,7 +155,7 @@ class Main
         }
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoEnterVent))]
-    class CoEnterVentPatch
+    private class CoEnterVentPatch
     {
         public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
         {
@@ -302,9 +300,9 @@ class Main
     }
     public static float StartSeconds;
     public static bool IsCountOK;
-    static float UpdateTime;
+    private static float UpdateTime;
     public static bool IsTeamBattle;
-    static bool IsSeted;
+    private static bool IsSeted;
     public static bool IsIntroEnded;
     public static void ClearAndReload()
     {
@@ -473,7 +471,7 @@ class Main
                 RPCHelper.RpcSyncGameData();
                 new LateTask(() =>
                 {
-                    if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+                    if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                     {
                         foreach (var pc in CachedPlayer.AllPlayers)
                         {

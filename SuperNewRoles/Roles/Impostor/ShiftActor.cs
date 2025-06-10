@@ -53,7 +53,7 @@ public static class ShiftActor
 
     public static void Shapeshift(PlayerControl shapeshifter, PlayerControl target)
     {
-        Logger.Info($"現在のカウント{Count}", "ShiftActor");
+        Info($"現在のカウント{Count}", "ShiftActor");
         if (shapeshifter.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
         if (!CanShow) return;
         var TargetRoleText = "";
@@ -61,7 +61,7 @@ public static class ShiftActor
         // 役職名
         if (!ModHelpers.IsSucsessChance(ShiftActorRightChance.GetSelection() + 1))
         { // 確率を判定し、失敗なら「クルーメイト」のみ表示。
-            Logger.Info("失敗", "ShiftActor");
+            Info("失敗", "ShiftActor");
             TargetRoleText = ModTranslation.GetString("CrewmateName");
         }
         else
@@ -104,7 +104,7 @@ public static class ShiftActor
                 }
             }
         }
-        Logger.Info($"テキスト名は{TargetRoleText}", "ShiftActor");
+        Info($"テキスト名は{TargetRoleText}", "ShiftActor");
 
         // ここからが表示関連
         var text1 = ModTranslation.GetString("ShiftActorText1"); // の役職は
@@ -119,7 +119,7 @@ public static class ShiftActor
     {
         foreach (PlayerControl p in Player)
         {
-            Logger.Info("シェイプシフター割り当て", "ShiftActor");
+            Info("シェイプシフター割り当て", "ShiftActor");
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(p, RoleTypes.Shapeshifter);
         }
     }

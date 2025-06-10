@@ -1,15 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SuperNewRoles.Modules.CustomRegulation;
 
 namespace SuperNewRoles.Modules;
 public static class OptionSaver
 {
-    static readonly DirectoryInfo directory = new("./SuperNewRoles/SaveData/");
+    private static readonly DirectoryInfo directory = new("./SuperNewRoles/SaveData/");
     public static readonly string OptionSaverFileName = $"{directory.FullName}/Options.{Extension}";
     public const string Extension = "data";
     public static readonly string PresetFileNameBase = $"{directory.FullName}/PresetOptions_";
@@ -82,24 +78,24 @@ public static class OptionSaver
     }
     public static void ReadAndSetOption()
     {
-        Logger.Info("Start LoadOption");
+        Info("Start LoadOption");
         (bool Suc, int preset) = LoadSavedOption();
         if (!Suc)
         {
-            Logger.Info("プリセットナンバー読み込みでエラーが発生しました。:" + preset.ToString());
+            Info("プリセットナンバー読み込みでエラーが発生しました。:" + preset.ToString());
             CustomOption.CurrentValues = new();
             return;
         }
-        Logger.Info($"Start LoadPreset{preset} ");
+        Info($"Start LoadPreset{preset} ");
         (Suc, int code, Dictionary<uint, byte> data) = LoadPreset(preset);
         if (!Suc)
         {
-            Logger.Info("プリセット読み込みでエラーが発生しました。:" + code.ToString());
+            Info("プリセット読み込みでエラーが発生しました。:" + code.ToString());
             CustomOption.CurrentValues = new();
             return;
         }
         CustomOption.CurrentValues = data;
-        Logger.Info("End LoadOption:" + data.Count.ToString());
+        Info("End LoadOption:" + data.Count.ToString());
     }
     public static (bool, int, Dictionary<uint, byte>) LoadPreset(int num)
     {
@@ -118,19 +114,19 @@ public static class OptionSaver
             (int version, bool Checksum) = ReadLeadAndChecksum(reader);
             if (!Checksum)
             {
-                Logger.Info("フアイルの データが こわれています！");
+                Info("フアイルの データが こわれています！");
                 reader.Close();
                 return (false, -2, null);
             }
             Dictionary<uint, byte> Options = new();
             if (Version != version)
             {
-                Logger.Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
+                Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
                 //ここに移行処理
                 switch (version)
                 {
                     default:
-                        Logger.Info("不正なバージョンが入力されました：" + version.ToString());
+                        Info("不正なバージョンが入力されました：" + version.ToString());
                         break;
                 }
             }
@@ -139,14 +135,14 @@ public static class OptionSaver
                 int optioncount = reader.ReadInt32();
                 uint id;
                 byte selection;
-                Logger.Info(optioncount.ToString() + ":" + reader.BaseStream.Length, "OPTIONCOUNT");
+                Info(optioncount.ToString() + ":" + reader.BaseStream.Length, "OPTIONCOUNT");
                 for (int i = 0; i < optioncount; i++)
                 {
                     id = reader.ReadUInt32();
                     selection = reader.ReadByte();
                     if (!Options.TryAdd(id, selection))
                     {
-                        Logger.Info("追加に失敗：" + id.ToString() + ":" + selection.ToString());
+                        Info("追加に失敗：" + id.ToString() + ":" + selection.ToString());
                     }
                 }
             }
@@ -177,18 +173,18 @@ public static class OptionSaver
             if (!Checksum)
             {
                 reader.Close();
-                Logger.Info("フアイルの データが こわれています！");
+                Info("フアイルの データが こわれています！");
                 return (false, -2);
             }
             int preset = -4;
             if (Version != version)
             {
-                Logger.Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
+                Info("Optionのバージョンが違います。なう:" + Version.ToString() + "、おるど:" + version.ToString());
                 //ここに移行処理
                 switch (version)
                 {
                     default:
-                        Logger.Info("不正なバージョンが入力されました：" + version.ToString());
+                        Info("不正なバージョンが入力されました：" + version.ToString());
                         break;
                 }
             }

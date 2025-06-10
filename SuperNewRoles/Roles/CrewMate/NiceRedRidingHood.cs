@@ -1,10 +1,7 @@
-
 using AmongUs.GameOptions;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using System.Linq;
 namespace SuperNewRoles.Roles.Crewmate.NiceRedRidingHood;
 
 public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandler, IHaveHauntAbility
@@ -43,7 +40,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
     {
         if (exiled == null || Player == null || Player.IsAlive() || !Player.IsRole(RoleId.NiceRedRidingHood)) return;
 
-        Logger.Info($"赤ずきん残り復活回数 : {RemainingCount}", Roleinfo.NameKey);
+        Info($"赤ずきん残り復活回数 : {RemainingCount}", Roleinfo.NameKey);
         if (RemainingCount <= 0) return;
 
         DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == Player.PlayerId)?.FirstOrDefault();
@@ -55,7 +52,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
         if ((killer.PlayerId == exiled.PlayerId) || (NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead()))
         {
             bool IsDisabledRevive = EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer);
-            Logger.Info($"復活可否 : {!IsDisabledRevive}", Roleinfo.NameKey);
+            Info($"復活可否 : {!IsDisabledRevive}", Roleinfo.NameKey);
 
             if (IsDisabledRevive) return;
 
@@ -67,7 +64,7 @@ public class NiceRedRidingHood : RoleBase, ICrewmate, IWrapUpHandler, INameHandl
             RemainingCount--;
             Player.Data.IsDead = false;
 
-            Logger.Info($"復活完了 : {!IsDisabledRevive}", Roleinfo.NameKey);
+            Info($"復活完了 : {!IsDisabledRevive}", Roleinfo.NameKey);
         }
     }
 

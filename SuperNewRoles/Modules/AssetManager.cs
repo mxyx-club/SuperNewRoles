@@ -1,10 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Il2CppInterop.Runtime;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -28,11 +23,11 @@ public static class AssetManager
     };
     public static void Load()
     {
-        Logger.Info("-------Start AssetBundle-------");
+        Info("-------Start AssetBundle-------");
         var ExcAssembly = Assembly.GetExecutingAssembly();
         foreach (var data in AssetPathes)
         {
-            Logger.Info($"Loading AssetBundle:" + data.Item1.ToString());
+            Info($"Loading AssetBundle:" + data.Item1.ToString());
             try
             {
                 //AssemblyからAssetBundleファイルを読み込む
@@ -50,14 +45,15 @@ public static class AssetManager
                 assetBundle.DontUnload();
 
                 BundleStream.Dispose();
-                Logger.Info($"Loaded AssetBundle:" + data.Item1.ToString());
-            } catch (Exception e)
+                Info($"Loaded AssetBundle:" + data.Item1.ToString());
+            }
+            catch (Exception e)
             {
-                Logger.Error($"Failed to load AssetBundle:" + data.Item1.ToString(),"LoadAssetBundle");
-                Logger.Error(e.ToString(),"LoadAssetBundle");
+                Error($"Failed to load AssetBundle:" + data.Item1.ToString(), "LoadAssetBundle");
+                Error(e.ToString(), "LoadAssetBundle");
             }
         }
-        Logger.Info("-------End LoadAssetBundle-------");
+        Info("-------End LoadAssetBundle-------");
     }
     /// <summary>
     /// アセットをロードする
@@ -73,7 +69,7 @@ public static class AssetManager
             return null;
         //キャッシュにあるならそれを返す
         Il2CppSystem.Type il2CppType = Il2CppType.Of<T>();
-        if (_data.TryGetValue(path+il2CppType.ToString(), out UnityEngine.Object result))
+        if (_data.TryGetValue(path + il2CppType.ToString(), out UnityEngine.Object result))
             return result.TryCast<T>();
         //読み込む
         T rs = Bundles[(byte)assetBundleType]

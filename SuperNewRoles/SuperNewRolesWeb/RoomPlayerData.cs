@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
-using AmongUs.Data.Player;
 
 namespace SuperNewRoles.SuperNewRolesWeb;
 public class RoomPlayerData
@@ -18,7 +15,7 @@ public class RoomPlayerData
             return _instance;
         }
     }
-    public static RoomPlayerData _instance = null;
+    public static RoomPlayerData _instance;
     public PlayerControl Local;
 
     public List<WebPlayer> WebPlayers = new();

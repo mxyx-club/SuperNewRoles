@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -33,7 +31,7 @@ public static class ChangeName
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            Logger.Info("[SHR:ChangeName]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Info("[SHR:ChangeName]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         }
         //コミュ情報を取得して呼ぶ
         SetRoleName(player, RoleHelpers.IsComms(), IsUnchecked);

@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuperNewRoles.Roles.RoleBases;
 public class OptionInfo
@@ -144,7 +141,7 @@ public class OptionInfo
         // TryGetValutを使う
         if (!OptionInfos.TryGetValue(role, out var optionInfo))
         {
-            Logger.Error($"OptionInfoが見つかりませんでした。Role:{role}", "GetOptionInfo");
+            Error($"OptionInfoが見つかりませんでした。Role:{role}", "GetOptionInfo");
             return null;
         }
         return optionInfo;

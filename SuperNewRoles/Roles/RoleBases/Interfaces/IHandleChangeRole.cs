@@ -7,5 +7,5 @@ public interface IHandleChangeRole
     /// <summary>
     /// 役職が変更される時, 変更前の役職で行う処理
     /// </summary>
-    public void OnChangeRole();
+    void OnChangeRole();
 }

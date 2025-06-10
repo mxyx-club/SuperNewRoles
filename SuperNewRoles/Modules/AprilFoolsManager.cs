@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -22,7 +19,7 @@ public static class AprilFoolsManager
     private static DateTime startTimeUtc_2024 = new(2024, 3, 31, 22, 0, 0, 0, DateTimeKind.Utc);
     private static DateTime endTimeUtc_2024 = new(2024, 4, 8, 7, 0, 0, 0, DateTimeKind.Utc);
 
-    public static bool isLastAprilFool = false;
+    public static bool isLastAprilFool;
 
     public static ModMode currentModMode { get; private set; } = ModMode.SuperNagaiRoles;
 
@@ -65,13 +62,13 @@ public static class AprilFoolsManager
         },
     };
 
-    private static bool IsForceApril2024 = false;
+    private static bool IsForceApril2024;
 
     private static Dictionary<string, Sprite> ModBanners = new();
 
     public const string DefaultModNameOnColor = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
 
-    public static List<ModMode> _enums = null;
+    public static List<ModMode> _enums;
 
     public static void SetRandomModMode()
     {
@@ -143,7 +140,7 @@ public static class AprilFoolsManager
 
     private static void UpdateAprilTranslation()
     {
-        Logger.Info("Start UpdateAprilTranslation");
+        Info("Start UpdateAprilTranslation");
         ModTranslation.AprilDictionary = new();
         if (!ModModeReplaces.TryGetValue(currentModMode.ToString(), out Dictionary<string, string> replaces))
             replaces = new();
@@ -169,7 +166,7 @@ public static class AprilFoolsManager
             }
             ModTranslation.AprilDictionary[trans.Key] = newValues;
         }
-        Logger.Info("End UpdateAprilTranslation");
+        Info("End UpdateAprilTranslation");
     }
     public static void OnLoad()
     {

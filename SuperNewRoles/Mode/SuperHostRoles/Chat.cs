@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using HarmonyLib;
 using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class Chat
+internal class Chat
 {
-    public static bool IsOldSHR = false;
-    public static CustomGameOverReason? WinCond = null;
-    public static List<PlayerControl> Winner = null;
+    public static bool IsOldSHR;
+    public static CustomGameOverReason? WinCond;
+    public static List<PlayerControl> Winner;
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     public class GameStartManagerStartPatch
     {

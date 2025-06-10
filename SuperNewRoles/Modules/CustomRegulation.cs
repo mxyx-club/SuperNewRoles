@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using AmongUs.GameOptions;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.Helpers;
@@ -14,14 +13,14 @@ namespace SuperNewRoles.Modules;
 
 public static class CustomRegulation
 {
-    static bool Loaded = false;
+    private static bool Loaded;
 
     // CustomRegulation.jsonのテストをする時にtrueに変える
-    const bool IsTest = false;
+    private const bool IsTest = false;
     public static IEnumerator FetchRegulation()
     {
         if (Loaded) yield break;
-        Logger.Info("フェチ開始いいいい");
+        Info("フェチ開始いいいい");
         JObject json;
 
 #pragma warning disable 0162 // 「到達できないコードが検出されました」の表示を無効
@@ -32,10 +31,10 @@ public static class CustomRegulation
             yield return request.SendWebRequest();
             if (request.isNetworkError || request.isHttpError)
             {
-                Logger.Info("むりやった");
+                Info("むりやった");
                 yield break;
             }
-            Logger.Info("通過");
+            Info("通過");
             json = JObject.Parse(request.downloadHandler.text);
         }
         else
@@ -46,11 +45,11 @@ public static class CustomRegulation
                 using StreamReader sr = new(filePath);
                 var text = sr.ReadToEnd();
                 json = JObject.Parse(text);
-                Logger.Info("カスタムレギュレーションのテストファイルの読み込みに成功しました。", "ReadingRegistration");
+                Info("カスタムレギュレーションのテストファイルの読み込みに成功しました。", "ReadingRegistration");
             }
             catch (Exception e)
             {
-                Logger.Error($"カスタムレギュレーションのテストファイルの読み込みに失敗しました。 : {e}", "ReadingRegistration");
+                Error($"カスタムレギュレーションのテストファイルの読み込みに失敗しました。 : {e}", "ReadingRegistration");
                 yield break;
             }
         }
@@ -156,7 +155,7 @@ public static class CustomRegulation
             }
             else
             {
-                Logger.Info(option.Key + "がnullでした");
+                Info(option.Key + "がnullでした");
             }
         }
         CustomOptionHolder.DisconnectNotPCOption.selection = 0;
@@ -166,8 +165,8 @@ public static class CustomRegulation
     public class RegulationData
     {
         public static List<RegulationData> Regulations = new();
-        public static int MaxId = 0;
-        public static int Selected = 0;
+        public static int MaxId;
+        public static int Selected;
         public string title;
         public int id;
 

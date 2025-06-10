@@ -1,12 +1,10 @@
-using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode.PlusMode;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class ReportDeadBody
+internal class ReportDeadBody
 {
     public static bool ReportDeadBodyPatch(PlayerControl __instance, GameData.PlayerInfo target)
     {
@@ -26,7 +24,8 @@ class ReportDeadBody
                 PlusGameOptions.EmergencyMeetingsCallstate.maxCount <= Patches.ReportDeadBodyPatch.MeetingCount.emergency) // 全体回数を使い切っているなら
                 return false;
             return true;
-        };
+        }
+        ;
 
         //死体レポートのみで起こる処理
         DeadPlayer deadPlayer;

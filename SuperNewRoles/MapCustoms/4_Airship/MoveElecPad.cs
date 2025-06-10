@@ -6,7 +6,7 @@ public class MoveElecPad
 {
     public static Vector3 Meetpos = new(16.908f, 14.7988f, 1.0f);//ミーティング
     public static Vector3 Safepos = new(37.0477f, -3.6707f, 1.0f);//金庫タスク
-    public static bool flag = false;
+    public static bool flag;
     public static void ClearAndReload()
     {
         flag = false;

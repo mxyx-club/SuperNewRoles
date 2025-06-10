@@ -1,12 +1,11 @@
-using HarmonyLib;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class MorePatch
+internal class MorePatch
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
-    class PlayerControlCompleteTaskPatch
+    private class PlayerControlCompleteTaskPatch
     {
         public static void Postfix(PlayerControl __instance)
         {

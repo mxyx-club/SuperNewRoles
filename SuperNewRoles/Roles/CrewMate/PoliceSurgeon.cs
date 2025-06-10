@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using AmongUs.Data;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -261,7 +258,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
                 case DeadTiming.Exited:
                     break;
             }
-            Logger.Info($"{p.name} : 死亡推定時刻_{estimatedDeathTime}s");
+            Info($"{p.name} : 死亡推定時刻_{estimatedDeathTime}s");
 
             // 死亡情報を一元管理している辞書に保存する。(この辞書に保存するのはここでのみ)
             RoleData.PersonalInformationManager.Add(PersonalInformationOfTheDead.Create(p.PlayerId, ReportDeadBodyPatch.MeetingCount.all, deadReason, DeadPlayer.ActualDeathTime[p.PlayerId].DeathTime, estimatedDeathTime));
@@ -273,7 +270,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
             writer.Write(p.PlayerId);
             writer.Write((byte)estimatedDeathTime);
             writer.Write((byte)deadReason);
-            writer.Write((byte)ReportDeadBodyPatch.MeetingCount.all);
+            writer.Write(ReportDeadBodyPatch.MeetingCount.all);
             writer.EndRPC();
         }
     }
@@ -312,7 +309,7 @@ internal static class PoliceSurgeon_AddActualDeathTime
             estimatedDeathTime = estimatedDeathTime >= TimeSpan.Zero ? estimatedDeathTime : -estimatedDeathTime;
         }
 
-        Logger.Info($"{player.name} : 絶対死亡時刻_{actualDeathTime:hh:mm:ss} 通報時刻_{reportTime:ss}s 相対死亡時刻_{relativeDeathTime:ss}s 死亡推定時刻_{estimatedDeathTime:ss}s前 誤差設定_{CustomOptionData.IncludeErrorInDeathTime.GetBool()} 誤差範囲設定_{CustomOptionData.MarginOfErrorToIncludeInTimeOfDeath.GetFloat()} 誤差秒数_{(errorTimeSpan >= TimeSpan.Zero ? "+" : "-")}{errorTimeSpan:ss}s");
+        Info($"{player.name} : 絶対死亡時刻_{actualDeathTime:hh:mm:ss} 通報時刻_{reportTime:ss}s 相対死亡時刻_{relativeDeathTime:ss}s 死亡推定時刻_{estimatedDeathTime:ss}s前 誤差設定_{CustomOptionData.IncludeErrorInDeathTime.GetBool()} 誤差範囲設定_{CustomOptionData.MarginOfErrorToIncludeInTimeOfDeath.GetFloat()} 誤差秒数_{(errorTimeSpan >= TimeSpan.Zero ? "+" : "-")}{errorTimeSpan:ss}s");
         return int.Parse($"{estimatedDeathTime:ss}");
     }
 
@@ -353,8 +350,8 @@ internal static class PostMortemCertificate_Display
             bool canResend = CustomOptionData.CanResend.GetBool();
             foreach (var pl in RoleData.Player)
             {
-                Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl), "#89c3eb");
-                if (canResend) Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb");
+                AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl), "#89c3eb");
+                if (canResend) AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb");
             }
         }
 
@@ -428,7 +425,7 @@ internal static class PostMortemCertificate_Display
             if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId && personalInfo.Item1 && personalInfo.Item2.DeadTurn != ReportDeadBodyPatch.MeetingCount.all) continue;
 
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-            GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+            GameObject targetBox = UObject.Instantiate(template, playerVoteArea.transform);
             targetBox.name = "PoliceSurgeonButton";
             targetBox.transform.localPosition = new Vector3(1f, 0.03f, -8.0f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
@@ -438,7 +435,7 @@ internal static class PostMortemCertificate_Display
             button.OnClick.RemoveAllListeners();
             int TargetPlayerId = player.PlayerId;
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClick(TargetPlayerId)));
-            Logger.Info($"{player.name}に死体検案書を確認する為のボタンを作成します。", "PoliceSurgeonButton");
+            Info($"{player.name}に死体検案書を確認する為のボタンを作成します。", "PoliceSurgeonButton");
         }
     }
 
@@ -465,8 +462,8 @@ internal static class PostMortemCertificate_Display
         private static Sprite colorBG;
         private static SpriteRenderer infoUnderlay;
         private static SpriteRenderer meetingUnderlay;
-        private static TMPro.TextMeshPro infoOverlay;
-        public static bool overlayShown = false;
+        private static TextMeshPro infoOverlay;
+        public static bool overlayShown;
 
         // overlayの初期化
         public static bool InitializeOverlays()
@@ -479,7 +476,7 @@ internal static class PostMortemCertificate_Display
 
             if (meetingUnderlay == null)
             {
-                meetingUnderlay = UnityEngine.Object.Instantiate(hudManager.FullScreen, hudManager.transform);
+                meetingUnderlay = UObject.Instantiate(hudManager.FullScreen, hudManager.transform);
                 meetingUnderlay.transform.localPosition = new Vector3(0f, 0f, 20f);
                 meetingUnderlay.gameObject.SetActive(true);
                 meetingUnderlay.enabled = false;
@@ -487,7 +484,7 @@ internal static class PostMortemCertificate_Display
 
             if (infoUnderlay == null)
             {
-                infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
+                infoUnderlay = UObject.Instantiate(meetingUnderlay, hudManager.transform);
                 infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -9.367681f);
                 infoUnderlay.gameObject.SetActive(true);
                 infoUnderlay.enabled = false;
@@ -495,11 +492,11 @@ internal static class PostMortemCertificate_Display
 
             if (infoOverlay == null)
             {
-                infoOverlay = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
+                infoOverlay = UObject.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
                 infoOverlay.fontSize = infoOverlay.fontSizeMin = infoOverlay.fontSizeMax = 1.15f;
                 infoOverlay.autoSizeTextContainer = false;
                 infoOverlay.enableWordWrapping = false;
-                infoOverlay.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                infoOverlay.alignment = TextAlignmentOptions.TopLeft;
                 infoOverlay.transform.position = Vector3.zero;
                 // 死体検案書をoverlayの真ん中に表示する
                 infoOverlay.transform.localPosition = new Vector3(-1.5f, 1.15f, -10f);
@@ -631,7 +628,7 @@ internal static class PostMortemCertificate_CreateAndGet
         else
         {
             var errorText = $"死亡情報が登録されていないプレイヤー({policeSurgeon.name})の死体検案書の表示が要請されました。";
-            Logger.Error(errorText, "PoliceSurgeon");
+            Error(errorText, "PoliceSurgeon");
             return errorText;
         }
     }
@@ -675,7 +672,7 @@ internal static class PostMortemCertificate_CreateAndGet
                 dateOfDocumentIssuance = DateTime.Now.ToString("MMMM d, yyyy", ci);
                 break;
         }
-        Logger.Info("DateOfDocumentIssuance");
+        Info("DateOfDocumentIssuance");
         return dateOfDocumentIssuance;
     }
 

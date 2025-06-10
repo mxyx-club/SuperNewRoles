@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.SuperNewRolesWeb;
@@ -294,19 +290,19 @@ internal static class GetChatCommands
 
         if (Commands.Length == 1)
         {
-            Logger.Info("Length==1", "/ar");
+            Info("Length==1", "/ar");
             RoleinformationText.RoleCommand(sendPlayer);
         }
         else
         {
-            Logger.Info("Length!=1", "/ar");
+            Info("Length!=1", "/ar");
             if (Commands.Length >= 3 && (Commands[2].Equals("mp", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myplayer", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myp", StringComparison.OrdinalIgnoreCase)))
             {
                 sendPlayer = commandUser;
             }
             if (!float.TryParse(Commands[1], out float sendtime))
             {
-                Logger.Info("送信間隔の取得に失敗した為, コマンドが実行できませんでした。", "/ar");
+                Info("送信間隔の取得に失敗した為, コマンドが実行できませんでした。", "/ar");
                 return;
             }
             RoleinformationText.RoleCommand(SendTime: sendtime, target: sendPlayer);
@@ -583,7 +579,7 @@ internal static class RoleinformationText
             return;
         }
         // ゲーム開始前は毎回現在の役職を取得する
-        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
             CustomOverlays.GetActivateRoles();
         SendCommand(target, GetInRole()); // 辞書の内容を加工した文字列を取得し、ターゲットに送信する
     }
@@ -771,7 +767,7 @@ internal static class RoleinformationText
             }
 
             string errorMessage = Format(ModTranslation.GetString("RoleIdInfoError"), "{0}", roleId);
-            Logger.Error($"RoleId : [ {roleId} ] の取得に失敗しました。", "WriteRoleInfo");
+            Error($"RoleId : [ {roleId} ] の取得に失敗しました。", "WriteRoleInfo");
             return (roleName, errorMessage);
         }
 

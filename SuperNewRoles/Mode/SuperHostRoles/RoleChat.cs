@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using InnerNet;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class RoleChat
+internal class RoleChat
 {
     public static bool SendChat(ChatController __instance)
     {

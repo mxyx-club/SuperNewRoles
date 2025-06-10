@@ -13,8 +13,8 @@ namespace SuperNewRoles.CustomCosmetics;
 
 public static class DownLoadClassVisor
 {
-    public static bool IsEndDownload = false;
-    public static bool running = false;
+    public static bool IsEndDownload;
+    public static bool running;
 
     /// <summary>バイザーをダウンロードするRepositoryURL</summary>
     /// <value>key : URL, Item1 : クローゼット名, Item2 : SNRのテンプレートで記載されているか</value>
@@ -42,7 +42,7 @@ public static class DownLoadClassVisor
     /// <summary>ダウンロード済みリポジトリ</summary>
     public static List<string> CachedRepos = new();
     public static List<CustomVisorOnline> VisorDetails = new();
-    private static Task hatFetchTask = null;
+    private static Task hatFetchTask;
 
     public static void Load()
     {

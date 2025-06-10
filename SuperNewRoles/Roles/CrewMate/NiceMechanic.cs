@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static Il2CppSystem.Globalization.CultureInfo;
 
 namespace SuperNewRoles.Roles.Crewmate;
 

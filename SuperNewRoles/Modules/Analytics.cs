@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using SuperNewRoles.Mode;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -29,12 +26,12 @@ public static class Analytics
             if (!ConfigRoles.IsSendAnalyticsPopupViewd)
             {
                 ConfigRoles.IsSendAnalyticsPopupViewd = true;
-                GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
+                GenericPopup Popup = Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
                 Popup.gameObject.SetActive(true);
                 Popup.transform.FindChild("Background").localScale = new(2, 2.8f, 1);
                 Popup.transform.FindChild("ExitGame").localPosition = new(0f, -2f, -0.5f);
                 Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("AnalyticsOK");
-                TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
+                TextMeshPro Title = Object.Instantiate(Popup.TextAreaTMP, Popup.transform);
                 Title.text = ModTranslation.GetString("Analytics");
                 Title.transform.localPosition = new(0.15f, 2, -0.5f);
                 Title.transform.localScale = Vector3.one * 4.5f;
@@ -48,14 +45,14 @@ public static class Analytics
             if (currentPopup == null && !ConfigRoles.IsViewdApril2024Popup.Value && AprilFoolsManager.IsApril(2024))
             {
                 ConfigRoles.IsViewdApril2024Popup.Value = true;
-                GenericPopup Popup = GameObject.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
+                GenericPopup Popup = Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
                 Popup.gameObject.SetActive(true);
                 Popup.transform.FindChild("Background").localScale = new(2, 2f, 1);
                 Popup.transform.FindChild("ExitGame").localPosition = new(0f, -1.5f, -0.5f);
-                GameObject.Destroy(Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextTranslatorTMP>());
+                Object.Destroy(Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextTranslatorTMP>());
                 Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupOK");
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0.04f,0,0);
-                TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
+                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().transform.localPosition = new(0.04f, 0, 0);
+                TextMeshPro Title = Object.Instantiate(Popup.TextAreaTMP, Popup.transform);
                 Title.text = ModTranslation.GetString("AprilFool2024HackedByEvilHackerPopupTitle");
                 Title.transform.localPosition = new(0.07f, 1.285f, -0.5f);
                 Title.transform.localScale = Vector3.one * 2.8f;
@@ -148,7 +145,7 @@ public static class Analytics
         data.Add("MapId", GameOptionsManager.Instance.CurrentGameOptions.MapId.ToString());
         data.Add("GameMode", GameOptionsManager.Instance.currentGameMode.ToString());
         string json = data.GetString();
-        Logger.Info(json, "JSON");
+        Info(json, "JSON");
         AmongUsClient.Instance.StartCoroutine(Post(AnalyticsUrl + SendDataUrl, json).WrapToIl2Cpp());
     }
     public static string GetString(this IList<string> list)
@@ -180,7 +177,7 @@ public static class Analytics
 
         yield return request.Send();
 
-        Logger.Info($"Status Code: {request.responseCode}", "Analytics");
+        Info($"Status Code: {request.responseCode}", "Analytics");
         //Logger.Info($"Result:{request.downloadHandler.text}");
     }
 }

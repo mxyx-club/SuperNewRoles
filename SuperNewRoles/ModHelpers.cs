@@ -1,18 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
-using Hazel;
-using Il2CppInterop.Runtime;
-using Il2CppInterop.Runtime.InteropTypes;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -22,7 +15,6 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -132,7 +124,7 @@ public static class ModHelpers
 
     public static Sprite CreateSprite(string path, bool fromDisk = false)
     {
-        Texture2D texture = fromDisk ? ModHelpers.LoadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
+        Texture2D texture = fromDisk ? LoadTextureFromDisk(path) : LoadTextureFromResources(path);
         if (texture == null)
             return null;
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -147,7 +139,7 @@ public static class ModHelpers
         for (int i = startAt; i < self.Count - 1; i++)
         {
             T value = self[i];
-            int index = UnityEngine.Random.Range(i, self.Count);
+            int index = URandom.Range(i, self.Count);
             self[i] = self[index];
             self[index] = value;
         }
@@ -192,7 +184,7 @@ public static class ModHelpers
         {
             if (tran.name != notdelete)
             {
-                GameObject.Destroy(tran);
+                UObject.Destroy(tran);
             }
         }
     }
@@ -202,7 +194,7 @@ public static class ModHelpers
         {
             if (tran.name != notdelete)
             {
-                GameObject.Destroy(tran);
+                UObject.Destroy(tran);
             }
         }
     }
@@ -264,12 +256,12 @@ public static class ModHelpers
         return res;
     }
 
-    public static void DestroyList<T>(Il2CppSystem.Collections.Generic.List<T> items) where T : UnityEngine.Object
+    public static void DestroyList<T>(ISystem.List<T> items) where T : UnityEngine.Object
     {
         if (items == null) return;
         foreach (T item in items)
         {
-            UnityEngine.Object.Destroy(item);
+            UObject.Destroy(item);
         }
     }
     public static void DestroyList<T>(List<T> items) where T : UnityEngine.Object
@@ -277,7 +269,7 @@ public static class ModHelpers
         if (items == null) return;
         foreach (T item in items)
         {
-            UnityEngine.Object.Destroy(item);
+            UObject.Destroy(item);
         }
     }
     public static MurderAttemptResult CheckMurderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
@@ -483,8 +475,8 @@ public static class ModHelpers
         else if (player.IsRole(RoleId.Safecracker) && !(Safecracker.SafecrackerChangeTaskPrefab.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship))
             return Safecracker.GenerateTasks(task.numCommon + task.numShort + task.numLong);
 
-        Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
-        Il2CppSystem.Collections.Generic.List<byte> list = new();
+        ISystem.HashSet<TaskTypes> types = new();
+        ISystem.List<byte> list = new();
 
         int start = 0;
         MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numCommon, list, types, MapUtilities.CachedShipStatus.CommonTasks.GetShuffle().ToIl2CppList());
@@ -494,7 +486,7 @@ public static class ModHelpers
         MapUtilities.CachedShipStatus.AddTasksFromList(ref start, task.numLong, list, types, MapUtilities.CachedShipStatus.LongTasks.GetShuffle().ToIl2CppList());
         return list.ToList();
     }
-    static float tien;
+    private static float tien;
     public static string GetStringByCount(char txt, int count)
     {
         StringBuilder builder = new();
@@ -525,7 +517,7 @@ public static class ModHelpers
     {
         if (obj == null)
         {
-            Logger.Error($"ActivateConsole Object was not found!", "");
+            Error($"ActivateConsole Object was not found!", "");
             return null;
         }
         obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -568,7 +560,7 @@ public static class ModHelpers
     {
         if (obj == null)
         {
-            Logger.Error($"ActivateConsole Object was not found!", "");
+            Error($"ActivateConsole Object was not found!", "");
             return null;
         }
         obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -651,12 +643,12 @@ public static class ModHelpers
         writer.Write((ushort)role);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
-    public static InnerNet.ClientData GetClient(this PlayerControl player)
+    public static ClientData GetClient(this PlayerControl player)
     {
         var client = AmongUsClient.Instance.allClients.FirstOrDefault(cd => cd.Character.PlayerId == player.PlayerId);
         return client;
     }
-    public static T FirstOrDefault<T>(this Il2CppSystem.Collections.Generic.List<T> list, Func<T, bool> func)
+    public static T FirstOrDefault<T>(this ISystem.List<T> list, Func<T, bool> func)
     {
         foreach (T obj in list)
             if (func(obj))
@@ -730,9 +722,9 @@ public static class ModHelpers
                 return true;
         return false;
     }
-    public static Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue> list, Func<Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue>, bool> func)
+    public static ISystem.KeyValuePair<TKey, TValue> FirstOrDefault<TKey, TValue>(this ISystem.Dictionary<TKey, TValue> list, Func<ISystem.KeyValuePair<TKey, TValue>, bool> func)
     {
-        foreach (Il2CppSystem.Collections.Generic.KeyValuePair<TKey, TValue> obj in list)
+        foreach (ISystem.KeyValuePair<TKey, TValue> obj in list)
             if (func(obj))
                 return obj;
         return default;
@@ -743,7 +735,7 @@ public static class ModHelpers
             return obj;
         return default;
     }
-    public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+    public static List<T> ToList<T>(this ISystem.List<T> list)
     {
         List<T> newList = new(list.Count);
         foreach (T item in list)
@@ -752,9 +744,9 @@ public static class ModHelpers
         }
         return newList;
     }
-    public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this IEnumerable<T> list)
+    public static ISystem.List<T> ToIl2CppList<T>(this IEnumerable<T> list)
     {
-        Il2CppSystem.Collections.Generic.List<T> newList = new(list.Count());
+        ISystem.List<T> newList = new(list.Count());
         foreach (T item in list)
         {
             newList.Add(item);
@@ -814,7 +806,7 @@ public static class ModHelpers
         if (SucsessChance == 0) return false;
         //成功確率が最大と一緒かそれ以上ならtrueを返す
         if (SucsessChance >= MaxChance) return true;
-        return UnityEngine.Random.Range(0, MaxChance) <= SucsessChance;
+        return URandom.Range(0, MaxChance) <= SucsessChance;
     }
     /// <summary>
     /// ランダムを取得します。max = 10だと0～10まで取得できます
@@ -824,7 +816,7 @@ public static class ModHelpers
     /// <returns></returns>
     public static int GetRandomInt(int max, int min = 0)
     {
-        return UnityEngine.Random.Range(min, max + 1);
+        return URandom.Range(min, max + 1);
     }
     public static bool HidePlayerName(PlayerControl source, PlayerControl target)
     {
@@ -940,24 +932,24 @@ public static class ModHelpers
     {
         return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
     }
-    public static T GetRandom<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+    public static T GetRandom<T>(this ISystem.List<T> list)
     {
-        var indexData = UnityEngine.Random.Range(0, list.Count);
+        var indexData = URandom.Range(0, list.Count);
         return list[indexData];
     }
     public static T GetRandom<T>(this List<T> list)
     {
-        var indexData = UnityEngine.Random.Range(0, list.Count);
+        var indexData = URandom.Range(0, list.Count);
         return list[indexData];
     }
     public static T GetRandom<T>(this T[] list)
     {
-        var indexData = UnityEngine.Random.Range(0, list.Length);
+        var indexData = URandom.Range(0, list.Length);
         return list[indexData];
     }
     public static int GetRandomIndex<T>(List<T> list)
     {
-        var indexData = UnityEngine.Random.Range(0, list.Count);
+        var indexData = URandom.Range(0, list.Count);
         return indexData;
     }
 
@@ -1059,7 +1051,7 @@ public static class ModHelpers
             }
         }
         if (IdControlDic.ContainsKey(id)) return IdControlDic[id];
-        Logger.Error($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
+        Error($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }
     public static Vent VentById(byte id)
@@ -1073,7 +1065,7 @@ public static class ModHelpers
             }
         }
         if (VentIdControlDic.ContainsKey(id)) return VentIdControlDic[id];
-        Logger.Error($"idと合致するVentIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
+        Error($"idと合致するVentIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }
 
@@ -1139,8 +1131,8 @@ public static class ModHelpers
             return false;
         return GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)Map;
     }
-    public static Il2CppSystem.Collections.Generic.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
-    public static Il2CppSystem.Collections.Generic.List<T> ListToIl2Cpp<T>(this Il2CppReferenceArray<T> values) where T : Il2CppObjectBase => values.ToList().ToIl2CppList();
+    public static ISystem.IEnumerable<T> IEnumerableToIl2Cpp<T>(this IEnumerable<T> values) => Il2CppSystem.Linq.Enumerable.Cast<T>(values.WrapToIl2Cpp());
+    public static ISystem.List<T> ListToIl2Cpp<T>(this Il2CppReferenceArray<T> values) where T : Il2CppObjectBase => values.ToList().ToIl2CppList();
     public static void ResetKillCool(this PlayerControl player, float timer = float.NegativeInfinity)
     {
         IGameOptions optdata = SyncSetting.OptionDatas[player].DeepCopy();

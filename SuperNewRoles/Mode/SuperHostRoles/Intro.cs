@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class Intro
+internal class Intro
 {
-    public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
+    public static ISystem.List<PlayerControl> ModeHandler(IntroCutscene __instance)
     {
-        Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
+        ISystem.List<PlayerControl> Teams = new();
         Teams.Add(PlayerControl.LocalPlayer);
         try
         {

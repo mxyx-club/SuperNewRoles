@@ -1,10 +1,9 @@
 using System.Timers;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
-class Celebrity
+internal class Celebrity
 {
     internal class AbilityOverflowingBrilliance
     {
@@ -56,7 +55,7 @@ class Celebrity
                 }
             }
 
-            Logger.Info("スターの輝きが現れる条件を満たしませんでした。「あなたたちは 真の闇におちるのです」", "CelebrityFlash");
+            Info("スターの輝きが現れる条件を満たしませんでした。「あなたたちは 真の闇におちるのです」", "CelebrityFlash");
             return false;
         }
         public static void WrapUp()
@@ -73,13 +72,13 @@ class Celebrity
             timer.Elapsed += (source, e) =>
             {
                 SeerHandler.ShowFlash(Color.yellow);
-                Logger.Info($"{RoleClass.Celebrity.FlashTime / 1000}s 経過した為発光しました。「走れ、光よ！」", "CelebrityFlash");
+                Info($"{RoleClass.Celebrity.FlashTime / 1000}s 経過した為発光しました。「走れ、光よ！」", "CelebrityFlash");
             };
             bool enabled = EnabledSetting();
             timer.AutoReset = enabled;
             timer.Enabled = enabled;
             if (!enabled) return;
-            Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
+            Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
         }
 
         /// <summary>
@@ -91,7 +90,7 @@ class Celebrity
 
             timer.Stop();
             if (isEndGame) timer.Dispose();
-            Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
+            Info("発光用タイマーを止めました。", "CelebrityFlash");
         }
     }
 }

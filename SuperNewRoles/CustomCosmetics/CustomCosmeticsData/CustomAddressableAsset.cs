@@ -1,15 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using Innersloth.Assets;
-using Sentry;
-using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 
@@ -25,7 +18,7 @@ public class CustomAddressableAsset<T> : AddressableAsset<T> where T : UnityEngi
     }
     public override T GetAsset()
     {
-        Logger.Info((currentViewData == null).ToString() + ":" + (currentViewData.TryCast<T>() == null).ToString());
+        Info((currentViewData == null).ToString() + ":" + (currentViewData.TryCast<T>() == null).ToString());
         if (currentViewData != null)
             return currentViewData.TryCast<T>();
         return null;
@@ -41,7 +34,7 @@ public class CustomAddressableAsset<T> : AddressableAsset<T> where T : UnityEngi
     }
     public override void Unload()
     {
-        Logger.Info("UNLOAD");
+        Info("UNLOAD");
     }
     public override void LoadAsync(Il2CppSystem.Action onSuccessCb = null, Il2CppSystem.Action onErrorcb = null, Il2CppSystem.Action onFinishedcb = null)
     {

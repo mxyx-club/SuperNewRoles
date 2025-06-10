@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ public class LateTask
         timer = time;
         this.name = name;
         AddTasks.Add(this);
-        Logger.Info("New LateTask \"" + name + "\" is created", "LateTask");
+        Info("New LateTask \"" + name + "\" is created", "LateTask");
     }
     public static void Update(float deltaTime)
     {
@@ -40,7 +39,7 @@ public class LateTask
             //Logger.Info("LateTask \"" + task.name + "\" Start","LateTask");
             if (task.Run(deltaTime))
             {
-                Logger.Info("LateTask \"" + task.name + "\" is finished", "LateTask");
+                Info("LateTask \"" + task.name + "\" is finished", "LateTask");
                 TasksToRemove.Add(task);
             }
         });
@@ -53,7 +52,7 @@ public class LateTask
     }
 }
 [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
-class LateUpdate
+internal class LateUpdate
 {
     public static void Postfix()
     {

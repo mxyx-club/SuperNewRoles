@@ -6,7 +6,7 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
-class Jester
+internal class Jester
 {
     public static void WrapUp(GameData.PlayerInfo exiled)
     {

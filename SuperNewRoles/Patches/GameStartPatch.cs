@@ -1,21 +1,19 @@
-using BepInEx.Configuration;
-using HarmonyLib;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class GameStartPatch
+internal class GameStartPatch
 {
-    public static bool lastPublic = false;
+    public static bool lastPublic;
     public static float lastTimer;
 
     /// <summary>公開部屋を封印するか</summary>
     private const bool PublicSeal = false;
 
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
-    class MakePublicPatch
+    private class MakePublicPatch
     {
         public static bool Prefix(GameStartManager __instance)
         {
@@ -28,7 +26,7 @@ class GameStartPatch
             string reason = null; // 都度変える
             string error = string.Format(ModTranslation.GetString("PublicRoomError"), HostAmongUSVer, HostSNRVer, reason == null ? ModTranslation.GetString("CheckOfficialInformation") : reason);
 
-            Logger.Error($"公開が無効に関わらず, 公開ボタンが押されました。", "MakePublicPatch");
+            Error($"公開が無効に関わらず, 公開ボタンが押されました。", "MakePublicPatch");
             __instance.MakePublicButton.color = Palette.DisabledClear;
             __instance.privatePublicText.color = Palette.DisabledClear;
 
@@ -38,7 +36,7 @@ class GameStartPatch
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
-    class CoStartGamePatch
+    private class CoStartGamePatch
     {
         public static void Postfix()
         {
@@ -54,7 +52,7 @@ class GameStartPatch
         }
     }
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
-    class StartPatch
+    private class StartPatch
     {
         public static void Postfix(GameStartManager __instance)
         {
@@ -67,22 +65,22 @@ class GameStartPatch
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
-    class AmongUsClientOnPlayerJoinedPatch
+    private class AmongUsClientOnPlayerJoinedPatch
     {
         public static void Postfix()
         {
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.UpdatePlayerCount(true);
             }
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
-    class AmongUsClientOnPlayerLeftPatch
+    private class AmongUsClientOnPlayerLeftPatch
     {
         public static void Postfix()
         {
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && lastPublic && AmongUsClient.Instance.AmHost)
             {
                 Modules.MatchMaker.UpdatePlayerCount();
             }
@@ -90,7 +88,7 @@ class GameStartPatch
     }
 
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
-    class UpdatePatch
+    private class UpdatePatch
     {
         public static void Postfix(GameStartManager __instance)
         {

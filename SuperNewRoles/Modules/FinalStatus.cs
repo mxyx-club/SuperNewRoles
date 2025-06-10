@@ -1,5 +1,3 @@
-using Hazel;
-
 namespace SuperNewRoles.Modules;
 
 public static class FinalStatusClass

@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionReportDeadBody : ReplayAction
@@ -27,19 +24,19 @@ public class ReplayActionReportDeadBody : ReplayAction
     public override void OnAction()
     {
         //ここに処理書く
-        Logger.Info("a");
+        Info("a");
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
-        Logger.Info("b");
+        Info("b");
         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(targetPlayer);
-        Logger.Info("c");
+        Info("c");
         if (source == null)
         {
-            Logger.Info("エラー");
+            Info("エラー");
             return;
         }
-        Logger.Info("d");
+        Info("d");
         source.ReportDeadBody(target);
-        Logger.Info("e");
+        Info("e");
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionReportDeadBody Create(byte sourcePlayer, byte targetPlayer)

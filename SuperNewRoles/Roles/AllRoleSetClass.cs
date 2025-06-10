@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -20,23 +17,23 @@ using Object = UnityEngine.Object;
 namespace SuperNewRoles;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetRole))]
-class SetRoleLogger
+internal class SetRoleLogger
 {
     public static void Postfix(PlayerControl __instance, RoleTypes role)
     {
-        Logger.Info($"{__instance.Data.PlayerName} の役職が {role} になりました", "SetRole");
+        Info($"{__instance.Data.PlayerName} の役職が {role} になりました", "SetRole");
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
-class RpcSetRoleReplacer
+internal class RpcSetRoleReplacer
 {
     public static void Postfix(PlayerControl __instance, RoleTypes roleType)
     {
-        Logger.Info($"{__instance.Data.PlayerName} の役職が {roleType} になりました", "RpcSetRole");
+        Info($"{__instance.Data.PlayerName} の役職が {roleType} になりました", "RpcSetRole");
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
-class Startgamepatch
+internal class Startgamepatch
 {
     public static void Postfix()
     {
@@ -61,7 +58,7 @@ public class PairRoleDetail
     public RoleId role { get; }
     public (TeamRoleType team, RoleId role)[] pairRoles { get; }
     public (int impostor, int neutral, int crewmate) needPlayerCount { get; }
-    public Action<List<(RoleId, PlayerControl)>> OnAssigned { get; } = null;
+    public Action<List<(RoleId, PlayerControl)>> OnAssigned { get; }
     public PairRoleDetail(RoleId role, (int impostor, int neutral, int crewmate) needPlayerCount, params (TeamRoleType team, RoleId role)[] pairRoles)
     {
         this.role = role;
@@ -77,9 +74,9 @@ public class PairRoleDetail
     }
 }
 [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
-class RoleManagerSelectRolesPatch
+internal class RoleManagerSelectRolesPatch
 {
-    public static bool IsSetRoleRPC = false;
+    public static bool IsSetRoleRPC;
     public static bool Prefix(RoleManager __instance)
     {
         ReplayLoader.AllRoleSet();
@@ -216,7 +213,7 @@ class RoleManagerSelectRolesPatch
             return;
         new LateTask(() =>
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
                 return;
             foreach (var pc in CachedPlayer.AllPlayers)
             {
@@ -225,7 +222,7 @@ class RoleManagerSelectRolesPatch
         }, 3f, "SetImpostor");
     }
 }
-class AllRoleSetClass
+internal class AllRoleSetClass
 {
     public enum AssignType
     {
@@ -329,7 +326,7 @@ class AllRoleSetClass
                 List<PlayerControl> listData = new();
                 for (int i2 = 0; i2 < 2; i2++)
                 {
-                    var player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
+                    var player = ModHelpers.GetRandomIndex(SelectPlayers);
                     listData.Add(SelectPlayers[player]);
                     SelectPlayers.RemoveAt(player);
                 }
@@ -848,7 +845,7 @@ class AllRoleSetClass
             _ => true,
         };
     }
-    static List<RoleId> GetTeamChanceList(bool IsTen, TeamRoleType Team)
+    private static List<RoleId> GetTeamChanceList(bool IsTen, TeamRoleType Team)
     {
         AssignType assignType = AssignType.Crewmate;
         switch (Team)
@@ -912,18 +909,18 @@ class AllRoleSetClass
         }
         foreach (var assigns in AssignTickets)
         {
-            Logger.Info("----------------");
-            Logger.Info($"{assigns.Key} : {assigns.Value.Count}");
-            Logger.Info($"IsImpostor: {assigns.Key.HasFlag(AssignType.Impostor)}");
-            Logger.Info($"IsNeutral: {assigns.Key.HasFlag(AssignType.Neutral)}");
-            Logger.Info($"IsCrewmate: {assigns.Key.HasFlag(AssignType.Crewmate)}");
-            Logger.Info($"IsTenPar: {assigns.Key.HasFlag(AssignType.TenPar)}");
-            Logger.Info($"IsNotTenPar: {assigns.Key.HasFlag(AssignType.NotTenPar)}");
+            Info("----------------");
+            Info($"{assigns.Key} : {assigns.Value.Count}");
+            Info($"IsImpostor: {assigns.Key.HasFlag(AssignType.Impostor)}");
+            Info($"IsNeutral: {assigns.Key.HasFlag(AssignType.Neutral)}");
+            Info($"IsCrewmate: {assigns.Key.HasFlag(AssignType.Crewmate)}");
+            Info($"IsTenPar: {assigns.Key.HasFlag(AssignType.TenPar)}");
+            Info($"IsNotTenPar: {assigns.Key.HasFlag(AssignType.NotTenPar)}");
             foreach (var assign in assigns.Value)
             {
-                Logger.Info($"{assign}");
+                Info($"{assign}");
             }
-            Logger.Info("----------------");
+            Info("----------------");
         }
         SetJumboTicket();
         //SetChance(selection, roleInfo.Role, roleInfo.Team);

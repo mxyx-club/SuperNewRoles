@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using AmongUs.Data;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -15,9 +12,9 @@ public class CustomOverlays
     private static Sprite colorBG;
     private static SpriteRenderer meetingUnderlay;
     private static SpriteRenderer infoUnderlay;
-    private static TMPro.TextMeshPro infoOverlayLeft;
-    private static TMPro.TextMeshPro infoOverlayCenter;
-    private static TMPro.TextMeshPro infoOverlayRight;
+    private static TextMeshPro infoOverlayLeft;
+    private static TextMeshPro infoOverlayCenter;
+    private static TextMeshPro infoOverlayRight;
     private static bool overlayShown;
     private static Dictionary<byte, string> playerDataDictionary = new();
     internal static Dictionary<byte, string> ActivateRolesDictionary = new();
@@ -26,11 +23,11 @@ public class CustomOverlays
     {
         HideBlackBG();
         HideInfoOverlay();
-        UnityEngine.Object.Destroy(meetingUnderlay);
-        UnityEngine.Object.Destroy(infoUnderlay);
-        UnityEngine.Object.Destroy(infoOverlayLeft);
-        UnityEngine.Object.Destroy(infoOverlayCenter);
-        UnityEngine.Object.Destroy(infoOverlayRight);
+        UObject.Destroy(meetingUnderlay);
+        UObject.Destroy(infoUnderlay);
+        UObject.Destroy(infoOverlayLeft);
+        UObject.Destroy(infoOverlayCenter);
+        UObject.Destroy(infoOverlayRight);
         meetingUnderlay = infoUnderlay = null;
         infoOverlayLeft = infoOverlayCenter = infoOverlayRight = null;
 
@@ -55,7 +52,7 @@ public class CustomOverlays
 
         if (meetingUnderlay == null)
         {
-            meetingUnderlay = UnityEngine.Object.Instantiate(hudManager.FullScreen, hudManager.transform);
+            meetingUnderlay = UObject.Instantiate(hudManager.FullScreen, hudManager.transform);
             meetingUnderlay.transform.localPosition = new Vector3(0f, 0f, 20f);
             meetingUnderlay.gameObject.SetActive(true);
             meetingUnderlay.enabled = false;
@@ -63,7 +60,7 @@ public class CustomOverlays
 
         if (infoUnderlay == null)
         {
-            infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
+            infoUnderlay = UObject.Instantiate(meetingUnderlay, hudManager.transform);
             infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
             infoUnderlay.gameObject.SetActive(true);
             infoUnderlay.enabled = false;
@@ -71,11 +68,11 @@ public class CustomOverlays
 
         if (infoOverlayLeft == null)
         {
-            infoOverlayLeft = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
+            infoOverlayLeft = UObject.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
             infoOverlayLeft.fontSize = infoOverlayLeft.fontSizeMin = infoOverlayLeft.fontSizeMax = 1.15f;
             infoOverlayLeft.autoSizeTextContainer = false;
             infoOverlayLeft.enableWordWrapping = false;
-            infoOverlayLeft.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            infoOverlayLeft.alignment = TextAlignmentOptions.TopLeft;
             infoOverlayLeft.transform.position = Vector3.zero;
             infoOverlayLeft.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
             infoOverlayLeft.transform.localScale = Vector3.one;
@@ -85,13 +82,13 @@ public class CustomOverlays
 
         if (infoOverlayCenter == null)
         {
-            infoOverlayCenter = UnityEngine.Object.Instantiate(infoOverlayLeft, hudManager.transform);
+            infoOverlayCenter = UObject.Instantiate(infoOverlayLeft, hudManager.transform);
             infoOverlayCenter.maxVisibleLines = 30;
             infoOverlayCenter.fontSize = infoOverlayCenter.fontSizeMin = infoOverlayCenter.fontSizeMax = 1.15f;
             infoOverlayCenter.outlineWidth += 0.02f;
             infoOverlayCenter.autoSizeTextContainer = false;
             infoOverlayCenter.enableWordWrapping = false;
-            infoOverlayCenter.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            infoOverlayCenter.alignment = TextAlignmentOptions.TopLeft;
             infoOverlayCenter.transform.position = Vector3.zero;
             infoOverlayCenter.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
             infoOverlayCenter.transform.localScale = Vector3.one;
@@ -101,13 +98,13 @@ public class CustomOverlays
 
         if (infoOverlayRight == null)
         {
-            infoOverlayRight = UnityEngine.Object.Instantiate(infoOverlayCenter, hudManager.transform);
+            infoOverlayRight = UObject.Instantiate(infoOverlayCenter, hudManager.transform);
             infoOverlayRight.maxVisibleLines = 30;
             infoOverlayRight.fontSize = infoOverlayRight.fontSizeMin = infoOverlayRight.fontSizeMax = 1.15f;
             infoOverlayRight.outlineWidth += 0.02f;
             infoOverlayRight.autoSizeTextContainer = false;
             infoOverlayRight.enableWordWrapping = false;
-            infoOverlayRight.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            infoOverlayRight.alignment = TextAlignmentOptions.TopLeft;
             infoOverlayRight.transform.position = Vector3.zero;
             infoOverlayRight.transform.localPosition = infoOverlayCenter.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
             infoOverlayRight.transform.localScale = Vector3.one;
@@ -272,7 +269,7 @@ public class CustomOverlays
     public static class CustomOverlayKeybinds
     {
         /// <summary> オーバーレイの開閉をブロックするか </summary>
-        static bool IsOpenBlocked =>
+        private static bool IsOpenBlocked =>
             FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening ||
             (!ModHelpers.IsDebugMode() && (IntroCutscene.Instance || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed));
 
@@ -296,7 +293,7 @@ public class CustomOverlays
             else if (Input.GetKeyDown(KeyCode.T)) YoggleInfoOverlay(CustomOverlayPattern.MatchTag); // 「現在設定されているタグ」を表示
             else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay(nowPattern, true); // 全てのoverlayの文章の更新 & GとIはページ送り
 
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
             if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay(CustomOverlayPattern.MyRole); // 自分の役職の説明を表示
             else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay(CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
         }
@@ -364,7 +361,7 @@ public class CustomOverlays
         else
         {
             // ゲームが開始する前は、毎回辞書に保存する。開始後は保存してあるものから文章を取得する。 文章取得は共通処理
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
                 GetActivateRoles();
 
             int impLine = 0, neuLine = 0, crewLine = 0;
@@ -410,8 +407,8 @@ public class CustomOverlays
         }
     }
 
-    private static int ActiveRoleNowPage = 0;
-    private static int ActiveRoleMaxPage = 0;
+    private static int ActiveRoleNowPage;
+    private static int ActiveRoleMaxPage;
 
     private static void ActivatePage(in bool update, out string left, out string center, out string right)
     {
@@ -599,7 +596,7 @@ public class CustomOverlays
             else neutralRoles.AppendLine(roleText);
 
             var log = type == TeamRoleType.Impostor ? "ImpostorRole" : type == TeamRoleType.Crewmate ? "CrewmateRole" : " NeutralRole";
-            if (isLogWrite) Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log);
+            if (isLogWrite) Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log);
         }
 
         // internalな辞書に陣営毎に保存する(keyは陣営)
@@ -634,7 +631,7 @@ public class CustomOverlays
         StringBuilder rightBuilder = new();
 
         // ゲーム開始後はゲーム開始時に辞書に格納した情報から表示する。
-        if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
         {
             foreach (var kvp in playerDataDictionary)
             {

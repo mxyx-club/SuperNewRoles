@@ -1,8 +1,6 @@
-using HarmonyLib;
-
 namespace SuperNewRoles.Roles;
 
-class Fox
+internal class Fox
 {
     public static class FoxMurderPatch
     {

@@ -3,7 +3,6 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.Role;
@@ -14,12 +13,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 
 public static class RoleSelectHandler
 {
-    public static CustomRpcSender sender = null;
+    public static CustomRpcSender sender;
     /// <summary>
     /// 追放メッセージを表記する為のBot
     /// </summary>
     /// <value>現在はパン屋Bot 又は 詐欺師Botのみ</value>
-    public static PlayerControl ConfirmImpostorSecondTextBot = null;
+    public static PlayerControl ConfirmImpostorSecondTextBot;
 
     public static CustomRpcSender RoleSelect(CustomRpcSender send)
     {
@@ -316,7 +315,7 @@ public static class RoleSelectHandler
     }
     public static void SetRoleDesync(PlayerControl Player, RoleTypes roleTypes)
     {
-        Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
+        Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
         if (!Player.IsMod())
         {
             int PlayerCID = Player.GetClientId();
@@ -364,10 +363,10 @@ public static class RoleSelectHandler
     {
         if (p.IsMod() && isNotModOnly)
         {
-            Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
+            Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
             return;
         }
-        Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
+        Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
         sender.RpcSetRole(p, roleTypes);
     }
     public static void CrewOrImpostorSet()

@@ -1,11 +1,8 @@
 using System;
-using System.Linq;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Crewmate;
@@ -34,7 +31,7 @@ public static class Psychometrist
                 if (text <= 0) text = 0;
                 if (newtext != "") newtext += "\n";
                 newtext += $"{text}秒前";
-                Logger.Info($"{text}");
+                Info($"{text}");
             }
             DeathTimeTextData.Item2.text = newtext;
         }
@@ -54,7 +51,7 @@ public static class Psychometrist
                         RoleClass.Psychometrist.FootprintsPosition[(data.Key.Item1, data.Key.Item2)].Item1.Add(ModHelpers.PlayerById(data.Key.Item1).GetTruePosition());
                     }
                     RoleClass.Psychometrist.FootprintsDeathTime[(data.Key.Item1, data.Key.Item2)] -= Time.fixedDeltaTime;
-                    Logger.Info($"{RoleClass.Psychometrist.FootprintsDeathTime[(data.Key.Item1, data.Key.Item2)]}");
+                    Info($"{RoleClass.Psychometrist.FootprintsDeathTime[(data.Key.Item1, data.Key.Item2)]}");
                     if (RoleClass.Psychometrist.FootprintsDeathTime[(data.Key.Item1, data.Key.Item2)] <= 0)
                     {
                         RoleClass.Psychometrist.FootprintsPosition[(data.Key.Item1, data.Key.Item2)] = (RoleClass.Psychometrist.FootprintsPosition[(data.Key.Item1, data.Key.Item2)].Item1, false);
@@ -77,8 +74,8 @@ public static class Psychometrist
         DeadBody targetbody = RoleClass.Psychometrist.CurrentTarget;
         if (targetbody == null || !PlayerControl.LocalPlayer.CanMove) return;
         DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == targetbody.ParentId)?.FirstOrDefault();
-        TextMeshPro DeathTimeText = GameObject.Instantiate(PlayerControl.LocalPlayer.NameText(), targetbody.transform);
-        int count = UnityEngine.Random.Range(CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt() * -1, CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt());
+        TextMeshPro DeathTimeText = UObject.Instantiate(PlayerControl.LocalPlayer.NameText(), targetbody.transform);
+        int count = URandom.Range(CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt() * -1, CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt());
         RoleClass.Psychometrist.DeathTimeTexts.Add((targetbody, DeathTimeText, count));
         DeathTimeText.transform.localPosition = new(-0.2f, 0.5f, 0);
         DeathTimeText.transform.localScale = new(1.5f, 1.5f, 1.5f);

@@ -1,19 +1,14 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Roles.Attribute;
-class HauntedWolf
+internal class HauntedWolf
 {
     internal static class CustomOptionData
     {
-        const int optionId = 500400;
+        private const int optionId = 500400;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption IsAssignMadAndFriendRoles;
@@ -93,7 +88,7 @@ class HauntedWolf
 
         internal static void SetHauntedWolf(PlayerControl player)
         {
-            Logger.Info($"{player.name} を 狼憑きにします。");
+            Info($"{player.name} を 狼憑きにします。");
             RoleData.Player.Add(player);
             ChacheManager.ResetHauntedWolfChache();
         }

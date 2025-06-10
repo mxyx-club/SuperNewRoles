@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
-using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class KillOverlayA
+internal class KillOverlayA
 {
     [HarmonyPatch(typeof(OverlayKillAnimation), nameof(OverlayKillAnimation.Initialize))]
     public static class OverlayKillAnimationInitializePatch
@@ -48,7 +46,7 @@ class KillOverlayA
     {
         public static void Prefix(KillOverlay __instance, ref OverlayKillAnimation killAnimation, GameData.PlayerInfo killer, GameData.PlayerInfo victim)
         {
-            Logger.Info("Cohkoejhgmm\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ned!");
+            Info("Cohkoejhgmm\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ned!");
             if (killer.PlayerId == victim.PlayerId)
             {
                 //int index = ModHelpers.GetRandomIndex(__instance.KillAnims.ToList());

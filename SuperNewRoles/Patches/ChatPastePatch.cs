@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class ChatPaste
+internal class ChatPaste
 {
-    [HarmonyLib.HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
-    class Pastepatch
+    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+    private class Pastepatch
     {
-        static void Postfix()
+        private static void Postfix()
         {
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
             {

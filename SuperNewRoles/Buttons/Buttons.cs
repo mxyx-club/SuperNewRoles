@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Agartha;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Modules;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -18,14 +12,12 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using SuperNewRoles.WaveCannonObj;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
 
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
-static class HudManagerStartPatch
+internal static class HudManagerStartPatch
 {
     #region Buttons
     public static CustomButton DebuggerButton;
@@ -106,11 +98,11 @@ static class HudManagerStartPatch
     #endregion
 
     #region Texts
-    public static TMPro.TMP_Text sheriffNumShotsText;
-    public static TMPro.TMP_Text PavlovsdogKillSelfText;
-    public static TMPro.TMP_Text GhostMechanicNumRepairText;
-    public static TMPro.TMP_Text PositionSwapperNumText;
-    public static TMPro.TMP_Text SecretlyKillNumText;
+    public static TMP_Text sheriffNumShotsText;
+    public static TMP_Text PavlovsdogKillSelfText;
+    public static TMP_Text GhostMechanicNumRepairText;
+    public static TMP_Text PositionSwapperNumText;
+    public static TMP_Text SecretlyKillNumText;
     #endregion
 
     public static void SetCustomButtonCooldowns()
@@ -288,7 +280,7 @@ static class HudManagerStartPatch
                 MechanicButton.HasEffect = true;
             },
             // FIXME: EvilMechanicでもNiceMechanicのボタンが表示されている状態です。変える方法分かったら変えて下さい…
-            PlayerControl.LocalPlayer.IsImpostor() ? Roles.Impostor.EvilMechanic.GetButtonSprite() : Roles.Crewmate.NiceMechanic.GetButtonSprite(),
+            PlayerControl.LocalPlayer.IsImpostor() ? EvilMechanic.GetButtonSprite() : NiceMechanic.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -386,7 +378,7 @@ static class HudManagerStartPatch
                         bool IsAliveLovers = false;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.TryGetRoleBase<Cupid>(out Cupid cupid) & cupid.Created)))
+                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.TryGetRoleBase(out Cupid cupid) & cupid.Created)))
                             {
                                 IsAliveLovers = true;
                                 break;
@@ -557,7 +549,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        PavlovsdogKillSelfText = GameObject.Instantiate(PavlovsdogKillButton.actionButton.cooldownTimerText, PavlovsdogKillButton.actionButton.cooldownTimerText.transform.parent);
+        PavlovsdogKillSelfText = UObject.Instantiate(PavlovsdogKillButton.actionButton.cooldownTimerText, PavlovsdogKillButton.actionButton.cooldownTimerText.transform.parent);
         PavlovsdogKillSelfText.text = "";
         PavlovsdogKillSelfText.enableWordWrapping = false;
         PavlovsdogKillSelfText.transform.localScale = Vector3.one * 0.5f;
@@ -1021,7 +1013,7 @@ static class HudManagerStartPatch
                     FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
                     CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
                     FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
-                    RoleClass.Doctor.Vital = GameObject.FindObjectOfType<VitalsMinigame>();
+                    RoleClass.Doctor.Vital = UObject.FindObjectOfType<VitalsMinigame>();
                 }
                 RoleClass.Doctor.MyPanelFlag = true;
             },
@@ -1031,7 +1023,7 @@ static class HudManagerStartPatch
                 if (RoleClass.Doctor.IsChargingNow)
                 {
                     DoctorVitalsButton.MaxTimer = 10f;
-                    Logger.Info(RoleClass.Doctor.Battery.ToString());
+                    Info(RoleClass.Doctor.Battery.ToString());
                     DoctorVitalsButton.Timer = RoleClass.Doctor.Battery <= 0 ? 10f : RoleClass.Doctor.Battery / 10f;
                 }
                 else if (RoleClass.Doctor.Battery > 0)
@@ -1430,7 +1422,7 @@ static class HudManagerStartPatch
             8,
             () => { return false; }
         );
-        sheriffNumShotsText = GameObject.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
+        sheriffNumShotsText = UObject.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
         sheriffNumShotsText.text = "";
         sheriffNumShotsText.enableWordWrapping = false;
         sheriffNumShotsText.transform.localScale = Vector3.one * 0.5f;
@@ -1692,7 +1684,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+        RoleClass.SerialKiller.SuicideKillText = UObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
         RoleClass.SerialKiller.SuicideKillText.text = "";
         RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
         RoleClass.SerialKiller.SuicideKillText.transform.localScale = Vector3.one * 0.5f;
@@ -2174,7 +2166,7 @@ static class HudManagerStartPatch
             49,
             () => { return false; }
         );
-        GhostMechanicNumRepairText = GameObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
+        GhostMechanicNumRepairText = UObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
         GhostMechanicNumRepairText.text = "";
         GhostMechanicNumRepairText.enableWordWrapping = false;
         GhostMechanicNumRepairText.transform.localScale = Vector3.one * 0.5f;
@@ -2211,14 +2203,15 @@ static class HudManagerStartPatch
             () => { return false; }
         );
         {
-            PositionSwapperNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
+            PositionSwapperNumText = UObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
             PositionSwapperNumText.text = "";
             PositionSwapperNumText.enableWordWrapping = false;
             PositionSwapperNumText.transform.localScale = Vector3.one * 0.5f;
             PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
             PositionSwapperButton.buttonText = ModTranslation.GetString("PositionSwapperButtonName");
             PositionSwapperButton.showButtonText = true;
-        };
+        }
+        ;
 
         SecretlyKillerMainButton = new(
             () =>
@@ -2290,14 +2283,15 @@ static class HudManagerStartPatch
             () => { return !PlayerControl.LocalPlayer.CanMove || (!RoleClass.SecretlyKiller.IsBlackOutKillCharge && ModHelpers.IsBlackout()); }
         );
         {
-            SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);
+            SecretlyKillNumText = UObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);
             SecretlyKillNumText.text = "";
             SecretlyKillNumText.enableWordWrapping = false;
             SecretlyKillNumText.transform.localScale = Vector3.one * 0.5f;
             SecretlyKillNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
             SecretlyKillerSecretlyKillButton.buttonText = ModTranslation.GetString("SecretlyKillButtonName");
             SecretlyKillerSecretlyKillButton.showButtonText = true;
-        };
+        }
+        ;
 
         Clairvoyant.SetupCustomButtons(__instance);
 
@@ -2424,8 +2418,8 @@ static class HudManagerStartPatch
                     FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown > 0 ? RoleClass.DefaultKillCoolDown / 2f : 0.00001f;
                     FastMakerButton.Timer = FastMakerButton.MaxTimer;
                     if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) FastMakerButton.buttonText = ModTranslation.GetString("KillName"); // ボタン名を戻す
-                    Logger.Info($"守護を発動させている為、設定キルクールの半分の値である<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
-                    Logger.Info($"マッドを作成しました。IsCreatedMadmate == {RoleClass.FastMaker.IsCreatedMadmate}", "FastMakerButton");
+                    Info($"守護を発動させている為、設定キルクールの半分の値である<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
+                    Info($"マッドを作成しました。IsCreatedMadmate == {RoleClass.FastMaker.IsCreatedMadmate}", "FastMakerButton");
                 }
                 else
                 {
@@ -2433,7 +2427,7 @@ static class HudManagerStartPatch
                     ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                     FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
                     FastMakerButton.Timer = FastMakerButton.MaxTimer;
-                    Logger.Info($"Mad作成済みの為キルしました。デフォルトキルクールである<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
+                    Info($"Mad作成済みの為キルしました。デフォルトキルクールである<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !ModeHandler.IsMode(ModeId.SuperHostRoles); },
@@ -2644,7 +2638,7 @@ static class HudManagerStartPatch
                         DeadBody component = collider2D.GetComponent<DeadBody>();
                         Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
                         Vector2 truePosition2 = component.TruePosition;
-                        Logger.Info((!component.Reported).ToString() + $"{truePosition2} : {truePosition} : {Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance} : {Vector2.Distance(truePosition2, truePosition)} : {PlayerControl.LocalPlayer.MaxReportDistance}");
+                        Info((!component.Reported).ToString() + $"{truePosition2} : {truePosition} : {Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance} : {Vector2.Distance(truePosition2, truePosition)} : {PlayerControl.LocalPlayer.MaxReportDistance}");
                         if (!component.Reported)
                         {
                             if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
@@ -2725,7 +2719,7 @@ static class HudManagerStartPatch
                 writer.Write((byte)255);
                 writer.Write(false);
                 writer.EndRPC();
-                RPCProcedure.UncheckedUsePlatform((byte)255, false);
+                RPCProcedure.UncheckedUsePlatform(255, false);
                 NunButton.Timer = NunButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Nun; },
@@ -2970,7 +2964,7 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("DoppelgangerButtonName"),
             showButtonText = true
         };
-        RoleClass.Doppelganger.DoppelgangerDurationText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+        RoleClass.Doppelganger.DoppelgangerDurationText = UObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
         RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
         RoleClass.Doppelganger.DoppelgangerDurationText.enableWordWrapping = false;
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
@@ -3026,7 +3020,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
+        Worshiper.SetupCustomButtons(__instance);
 
         FireFox.SetupCustomButtons(__instance);
 

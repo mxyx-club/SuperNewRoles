@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers;
 
-class RoleSystem
+internal class RoleSystem
 {
     public static void RoleSetName()
     {

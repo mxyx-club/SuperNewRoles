@@ -14,7 +14,7 @@ public class RocketDeadbody : CustomAnimation
     public override void Awake()
     {
         base.Awake();
-        Logger.Info("Awaked");
+        Info("Awaked");
         spriteRenderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
         spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
         transform.localScale = Vector3.one * 0.45f;

@@ -1,12 +1,11 @@
-using HarmonyLib;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Sabotage;
 
-class Patch
+internal class Patch
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.OpenMeetingRoom))]
-    class OpenMeetingPatch
+    private class OpenMeetingPatch
     {
         public static void Prefix(HudManager __instance)
         {
@@ -17,7 +16,7 @@ class Patch
         }
     }
     [HarmonyPatch(typeof(InfectedOverlay), nameof(InfectedOverlay.Update))]
-    class SetUpCustomButton
+    private class SetUpCustomButton
     {
         public static void Postfix(InfectedOverlay __instance)
         {
@@ -25,7 +24,7 @@ class Patch
         }
     }
     [HarmonyPatch(typeof(InfectedOverlay), nameof(InfectedOverlay.Start))]
-    class SetUpCustomSabotageButton
+    private class SetUpCustomSabotageButton
     {
         public static void Postfix(InfectedOverlay __instance)
         {

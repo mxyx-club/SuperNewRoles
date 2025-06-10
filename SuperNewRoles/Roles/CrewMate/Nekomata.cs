@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles;
 
-class Nekomata
+internal class Nekomata
 {
     public static void NekomataEnd(GameData.PlayerInfo __instance)
     {
@@ -65,7 +64,7 @@ class Nekomata
     }
     public static void NekomataProc(List<PlayerControl> p)
     {
-        if (p.Count <= 0) { Logger.Info("抽選リストにプレイヤーが存在しない為, 猫又の道連れ処理を終了しました。", "Nekomata Exiled"); return; }
+        if (p.Count <= 0) { Info("抽選リストにプレイヤーが存在しない為, 猫又の道連れ処理を終了しました。", "Nekomata Exiled"); return; }
 
         var rdm = ModHelpers.GetRandomIndex(p);
         var random = p[rdm];
@@ -82,7 +81,7 @@ class Nekomata
             }
             if (random.IsRole(RoleId.Jester) || random.IsRole(RoleId.MadJester))
             {
-                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
+                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(random.Data).Item2 - TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                 {
                     RPCProcedure.ShareWinner(random.PlayerId);
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
@@ -91,7 +90,7 @@ class Nekomata
                     RoleClass.Jester.IsJesterWin = true;
                     GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                 }
-                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
+                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(random.Data).Item2 - TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                 {
                     RPCProcedure.ShareWinner(random.PlayerId);
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

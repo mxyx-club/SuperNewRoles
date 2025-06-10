@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using AmongUs.GameOptions;
 using SuperNewRoles.Buttons;
 using UnityEngine;
@@ -19,7 +16,7 @@ public static class Jumbo
             if (p == null) continue;
             if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) RoleClass.Jumbo.JumboSize.Add(p.PlayerId, 0f);
             if (!RoleClass.Jumbo.OldPos.ContainsKey(p.PlayerId)) RoleClass.Jumbo.OldPos.Add(p.PlayerId, p.GetTruePosition());
-            Logger.Info($"{(CustomOptionHolder.JumboMaxSize.GetFloat() / 10 / RoleClass.Jumbo.JumboSize[p.PlayerId])} : {((CustomOptionHolder.JumboMaxSize.GetFloat() / 10) / RoleClass.Jumbo.JumboSize[p.PlayerId]) >= CustomOptionHolder.JumboWalkSoundSize.GetSelection()} : {RoleClass.Jumbo.OldPos[p.PlayerId] != p.GetTruePosition()} : {RoleClass.Jumbo.OldPos[p.PlayerId]} : {p.GetTruePosition()}");
+            Info($"{(CustomOptionHolder.JumboMaxSize.GetFloat() / 10 / RoleClass.Jumbo.JumboSize[p.PlayerId])} : {((CustomOptionHolder.JumboMaxSize.GetFloat() / 10) / RoleClass.Jumbo.JumboSize[p.PlayerId]) >= CustomOptionHolder.JumboWalkSoundSize.GetSelection()} : {RoleClass.Jumbo.OldPos[p.PlayerId] != p.GetTruePosition()} : {RoleClass.Jumbo.OldPos[p.PlayerId]} : {p.GetTruePosition()}");
             if ((CustomOptionHolder.JumboMaxSize.GetFloat() / 10 / RoleClass.Jumbo.JumboSize[p.PlayerId]) >= CustomOptionHolder.JumboWalkSoundSize.GetSelection())
             {
                 if (!RoleClass.Jumbo.PlaySound.ContainsKey(p.PlayerId)) RoleClass.Jumbo.PlaySound.Add(p.PlayerId, 0f);

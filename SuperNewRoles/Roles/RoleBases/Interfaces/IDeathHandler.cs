@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace SuperNewRoles.Roles.RoleBases.Interfaces;
 /// <summary>
 /// 死亡時の処理を書く際に使うインターフェース
@@ -14,7 +8,7 @@ public interface IDeathHandler
     /// 誰かが死んだ時の処理
     /// </summary>
     /// <param name="deathInfo">死亡情報</param>
-    public void OnDeath(DeathInfo deathInfo)
+    void OnDeath(DeathInfo deathInfo)
     {
 
     }
@@ -22,7 +16,7 @@ public interface IDeathHandler
     /// 自分が死んだ時の処理
     /// </summary>
     /// <param name="deathInfo">死亡情報</param>
-    public void OnAmDeath(DeathInfo deathInfo)
+    void OnAmDeath(DeathInfo deathInfo)
     {
 
     }
@@ -30,7 +24,7 @@ public interface IDeathHandler
     /// MurderPlayer時の処理(自分が関係してなくても発生)
     /// </summary>
     /// <param name="info">死亡情報</param>
-    public void OnMurderPlayer(DeathInfo info)
+    void OnMurderPlayer(DeathInfo info)
     {
 
     }
@@ -38,7 +32,7 @@ public interface IDeathHandler
     /// 追放時の処理(自分が関係してなくても発生)
     /// </summary>
     /// <param name="info">死亡情報</param>
-    public void OnExiled(DeathInfo info)
+    void OnExiled(DeathInfo info)
     {
 
     }

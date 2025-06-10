@@ -1,12 +1,10 @@
-using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
-using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
-class HudManagerPatch
+internal class HudManagerPatch
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class HudManagerUpdatePatch
@@ -18,7 +16,7 @@ class HudManagerPatch
         public static void Postfix(HudManager __instance)
         {
             WallHack.WallHackUpdate();
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
             ReplayManager.HudUpdate();
             Mode.Zombie.FixedUpdate.ZombieTimerUpdate(__instance);
             CustomButton.HudUpdate();

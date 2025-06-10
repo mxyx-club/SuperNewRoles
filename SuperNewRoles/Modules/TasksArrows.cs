@@ -1,5 +1,3 @@
-using HarmonyLib;
-
 namespace SuperNewRoles.Modules;
 
 [HarmonyPatch]
@@ -50,9 +48,9 @@ public static class TasksArrow
     }
 }
 
-static class TasksArrowsOption
+internal static class TasksArrowsOption
 {
-    public static bool hideTaskArrows = false;
+    public static bool hideTaskArrows;
 
     public static void clearAndReloadMapOptions()
     {

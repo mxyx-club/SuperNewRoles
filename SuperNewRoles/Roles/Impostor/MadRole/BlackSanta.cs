@@ -1,7 +1,6 @@
 
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using Hazel;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Role;
@@ -176,13 +175,13 @@ public class BlackSanta : RoleBase, IMadmate, ICustomButton, IRpcHandler
                 if (intro != IntroData.CrewmateIntro && intro != IntroData.ImpostorIntro) // RoleBase化が終わったらIntroDataを削除し, RoleInfoのみ(elseの中身のみ)にする。
                 {
                     introData.Add(intro);
-                    Logger.Info($"プレゼント対象役 : {intro.RoleId}", "BlackSanta");
+                    Info($"プレゼント対象役 : {intro.RoleId}", "BlackSanta");
                 }
                 else
                 {
                     RoleInfo info = RoleInfoManager.GetRoleInfo(roleId);
                     roleInfo.Add(info);
-                    Logger.Info($"プレゼント対象役 : {info.Role}", "BlackSanta");
+                    Info($"プレゼント対象役 : {info.Role}", "BlackSanta");
                 }
             }
         }

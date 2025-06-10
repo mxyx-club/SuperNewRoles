@@ -1,50 +1,48 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using BepInEx.Unity.IL2CPP.Utils;
 using UnityEngine.Networking;
 
-namespace SuperNewRoles.SuperNewRolesWeb
+namespace SuperNewRoles.SuperNewRolesWeb;
+
+public static class Requests
 {
-    public static class Requests
+    public static void Get(string url, Action<long, DownloadHandler> callback)
     {
-        public static void Get(string url, Action<long, DownloadHandler> callback)
+        AmongUsClient.Instance.StartCoroutine(GetIE(url, callback));
+    }
+    public static void Post(string url, string data, Action<long, DownloadHandler> callback)
+    {
+        AmongUsClient.Instance.StartCoroutine(PostIE(url, data, callback));
+    }
+    private static IEnumerator PostIE(string url, string data, Action<long, DownloadHandler> callback)
+    {
+        var request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(data);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        yield return request.Send();
+
+        callback(request.responseCode, request.downloadHandler);
+
+        Info($"Connected To {url} And Status Code: {request.responseCode}", "SNRWeb");
+    }
+
+    private static IEnumerator GetIE(string url, Action<long, DownloadHandler> callback)
+    {
+        var request = new UnityWebRequest(url, "GET")
         {
-            AmongUsClient.Instance.StartCoroutine(GetIE(url, callback));
-        }
-        public static void Post(string url, string data, Action<long, DownloadHandler> callback)
-        {
-            AmongUsClient.Instance.StartCoroutine(PostIE(url, data, callback));
-        }
-        static IEnumerator PostIE(string url, string data, Action<long, DownloadHandler> callback)
-        {
-            var request = new UnityWebRequest(url, "POST");
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(data);
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            downloadHandler = new DownloadHandlerBuffer()
+        };
+        request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            yield return request.Send();
+        yield return request.Send();
 
-            callback(request.responseCode, request.downloadHandler);
+        callback(request.responseCode, request.downloadHandler);
 
-            Logger.Info($"Connected To {url} And Status Code: {request.responseCode}", "SNRWeb");
-        }
-
-        static IEnumerator GetIE(string url, Action<long, DownloadHandler> callback)
-        {
-            var request = new UnityWebRequest(url, "GET")
-            {
-                downloadHandler = new DownloadHandlerBuffer()
-            };
-            request.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            yield return request.Send();
-
-            callback(request.responseCode, request.downloadHandler);
-
-            //Logger.Info($"Status Code: {request.responseCode}", "Analytics");
-        }
+        //Logger.Info($"Status Code: {request.responseCode}", "Analytics");
     }
 }

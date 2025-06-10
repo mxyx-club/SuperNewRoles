@@ -52,7 +52,7 @@ public class Beacon
         {
             if (beacon.GameObject == null)
                 continue;
-            Logger.Info($"{beacon.GameObject.name}をClearします", "ClearBeacons");
+            Info($"{beacon.GameObject.name}をClearします", "ClearBeacons");
             Object.Destroy(beacon.GameObject);
         }
         AllBeacons.Clear();

@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms;
-using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles.Sabotage;
 

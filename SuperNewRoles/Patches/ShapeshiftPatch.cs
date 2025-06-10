@@ -1,7 +1,4 @@
 using System;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
@@ -16,7 +13,7 @@ namespace SuperNewRoles.Patches;
 
 #region CheckShapeshiftPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckShapeshift))]
-class CheckShapeshiftPatch
+internal class CheckShapeshiftPatch
 {
     public static bool Prefix(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
     {
@@ -57,7 +54,7 @@ class CheckShapeshiftPatch
         __instance.RpcShapeshift(target, shouldAnimate);
         return false;
     }
-    static bool HandleSHRShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
+    private static bool HandleSHRShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
     {
         //以下解除なら処理しない
         if (__instance == target) return true;
@@ -149,7 +146,7 @@ class CheckShapeshiftPatch
         }
         return true;
     }
-    static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
+    private static bool HandleShapeshiftCheck(PlayerControl __instance, PlayerControl target, bool shouldAnimate)
     {
         if (RoleClass.Assassin.TriggerPlayer != null)
             return false;
@@ -182,7 +179,7 @@ class CheckShapeshiftPatch
 #endregion
 #region ShapeshiftPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
-class RpcShapeshiftPatch
+internal class RpcShapeshiftPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
@@ -294,7 +291,7 @@ class RpcShapeshiftPatch
 
 #region ShapeshiftMinigameBeginPatch
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
-class ShapeshifterMinigameBeginPatch
+internal class ShapeshifterMinigameBeginPatch
 {
     private static void NewTask(ShapeshifterMinigame __instance)
     {
@@ -326,14 +323,14 @@ class ShapeshifterMinigameBeginPatch
         if (!PlayerControl.LocalPlayer.IsRole(RoleId.GM)) return;
 
         NewTask(__instance);
-        foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
+        foreach (ShapeshifterPanel panel in UObject.FindObjectsOfType<ShapeshifterPanel>()) UObject.Destroy(panel.gameObject);
         int index = 0;
         foreach (var Data in Roles.Neutral.GM.ActionDictionary)
         {
             int num = index % 3;
             int num2 = index / 3;
-            ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
-            panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
+            ShapeshifterPanel panel = UObject.Instantiate(__instance.PanelPrefab, __instance.transform);
+            panel.transform.localPosition = new Vector3(__instance.XStart + num * __instance.XOffset, __instance.YStart + num2 * __instance.YOffset, -1f);
 
             Create(panel, index, Data.Value);
             panel.PlayerIcon.gameObject.SetActive(false);
@@ -358,7 +355,7 @@ class ShapeshifterMinigameBeginPatch
 
 #region ShapeshiftMinigameShapeshiftPatch
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Shapeshift))]
-class ShapeshifterMinigameShapeshiftPatch
+internal class ShapeshifterMinigameShapeshiftPatch
 {
     public static bool Prefix(ShapeshifterMinigame __instance, [HarmonyArgument(0)] PlayerControl player)
     {
@@ -409,7 +406,8 @@ class ShapeshifterMinigameShapeshiftPatch
                         RoleClass.RemoteSheriff.KillMaxCount--;
                     }
                     Sheriff.ResetKillCooldown();
-                };
+                }
+                ;
             }
             __instance.Close();
             return false;

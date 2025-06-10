@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
@@ -38,7 +33,7 @@ public class ReplayActionSluggerExile : ReplayAction
     {
         foreach (SluggerDeadbody db in SluggerDeadbody.DeadBodys.FindAll(x => x.PlayerId == sourcePlayer))
         {
-            GameObject.Destroy(db.gameObject);
+            Object.Destroy(db.gameObject);
         }
     }
     //試合内でアクションがあったら実行するやつ

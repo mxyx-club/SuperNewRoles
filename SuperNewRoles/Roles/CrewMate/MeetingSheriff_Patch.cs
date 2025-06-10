@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
@@ -10,7 +7,7 @@ using UnityEngine;
 namespace SuperNewRoles.Roles;
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
-class MeetingUpdatePatch
+internal class MeetingUpdatePatch
 {
     public static void Postfix(MeetingHud __instance)
     {
@@ -29,8 +26,8 @@ class MeetingUpdatePatch
         }
         Meetingsheriff_updatepatch.Change();
     }
-    public static PassiveButton RightButton = null;
-    public static PassiveButton LeftButton = null;
+    public static PassiveButton RightButton;
+    public static PassiveButton LeftButton;
     public static bool IsFlag;
     public static bool IsSHRFlag;
     private static Sprite m_Meeting_AreaTabChange;
@@ -46,7 +43,7 @@ class MeetingUpdatePatch
         }
     }
 }
-class Meetingsheriff_updatepatch
+internal class Meetingsheriff_updatepatch
 {
     internal static void UpdateButtonsPostfix(MeetingHud __instance)
     {
@@ -88,9 +85,9 @@ class Meetingsheriff_updatepatch
         };
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-class MeetingSheriff_Patch
+internal class MeetingSheriff_Patch
 {
-    static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
+    private static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
         (var killResult, var suicideResult) = Sheriff.SheriffKillResult(CachedPlayer.LocalPlayer, Target);
@@ -116,7 +113,7 @@ class MeetingSheriff_Patch
         }
 
     }
-    static void Event(MeetingHud __instance)
+    private static void Event(MeetingHud __instance)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
         {
@@ -141,7 +138,7 @@ class MeetingSheriff_Patch
         }
     }
 
-    static void Postfix(MeetingHud __instance)
+    private static void Postfix(MeetingHud __instance)
     {
         if (AmongUsClient.Instance.AmHost)
         {
@@ -239,7 +236,7 @@ class MeetingSheriff_Patch
     }
     public static GameObject Right;
     public static GameObject Left;
-    static void CreateAreaButton(MeetingHud __instance)
+    private static void CreateAreaButton(MeetingHud __instance)
     {
         GameObject template = __instance.SkipVoteButton.gameObject;
         GameObject targetBox = Object.Instantiate(template, __instance.transform);
@@ -248,10 +245,10 @@ class MeetingSheriff_Patch
         targetBox.transform.localPosition = new Vector3(4.8f, 0f, -3f);
         targetBox.transform.localScale = new Vector3(0.075f, 0.075f, 0.075f);
         Right = targetBox;
-        GameObject.Destroy(targetBox.transform.FindChild("Text_TMP").gameObject);
+        Object.Destroy(targetBox.transform.FindChild("Text_TMP").gameObject);
         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
         renderer.sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
-        GameObject.Destroy(targetBox.GetComponent<BoxCollider2D>());
+        Object.Destroy(targetBox.GetComponent<BoxCollider2D>());
         PassiveButton button = targetBox.GetComponent<PassiveButton>();
         button.Colliders = new List<Collider2D>() { targetBox.AddComponent<PolygonCollider2D>() }.ToArray();
         button.OnClick.RemoveAllListeners();
@@ -259,16 +256,16 @@ class MeetingSheriff_Patch
         button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.green));
         button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.white));
 
-        GameObject targetBoxl = UnityEngine.Object.Instantiate(template, __instance.transform);
+        GameObject targetBoxl = Object.Instantiate(template, __instance.transform);
         targetBoxl.name = "LeftButton";
         targetBoxl.gameObject.SetActive(true);
         targetBoxl.transform.localPosition = new Vector3(-4.75f, 0f, -3f);
         targetBoxl.transform.localScale = new Vector3(-0.075f, 0.075f, 0.075f);
         Left = targetBoxl;
-        GameObject.Destroy(targetBoxl.transform.FindChild("Text_TMP").gameObject);
+        Object.Destroy(targetBoxl.transform.FindChild("Text_TMP").gameObject);
         SpriteRenderer rendererl = targetBoxl.GetComponent<SpriteRenderer>();
         rendererl.sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
-        GameObject.Destroy(targetBoxl.GetComponent<BoxCollider2D>());
+        Object.Destroy(targetBoxl.GetComponent<BoxCollider2D>());
         PassiveButton buttonl = targetBoxl.GetComponent<PassiveButton>();
         buttonl.Colliders = new List<Collider2D>() { targetBoxl.AddComponent<PolygonCollider2D>() }.ToArray();
         buttonl.OnClick.RemoveAllListeners();

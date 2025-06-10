@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using SuperNewRoles.Patches;
 using static GameData;
 
 namespace SuperNewRoles.Replay.ReplayActions;
@@ -37,7 +33,7 @@ public class ReplayActionCompleteTask : ReplayAction
                 if (taskInfo.Complete)
                 {
                     taskInfo.Complete = false;
-                    GameData.Instance.CompletedTasks--;
+                    Instance.CompletedTasks--;
                 }
             }
             if (playerTask is NormalPlayerTask)
@@ -52,7 +48,7 @@ public class ReplayActionCompleteTask : ReplayAction
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
         {
-            Logger.Info("sourceがnull");
+            Info("sourceがnull");
             return;
         }
         source.CompleteTask(taskId);
@@ -62,7 +58,7 @@ public class ReplayActionCompleteTask : ReplayAction
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
         {
-            Logger.Info("sourceがnull");
+            Info("sourceがnull");
             return;
         }
         ToDontComplete(source, taskId);

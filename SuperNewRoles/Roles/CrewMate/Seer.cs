@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Impostor;
@@ -28,7 +26,7 @@ public class SeerBase : RoleBase
         this.SeerMode = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 1 : Mode;
     }
 }
-class SeerHandler
+internal class SeerHandler
 //マッド・イビル・フレンズ・ジャッカル・サイドキック　シーア
 {
     private static SpriteRenderer FullScreenRenderer;
@@ -36,7 +34,7 @@ class SeerHandler
     private static Coroutine FlashCoroutine;
     public static void ShowFlash_ClearAndReload()
     {
-        FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
+        FullScreenRenderer = UObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         Renderer = FastDestroyableSingleton<HudManager>.Instance;
         FlashCoroutine = null;
         FullScreenRenderer.gameObject.SetActive(false);
@@ -54,7 +52,7 @@ class SeerHandler
     **/
     public static void ShowFlash(Color color, float duration = 1f, Action OnFlashEnd = null)
     {
-        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || Renderer == null || FullScreenRenderer == null) return;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started || Renderer == null || FullScreenRenderer == null) return;
 
         FullScreenRenderer.gameObject.SetActive(true);
         FullScreenRenderer.enabled = true;
@@ -80,7 +78,7 @@ class SeerHandler
                 FullScreenRenderer.enabled = true;
                 FullScreenRenderer.gameObject.SetActive(false);
                 FlashCoroutine = null;
-                Logger.Info("発動待機状態に戻しました。", "SetActive(false)");
+                Info("発動待機状態に戻しました。", "SetActive(false)");
                 OnFlashEnd?.Invoke();
             }
         })));
@@ -173,7 +171,7 @@ class SeerHandler
                                 tmp.a = Mathf.Clamp01(1 - p);
                                 rend.color = tmp;
                             }
-                            if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
+                            if (p == 1f && rend != null && rend.gameObject != null) UObject.Destroy(rend.gameObject);
                         })));
                     }
                 }
@@ -193,7 +191,7 @@ class SeerHandler
                     // 自分が死んだ後は, どのシーアも霊魂の色にクルーのボディカラーを反映させる。
                     var soulColorId = PlayerControl.LocalPlayer.IsDead()
                                     ? bodyColorId
-                                    : EvilSeer.DefaultBodyColorId;
+                                    : SeerBase.DefaultBodyColorId;
 
                     bool flashModeFlag = false;
                     Color flashColor = new(42f / 255f, 187f / 255f, 245f / 255f); // 基本の発光カラー
@@ -228,7 +226,7 @@ class SeerHandler
 
                             if (PlayerControl.LocalPlayer.IsDead() || (isBodyColor && evilSeer.IsClearColor)) soulColorId = bodyColorId; // 彩光が最高
                             else if (isBodyColor) soulColorId = indistinctBodyColorId; // 明暗
-                            else soulColorId = EvilSeer.DefaultBodyColorId; // デフォルト
+                            else soulColorId = SeerBase.DefaultBodyColorId; // デフォルト
 
                             // |:===== 死の点滅関連の処理 =====:|
                             flashModeFlag = seerBase.SeerMode <= 1;
@@ -286,7 +284,7 @@ class SeerHandler
                         if (!p2.IsMod())
                         {
                             p2.ShowReactorFlash(1.5f);
-                            Logger.Info($"非導入者で尚且つ[ {p2.GetRole()} ]である{p2.GetDefaultName()}に死の点滅を発生させました。", "MurderPlayer");
+                            Info($"非導入者で尚且つ[ {p2.GetRole()} ]である{p2.GetDefaultName()}に死の点滅を発生させました。", "MurderPlayer");
                         }
                     }
                 }

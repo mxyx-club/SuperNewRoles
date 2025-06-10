@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -58,7 +57,7 @@ public class Squid
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Squid; },
             () =>
             {
-                if (Squid.IsVigilance.ContainsValue(true)) CustomButton.FillUp(SquidButton);
+                if (IsVigilance.ContainsValue(true)) CustomButton.FillUp(SquidButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () =>
@@ -77,7 +76,7 @@ public class Squid
             SquidDurationTime.GetFloat(),
             () =>
             {
-                Logger.Info("効果終了のお知らせ", "Squid Button");
+                Info("効果終了のお知らせ", "Squid Button");
                 ResetCooldown();
                 SetVigilance(PlayerControl.LocalPlayer, false);
             }
@@ -120,7 +119,7 @@ public class Squid
             var rend = ink.AddComponent<SpriteRenderer>();
             rend.sprite = GetInkSprite(random.Next(175, 275));
             rend.color = new(20 / 255f, 10 / 255f, 25 / 255f);
-            Logger.Info($"[イカインク] defaultPos : (X : {defaultPos.x}, Y : {defaultPos.y}), inkSize : {rend.sprite.pixelsPerUnit}");
+            Info($"[イカインク] defaultPos : (X : {defaultPos.x}, Y : {defaultPos.y}), inkSize : {rend.sprite.pixelsPerUnit}");
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(SquidObstructionTime.GetFloat(), new System.Action<float>((p) =>
             {
                 if (rend != null)
@@ -156,12 +155,12 @@ public class Squid
                 })
                 {
                     repetitionCount++;
-                    Logger.Info($"{name}の位置が{allDefaultPosition.IndexOf(pos)}に近い為再実行しました, 距離 : {Vector3.Distance(position, pos)}");
+                    Info($"{name}の位置が{allDefaultPosition.IndexOf(pos)}に近い為再実行しました, 距離 : {Vector3.Distance(position, pos)}");
                     goto repetition;
                 }
             }
             allDefaultPosition.Add(position);
-            Logger.Info($"{name}の位置を{(repetitionCount >= 1 ? $"{repetitionCount}回目で" : "")}決定しました");
+            Info($"{name}の位置を{(repetitionCount >= 1 ? $"{repetitionCount}回目で" : "")}決定しました");
             return position;
         }
     }
@@ -234,7 +233,7 @@ public class Squid
     {
         public static void Postfix(PlayerPhysics __instance)
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (__instance.AmOwner && __instance.myPlayer.IsRole(RoleId.Squid) && Abilitys.IsBoostSpeed && __instance.myPlayer.CanMove && GameData.Instance)

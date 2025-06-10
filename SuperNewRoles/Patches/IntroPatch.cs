@@ -1,7 +1,6 @@
 using System.Collections;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
@@ -36,41 +35,41 @@ public static class ShouldAlwaysHorseAround
 public class IntroPatch
 {
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
-    class IntroCutsceneCoBeginPatch
+    private class IntroCutsceneCoBeginPatch
     {
-        static void Postfix()
+        private static void Postfix()
         {
-            Logger.Info("=================Player Info=================", "Intro Begin");
-            Logger.Info("=================Player Data=================", "Player Info");
+            Info("=================Player Info=================", "Intro Begin");
+            Info("=================Player Data=================", "Player Info");
             {
-                Logger.Info($"プレイヤー数：{CachedPlayer.AllPlayers.Count}人", "All Player Count");
+                Info($"プレイヤー数：{CachedPlayer.AllPlayers.Count}人", "All Player Count");
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                { Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info"); }
+                { Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info"); }
             }
-            Logger.Info("=================Role Data=================", "Player Info");
+            Info("=================Role Data=================", "Player Info");
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
+                Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
             }
-            Logger.Info("=================Other Data=================", "Intro Begin");
+            Info("=================Other Data=================", "Intro Begin");
             {
-                Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
-                Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
+                Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
+                Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
                 foreach (IntroData data in IntroData.Intros.Values) { data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum); }
                 foreach (IntroInfo info in IntroInfo.IntroInfos.Values) { info.UpdateIntroDesc(); }
             }
-            Logger.Info("=================Activate Roles Data=================", " Other Data");
+            Info("=================Activate Roles Data=================", " Other Data");
             {
-                Logger.Info($"インポスター役職 : 最大 {CustomOptionHolder.impostorRolesCountMax.GetSelection()}役職", "ImpostorRole");
-                Logger.Info($"クルーメイト役職 : 最大 {CustomOptionHolder.crewmateRolesCountMax.GetSelection()}役職", "CremateRole");
-                Logger.Info($"第三陣営役職 : 最大 {CustomOptionHolder.neutralRolesCountMax.GetSelection()}役職", "NeutralRole");
+                Info($"インポスター役職 : 最大 {CustomOptionHolder.impostorRolesCountMax.GetSelection()}役職", "ImpostorRole");
+                Info($"クルーメイト役職 : 最大 {CustomOptionHolder.crewmateRolesCountMax.GetSelection()}役職", "CremateRole");
+                Info($"第三陣営役職 : 最大 {CustomOptionHolder.neutralRolesCountMax.GetSelection()}役職", "NeutralRole");
                 CustomOverlays.GetActivateRoles(true); // 現在の役職設定を取得し、辞書に保存するついでにlogに記載する
             }
             CustomRoles.OnIntroStart();
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneOnDestroyReplayPatch
+    private class IntroCutsceneOnDestroyReplayPatch
     {
         public static void Postfix(IntroCutscene __instance)
         {
@@ -78,7 +77,7 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneOnDestroyPatch
+    private class IntroCutsceneOnDestroyPatch
     {
         public static PoolablePlayer playerPrefab;
         public static void Prefix(IntroCutscene __instance)
@@ -107,7 +106,7 @@ public class IntroPatch
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     GameData.PlayerInfo data = p.Data;
-                    Logger.Info($"生成:{p.Data.PlayerName}");
+                    Info($"生成:{p.Data.PlayerName}");
                     PoolablePlayer player = Object.Instantiate(__instance.PlayerPrefab, FastDestroyableSingleton<HudManager>.Instance.transform);
                     playerPrefab = __instance.PlayerPrefab;
                     p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
@@ -142,7 +141,7 @@ public class IntroPatch
                         {
                             button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
                             {
-                                Roles.Neutral.GM.target = target;
+                                GM.target = target;
                                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                                 {
@@ -171,20 +170,20 @@ public class IntroPatch
                     {
                         player.gameObject.SetActive(false);
                     }
-                    Logger.Info($"生成完了:{p.Data.PlayerName}");
+                    Info($"生成完了:{p.Data.PlayerName}");
                 }
             }
 
             if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
             {
                 RoleClass.Hitman.UpdateTime = CustomOptionHolder.HitmanChangeTargetTime.GetFloat();
-                Roles.Neutral.Hitman.SetTarget();
-                Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
+                Hitman.SetTarget();
+                Hitman.DestroyIntroHandle(__instance);
                 if (FastDestroyableSingleton<HudManager>.Instance != null)
                 {
                     Vector3 bottomLeft = new(-4.65f, -2.25f, -9);
                     RoleClass.Hitman.cooldownText = Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.transform);
-                    RoleClass.Hitman.cooldownText.alignment = TMPro.TextAlignmentOptions.Center;
+                    RoleClass.Hitman.cooldownText.alignment = TextAlignmentOptions.Center;
                     RoleClass.Hitman.cooldownText.transform.localPosition = bottomLeft + new Vector3(0f, -1f, -1f);
                     RoleClass.Hitman.cooldownText.gameObject.SetActive(true);
                 }
@@ -212,11 +211,11 @@ public class IntroPatch
         }
     }
 
-    public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+    public static void SetupIntroTeamIcons(IntroCutscene __instance, ref ISystem.List<PlayerControl> yourTeam)
     {
         if (ReplayManager.IsReplayMode)
         {
-            var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            var newTeam = new ISystem.List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p != PlayerControl.LocalPlayer)
@@ -227,12 +226,12 @@ public class IntroPatch
         }
         if (ModeHandler.IsMode(ModeId.Default))
         {
-            var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            var newTeam2 = new ISystem.List<PlayerControl>();
             newTeam2.Add(PlayerControl.LocalPlayer);
             yourTeam = newTeam2;
             if (PlayerControl.LocalPlayer.IsCrew())
             {
-                var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                var newTeam = new ISystem.List<PlayerControl>();
                 newTeam.Add(PlayerControl.LocalPlayer);
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
@@ -255,7 +254,7 @@ public class IntroPatch
                     case RoleId.BlackCat:
                         if (Madmate.CheckImpostor(PlayerControl.LocalPlayer)) break;
                         ImpostorIntroTeam:
-                        Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+                        ISystem.List<PlayerControl> ImpostorTeams = new();
                         ImpostorTeams.Add(PlayerControl.LocalPlayer);
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
@@ -275,7 +274,7 @@ public class IntroPatch
                     case RoleId.JackalFriends:
                         if (JackalFriends.CheckJackal(PlayerControl.LocalPlayer)) break;
                         JackalIntroTeam:
-                        Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
+                        ISystem.List<PlayerControl> JackalTeams = new();
                         JackalTeams.Add(PlayerControl.LocalPlayer);
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
@@ -287,7 +286,7 @@ public class IntroPatch
                         yourTeam = JackalTeams;
                         break;
                     case RoleId.Fox:
-                        Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new();
+                        ISystem.List<PlayerControl> FoxTeams = new();
                         int FoxNum = 0;
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
@@ -300,7 +299,7 @@ public class IntroPatch
                         yourTeam = FoxTeams;
                         break;
                     case RoleId.FireFox:
-                        Il2CppSystem.Collections.Generic.List<PlayerControl> FireFoxTeams = new();
+                        ISystem.List<PlayerControl> FireFoxTeams = new();
                         int FireFoxNum = 0;
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
@@ -315,7 +314,7 @@ public class IntroPatch
                     case RoleId.TheFirstLittlePig:
                     case RoleId.TheSecondLittlePig:
                     case RoleId.TheThirdLittlePig:
-                        Il2CppSystem.Collections.Generic.List<PlayerControl> TheThreeLittlePigsTeams = new();
+                        ISystem.List<PlayerControl> TheThreeLittlePigsTeams = new();
                         int TheThreeLittlePigsNum = 0;
                         foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
                         {
@@ -330,7 +329,7 @@ public class IntroPatch
                         yourTeam = TheThreeLittlePigsTeams;
                         break;
                     case RoleId.Pokerface:
-                        Il2CppSystem.Collections.Generic.List<PlayerControl> PokerfaceTeams = new();
+                        ISystem.List<PlayerControl> PokerfaceTeams = new();
                         Pokerface.PokerfaceTeam team = Pokerface.GetPokerfaceTeam(PlayerControl.LocalPlayer.PlayerId);
                         if (team != null)
                         {
@@ -357,7 +356,7 @@ public class IntroPatch
         else
         {
             var temp = ModeHandler.TeamHandler(__instance);
-            if (temp != new Il2CppSystem.Collections.Generic.List<PlayerControl>())
+            if (temp != new ISystem.List<PlayerControl>())
             {
                 yourTeam = temp;
             }
@@ -378,7 +377,7 @@ public class IntroPatch
         }
     }
 
-    public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+    public static void SetupIntroTeam(IntroCutscene __instance, ref ISystem.List<PlayerControl> yourTeam)
     {
         IntroHandler.Handler();
 
@@ -470,7 +469,7 @@ public class IntroPatch
     }
 
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowTeam))]
-    class ShowTeam
+    private class ShowTeam
     {
         public static void Postfix()
         {
@@ -478,7 +477,7 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneDestroyPatch
+    private class IntroCutsceneDestroyPatch
     {
         public static void Prefix()
         {
@@ -521,14 +520,14 @@ public class IntroPatch
     }
 
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
-    class SetUpRoleTextPatch
+    private class SetUpRoleTextPatch
     {
         private static byte ToByteIntro(float f)
         {
             f = Mathf.Clamp01(f);
             return (byte)(f * 255);
         }
-        static IEnumerator settask()
+        private static IEnumerator settask()
         {
             while (true)
             {
@@ -538,7 +537,7 @@ public class IntroPatch
                 yield return null;
             }
         }
-        static bool Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.IEnumerator __result)
+        private static bool Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.IEnumerator __result)
         {
             __result = SetupRole(__instance).WrapToIl2Cpp();
             return false;
@@ -614,27 +613,27 @@ public class IntroPatch
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-    class BeginCrewmatePatch
+    private class BeginCrewmatePatch
     {
-        public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+        public static void Prefix(IntroCutscene __instance, ref ISystem.List<PlayerControl> teamToDisplay)
         {
             SetupIntroTeamIcons(__instance, ref teamToDisplay);
         }
 
-        public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+        public static void Postfix(IntroCutscene __instance, ref ISystem.List<PlayerControl> teamToDisplay)
         {
             SetupIntroTeam(__instance, ref teamToDisplay);
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-    class BeginImpostorPatch
+    private class BeginImpostorPatch
     {
-        public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        public static void Prefix(IntroCutscene __instance, ref ISystem.List<PlayerControl> yourTeam)
         {
             SetupIntroTeamIcons(__instance, ref yourTeam);
         }
 
-        public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        public static void Postfix(IntroCutscene __instance, ref ISystem.List<PlayerControl> yourTeam)
         {
             SetupIntroTeam(__instance, ref yourTeam);
         }

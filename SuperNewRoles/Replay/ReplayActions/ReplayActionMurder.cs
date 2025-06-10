@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
@@ -27,12 +24,12 @@ public class ReplayActionMurder : ReplayAction
     //アクション実行時の処理
     public override void OnAction()
     {
-        Logger.Info("キルアクション");
+        Info("キルアクション");
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
         if (source == null || target == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{targetPlayer}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{targetPlayer}");
             return;
         }
         source.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
@@ -43,13 +40,13 @@ public class ReplayActionMurder : ReplayAction
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
         if (source == null || target == null)
         {
-            Logger.Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{targetPlayer}");
+            Info($"アクションを実行しようとしましたが、対象がいませんでした。source:{sourcePlayer},target:{targetPlayer}");
             return;
         }
         target.Revive();
-        foreach (DeadBody deadbody in GameObject.FindObjectsOfType<DeadBody>())
+        foreach (DeadBody deadbody in Object.FindObjectsOfType<DeadBody>())
             if (deadbody.ParentId == target.PlayerId)
-                GameObject.Destroy(deadbody);
+                Object.Destroy(deadbody);
     }
 
     //試合内でアクションがあったら実行するやつ

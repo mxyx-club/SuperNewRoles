@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -33,7 +28,7 @@ public class WCTankAnimHandler : IWaveCannonAnimationHandler
         CannonObject.spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
         PlayerMaterial.SetMaskLayerBasedOnLocalPlayer(CannonObject.spriteRenderer, false);
         PlayerMaterial.SetColors(CannonObject.Owner.CurrentOutfit.ColorId, CannonObject.spriteRenderer);
-        CannonPoolable = GameObject.Instantiate(MapOption.MapOption.playerIcons[waveCannonObject.OwnerPlayerId], waveCannonObject.transform);
+        CannonPoolable = Object.Instantiate(MapOption.MapOption.playerIcons[waveCannonObject.OwnerPlayerId], waveCannonObject.transform);
         SetChildLayer(CannonPoolable.transform, 0);
         CannonPoolable.transform.localPosition = new(0, 0.4f, 0.05f);
         CannonPoolable.transform.localScale = new(-0.35f, 0.35f, 0.35f);
@@ -95,7 +90,7 @@ public class WCTankAnimHandler : IWaveCannonAnimationHandler
                         PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer, null));
                     WaveCannonJackal.ResetCooldowns(false, true);
                 }
-                GameObject.Destroy(CannonObject.gameObject);
+                Object.Destroy(CannonObject.gameObject);
             });
         });
     }

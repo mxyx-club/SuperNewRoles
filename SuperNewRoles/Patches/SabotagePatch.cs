@@ -1,5 +1,4 @@
 using System;
-using HarmonyLib;
 
 //参考=>https://github.com/Koke1024/Town-Of-Moss/blob/main/TownOfMoss/Patches/MeltDownBoost.cs
 
@@ -11,23 +10,23 @@ public static class ElectricPatch
     {
         onTask = false;
     }
-    public static bool onTask = false;
-    public static bool done = false;
+    public static bool onTask;
+    public static bool done;
     public static DateTime lastUpdate;
 
     [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
-    class VitalsMinigameStartPatch
+    private class VitalsMinigameStartPatch
     {
-        static void Postfix(VitalsMinigame __instance)
+        private static void Postfix(VitalsMinigame __instance)
         {
             onTask = true;
             done = false;
         }
     }
     [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.FixedUpdate))]
-    class SwitchMinigameClosePatch
+    private class SwitchMinigameClosePatch
     {
-        static void Postfix(SwitchMinigame __instance)
+        private static void Postfix(SwitchMinigame __instance)
         {
             lastUpdate = DateTime.UtcNow;
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) =>

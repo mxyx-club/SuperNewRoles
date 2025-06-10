@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
@@ -188,10 +187,10 @@ public static class Main
         }
         return new Vector2(0, 0);
     }
-    static float ImpostorMoveTime;
-    static int LastCount;
-    static float LastUpdate;
-    static float UpdateTime = 0.1f;
+    private static float ImpostorMoveTime;
+    private static int LastCount;
+    private static float LastUpdate;
+    private static float UpdateTime = 0.1f;
     public static List<byte> TeleportIDs = new();
     public static void Teleport(PlayerControl player, Vector2 position) => player.RpcSnapTo(position);
 

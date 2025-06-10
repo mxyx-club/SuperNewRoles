@@ -1,9 +1,8 @@
-using Hazel;
 using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
 
-class Clergyman
+internal class Clergyman
 {
     public static void ResetCooldown()
     {
@@ -66,7 +65,7 @@ class Clergyman
         HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
         HudManagerStartPatch.ClergymanLightOutButton.Timer = HudManagerStartPatch.ClergymanLightOutButton.MaxTimer;
         HudManagerStartPatch.ClergymanLightOutButton.effectCancellable = true;
-        Logger.Info(RoleClass.Clergyman.DurationTime.ToString(), "ClergymanDuration");
+        Info(RoleClass.Clergyman.DurationTime.ToString(), "ClergymanDuration");
         HudManagerStartPatch.ClergymanLightOutButton.EffectDuration = RoleClass.Clergyman.DurationTime;
         HudManagerStartPatch.ClergymanLightOutButton.HasEffect = true;
     }

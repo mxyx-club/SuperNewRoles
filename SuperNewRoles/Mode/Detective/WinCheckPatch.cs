@@ -1,6 +1,6 @@
 namespace SuperNewRoles.Mode.Detective;
 
-class WinCheckPatch
+internal class WinCheckPatch
 {
     public static bool CheckEndGame(ShipStatus __instance)
     {

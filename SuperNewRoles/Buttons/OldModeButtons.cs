@@ -1,4 +1,3 @@
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -6,10 +5,10 @@ namespace SuperNewRoles.Buttons;
 
 public static class OldModeButtons
 {
-    public static bool IsOldMode => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && CustomOptionHolder.IsOldMode.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
+    public static bool IsOldMode => AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && CustomOptionHolder.IsOldMode.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
     public static bool CanUseKeyboard => IsOldMode && false;
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-    static class MeetingHudStart
+    private static class MeetingHudStart
     {
         public static void Postfix(MeetingHud __instance)
         {
@@ -18,9 +17,9 @@ public static class OldModeButtons
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
-    static class MeetingHudUpdate
+    private static class MeetingHudUpdate
     {
-        public static bool IsEnd = false;
+        public static bool IsEnd;
         public static float time;
         public static void Postfix(MeetingHud __instance)
         {
@@ -48,17 +47,17 @@ public static class OldModeButtons
         }
     }
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new System.Type[] { typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
-    class HudManagerSetHudActivePatch
+    private class HudManagerSetHudActivePatch
     {
         public static void Postfix() => OldModeUpdate();
     }
     [HarmonyPatch(typeof(ConsoleJoystick), nameof(ConsoleJoystick.HandleHUD))]
-    class ConsoleJoystickHandleHUDPatch
+    private class ConsoleJoystickHandleHUDPatch
     {
         public static bool Prefix() => !CanUseKeyboard;
     }
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.HandleHud))]
-    class KeyboardJoystickHandleHUDPatch
+    private class KeyboardJoystickHandleHUDPatch
     {
         public static bool Prefix()
         {

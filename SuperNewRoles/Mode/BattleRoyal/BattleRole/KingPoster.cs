@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AmongUs.GameOptions;
 using SuperNewRoles.Helpers;
 using UnityEngine;
-using static Rewired.ComponentControls.Effects.RotateAroundAxis;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole;
 public class KingPoster : BattleRoyalRole
@@ -32,8 +28,8 @@ public class KingPoster : BattleRoyalRole
     public bool IsAbilityTime;
     public bool IsAbilityEnded;
     public float AbilityTime;
-    float Speed = 1;
-    float Angle;
+    private float Speed = 1;
+    private float Angle;
     public void OnKillClick(PlayerControl target)
     {
         //放置
@@ -43,9 +39,9 @@ public class KingPoster : BattleRoyalRole
         CurrentPlayer.RpcSnapTo(CurrentPlayer.transform.position + velocity);
         CurrentPlayer.RpcResetAbilityCooldown();
     }
-    string Hat;
-    string Visor;
-    string Skin;
+    private string Hat;
+    private string Visor;
+    private string Skin;
     public override void FixedUpdate()
     {
         if (IsAbilityUsingNow)

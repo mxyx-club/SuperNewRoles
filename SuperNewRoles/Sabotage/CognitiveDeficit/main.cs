@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using UnityEngine;
 using static UnityEngine.UI.Button;
@@ -17,7 +16,7 @@ public static class Main
         SabotageManager.thisSabotage = SabotageManager.CustomSabotage.CognitiveDeficit;
         foreach (Arrow aw in ArrowData)
         {
-            GameObject.Destroy(aw.arrow);
+            UObject.Destroy(aw.arrow);
         }
         ArrowData = new List<Arrow>();
         IsYellow = true;
@@ -47,7 +46,7 @@ public static class Main
     {
         if (SabotageManager.IsOK(SabotageManager.CustomSabotage.CognitiveDeficit))
         {
-            ButtonBehavior button = InfectedOverlay.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
+            ButtonBehavior button = UObject.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
             button.transform.localPosition += new Vector3(0.2f, -1.7f, 0);
             button.spriteRenderer.sprite = IconManager.CognitiveDeficitGetButtonSprite();
             button.OnClick = new ButtonClickedEvent();
@@ -181,7 +180,7 @@ public static class Main
             }
             foreach (Arrow aw in ArrowData)
             {
-                GameObject.Destroy(aw.arrow);
+                UObject.Destroy(aw.arrow);
             }
             ArrowData = new List<Arrow>();
             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)

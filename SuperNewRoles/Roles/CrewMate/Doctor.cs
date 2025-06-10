@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 
-class Doctor
+internal class Doctor
 {
     public static void FixedUpdate()
     {
@@ -26,32 +24,32 @@ class Doctor
     public class VitalsPatch
     {
         //static float vitalsTimer = 0f;
-        static TMPro.TextMeshPro TimeRemaining;
-        private static List<TMPro.TextMeshPro> hackerTexts = new();
+        private static TextMeshPro TimeRemaining;
+        private static List<TextMeshPro> hackerTexts = new();
 
         public static void ResetData()
         {
             //vitalsTimer = 0f;
             if (TimeRemaining != null)
             {
-                UnityEngine.Object.Destroy(TimeRemaining);
+                UObject.Destroy(TimeRemaining);
                 TimeRemaining = null;
             }
         }
 
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
-        class VitalsMinigameStartPatch
+        private class VitalsMinigameStartPatch
         {
-            static void Postfix(VitalsMinigame __instance)
+            private static void Postfix(VitalsMinigame __instance)
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
                 {
                     hackerTexts = new();
                     foreach (VitalsPanel panel in __instance.vitals)
                     {
-                        TMPro.TextMeshPro text = UnityEngine.Object.Instantiate(__instance.SabText, panel.transform);
+                        TextMeshPro text = UObject.Instantiate(__instance.SabText, panel.transform);
                         hackerTexts.Add(text);
-                        UnityEngine.Object.DestroyImmediate(text.GetComponent<AlphaBlink>());
+                        UObject.DestroyImmediate(text.GetComponent<AlphaBlink>());
                         text.gameObject.SetActive(false);
                         text.transform.localScale = Vector3.one * 0.75f;
                         text.transform.localPosition = new(-0.75f, -0.23f, 0f);
@@ -61,20 +59,20 @@ class Doctor
             }
         }
         [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })]
-        class VitalsMinigameClosePatch
+        private class VitalsMinigameClosePatch
         {
             public static void Prefix(Minigame __instance)
             {
-                if (GameObject.FindObjectOfType<VitalsMinigame>() && PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
+                if (UObject.FindObjectOfType<VitalsMinigame>() && PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
                 {
                     new LateTask(() => RoleClass.Doctor.MyPanelFlag = false, 0.5f, "Doctor flag");
                 }
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
-        class VitalsMinigameUpdatePatch
+        private class VitalsMinigameUpdatePatch
         {
-            static void Postfix(VitalsMinigame __instance)
+            private static void Postfix(VitalsMinigame __instance)
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
                 {
@@ -110,7 +108,7 @@ class Doctor
                 }
                 else
                 {
-                    foreach (TMPro.TextMeshPro text in hackerTexts)
+                    foreach (TextMeshPro text in hackerTexts)
                         if (text != null && text.gameObject != null)
                             text.gameObject.SetActive(false);
                 }

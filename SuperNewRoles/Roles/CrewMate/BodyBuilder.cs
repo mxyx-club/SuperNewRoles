@@ -1,11 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using Agartha;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
@@ -101,10 +97,10 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
 
     // タスク関係
     [HarmonyPatch(typeof(Console), nameof(Console.Use))]
-    class ConsolePatch
+    private class ConsolePatch
     {
         private static Minigame preMinigame;
-        static void Prefix(Console __instance)
+        private static void Prefix(Console __instance)
         {
             if ((!ChangeAllTaskLiftWeights.GetBool() && GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Fungle) || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;
@@ -122,7 +118,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
             task.MinigamePrefab = ship.ShortTasks.FirstOrDefault(x => x.TaskType == TaskTypes.LiftWeights).MinigamePrefab;
         }
 
-        static void Postfix(Console __instance)
+        private static void Postfix(Console __instance)
         {
             if ((!ChangeAllTaskLiftWeights.GetBool() && GameManager.Instance.LogicOptions.currentGameOptions.MapId == (byte)MapNames.Fungle) || !PlayerControl.LocalPlayer.IsRole(RoleId.BodyBuilder))
                 return;
@@ -221,7 +217,7 @@ public class BodyBuilder : RoleBase, ICrewmate, ICustomButton, IDeathHandler, IH
         myObject = null;
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity)), HarmonyPostfix]
-    static void onMovePlayer(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
+    private static void onMovePlayer(PlayerPhysics __instance, [HarmonyArgument(0)] Vector2 direction)
     {
         PlayerControl player = __instance.myPlayer;
         if (!player.IsRole(RoleId.BodyBuilder) || direction == Vector2.zero || player.GetRoleBase<BodyBuilder>().myObject == null)

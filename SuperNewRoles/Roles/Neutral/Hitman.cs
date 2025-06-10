@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;

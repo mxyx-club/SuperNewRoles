@@ -7,9 +7,9 @@ public interface IFixedUpdaterAll
     /// <summary>
     /// DefaultモードでのFixedUpdate
     /// </summary>
-    public void FixedUpdateAllDefault();
+    void FixedUpdateAllDefault();
     /// <summary>
     /// SHRモードでのFixedUpdate
     /// </summary>
-    public virtual void FixedUpdateAllSHR() { }
+    virtual void FixedUpdateAllSHR() { }
 }

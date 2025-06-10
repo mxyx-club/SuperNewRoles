@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Attribute;
@@ -1282,7 +1281,7 @@ public class CustomOptionHolder
 
         /* |: ========================= Neutral Settings ========================== :| */
 
-        
+
         JackalSeerOption = SetupCustomRoleOption(300200, true, RoleId.JackalSeer);
         JackalSeerPlayerCount = Create(300201, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
         JackalSeerMode = Create(300202, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
@@ -1944,22 +1943,22 @@ public class CustomOptionHolder
 
         MatchTagOption.LoadOption(); // マッチタグの設定
 
-        Logger.Info("---------- CustomOption Id Info start ----------", "CustomOptionId Info");
+        Info("---------- CustomOption Id Info start ----------", "CustomOptionId Info");
 
-        Logger.Info("設定数:" + options.Count);
+        Info("設定数:" + options.Count);
 
-        Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
-        Logger.Info($"SettingRoleIdのMax: 1 - {GetRoleSettingid(GenericIdMax)}", "Generic ");
-        Logger.Info($"SettingRoleIdのMax: 2 - {GetRoleSettingid(ImpostorIdMax)}", "Impostor");
-        Logger.Info($"SettingRoleIdのMax: 3 - {GetRoleSettingid(NeutralIdMax)}", "Neutral ");
-        Logger.Info($"SettingRoleIdのMax: 4 - {GetRoleSettingid(CrewmateIdMax)}", "Crewmate");
-        Logger.Info($"SettingRoleIdのMax: 5 - {GetRoleSettingid(ModifierIdMax)}", "Modifier");
-        Logger.Info($"SettingRoleIdのMax: 6 - {GetRoleSettingid(MatchingTagIdMax)}", "MatchingTag");
+        Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
+        Info($"SettingRoleIdのMax: 1 - {GetRoleSettingid(GenericIdMax)}", "Generic ");
+        Info($"SettingRoleIdのMax: 2 - {GetRoleSettingid(ImpostorIdMax)}", "Impostor");
+        Info($"SettingRoleIdのMax: 3 - {GetRoleSettingid(NeutralIdMax)}", "Neutral ");
+        Info($"SettingRoleIdのMax: 4 - {GetRoleSettingid(CrewmateIdMax)}", "Crewmate");
+        Info($"SettingRoleIdのMax: 5 - {GetRoleSettingid(ModifierIdMax)}", "Modifier");
+        Info($"SettingRoleIdのMax: 6 - {GetRoleSettingid(MatchingTagIdMax)}", "MatchingTag");
 
-        Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
+        Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
 
         CheckOption();
-        CustomOption.UpdateCanShows(null);
+        UpdateCanShows(null);
 
         /*
         string OPTIONDATA = "{";
@@ -1991,7 +1990,7 @@ public class CustomOptionHolder
     /// </summary>
     private static void CheckOption()
     {
-        Logger.Info("----------- CustomOption Info start -----------", "CustomOption");
+        Info("----------- CustomOption Info start -----------", "CustomOption");
 
         if (GameOptionsMenuUpdatePatch.HasSealingOption)
         {
@@ -2004,10 +2003,10 @@ public class CustomOptionHolder
                 if (optionInfo == null) continue;
                 if (!optionInfo.HasSealingCondition || optionInfo.IsHidden) continue;
 
-                Logger.Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing");
+                Info($"解放済の封印処理が残っています。 CustomOption Id => {option.id}", "Sealing");
             }
         }
 
-        Logger.Info("----------- CustomOption Info End -----------", "CustomOption");
+        Info("----------- CustomOption Info End -----------", "CustomOption");
     }
 }

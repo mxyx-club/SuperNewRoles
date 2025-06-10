@@ -1,6 +1,4 @@
 using System;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
@@ -81,7 +79,7 @@ internal static class Kunoichi
         {
             if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, kunai.kunai.transform.position) > 6f)
             {
-                GameObject.Destroy(kunai.kunai);
+                UObject.Destroy(kunai.kunai);
                 RoleClass.Kunoichi.Kunais.Remove(kunai);
             }
             else
@@ -102,7 +100,7 @@ internal static class Kunoichi
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                         }
                         RoleClass.Kunoichi.Kunais.Remove(kunai);
-                        GameObject.Destroy(kunai.kunai);
+                        UObject.Destroy(kunai.kunai);
                         break;
                     }
                 }
@@ -240,7 +238,7 @@ internal static class Kunoichi
     {
         public static void Postfix(PlayerPhysics __instance)
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
             if (!ModeHandler.IsMode(ModeId.Default)) return;
             if (__instance.myPlayer.IsRole(RoleId.Kunoichi))
             {

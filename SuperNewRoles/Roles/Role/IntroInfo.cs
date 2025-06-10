@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Roles.Role;
@@ -19,7 +15,7 @@ public class IntroInfo
     {
         get
         {
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
             {
                 return _titleDesc;
             }

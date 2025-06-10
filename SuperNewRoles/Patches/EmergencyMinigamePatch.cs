@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Il2CppSystem.Linq;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.PlusMode;
@@ -10,12 +7,12 @@ using SuperNewRoles.WaveCannonObj;
 
 namespace SuperNewRoles.Patches;
 
-class EmergencyMinigamePatch
+internal class EmergencyMinigamePatch
 {
     /// <summary>
     /// 緊急招集の状態
     /// </summary>
-    enum Status
+    private enum Status
     {
         Vanilla, // バニラの判定及び, StatusTextを使用する
         EnabledForMod, // モッド側の有効判定及び, StatusTextを使用する
@@ -23,7 +20,7 @@ class EmergencyMinigamePatch
     }
 
     [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
-    class EmergencyUpdatePatch
+    private class EmergencyUpdatePatch
     {
         public static void Postfix(EmergencyMinigame __instance)
         {
@@ -71,7 +68,7 @@ class EmergencyMinigamePatch
 
         if (WaveCannonObject.Objects.Any(x => x.Value.CurrentAnimType == WaveCannonObject.WCAnimType.Bullet))
         {
-            statusText = ModTranslation.GetString("BulletMeetingDisabledForBullet" + 
+            statusText = ModTranslation.GetString("BulletMeetingDisabledForBullet" +
                 (WaveCannonObject.Objects.Any(x => x.Value.IsShootNow) ? "Shooting" : "Charging"));
             numberText = string.Empty;
             return Status.DisabledForMod;
@@ -174,13 +171,13 @@ class EmergencyMinigamePatch
         /// </summary>
         /// <param name="IsPlayerExpelled">追放者が存在するか</param>
         /// <returns>true : 存在する / false : 存在しない</returns>
-        static bool IsThereDeadBeforeCurrentTurn(bool IsPlayerExpelled) => DeadPlayer.deadPlayers.Count > 0 || IsPlayerExpelled;
+        private static bool IsThereDeadBeforeCurrentTurn(bool IsPlayerExpelled) => DeadPlayer.deadPlayers.Count > 0 || IsPlayerExpelled;
         /// <summary>
         /// 渡された死亡状態から, CTの判定及び取得を行う
         /// </summary>
         /// <param name="IsThereDeadBeforeCurrentTurn">死者存在後のCTを取得するか</param>
         /// <returns>現在の緊急会議CT</returns>
-        static int GetEmergencyCooldown(bool IsThereDeadBeforeCurrentTurn) => IsThereDeadBeforeCurrentTurn
+        private static int GetEmergencyCooldown(bool IsThereDeadBeforeCurrentTurn) => IsThereDeadBeforeCurrentTurn
             ? GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.EmergencyCooldown)
             : PlusGameOptions.FirstEmergencyCooldownSetting.GetInt();
 
@@ -188,7 +185,7 @@ class EmergencyMinigamePatch
         /// 導入者個人でクールダウンを設定に従い反映する
         /// </summary>
         /// <param name="cooldown">設定CT</param>
-        static void SetCooldown(int cooldown)
+        private static void SetCooldown(int cooldown)
         {
             if (!PlusGameOptions.EnableFirstEmergencyCooldown) return;
 
@@ -198,13 +195,13 @@ class EmergencyMinigamePatch
 
             ShipStatus.Instance.EmergencyCooldown = cooldown;
 
-            Logger.Info($"緊急会議クールダウン セット : {cooldown}s", "EmergencyMinigamePatch");
+            Info($"緊急会議クールダウン セット : {cooldown}s", "EmergencyMinigamePatch");
         }
         /// <summary>
         /// 非導入者にクールダウンを送信する
         /// </summary>
         /// <param name="cooldown">設定CT</param>
-        static void SyncSettings(int cooldown)
+        private static void SyncSettings(int cooldown)
         {
             if (!PlusGameOptions.EnableFirstEmergencyCooldown) return;
             if (!(AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles))) return;
@@ -221,7 +218,7 @@ class EmergencyMinigamePatch
                 optData.RpcSyncOption(player.GetClientId());
                 SyncSetting.OptionDatas[player] = optData.DeepCopy();
             }
-            Logger.Info($"非導入者の緊急会議クールダウン セット完了(設定CT : {cooldown}s)", "EmergencyMinigamePatch");
+            Info($"非導入者の緊急会議クールダウン セット完了(設定CT : {cooldown}s)", "EmergencyMinigamePatch");
         }
     }
 }

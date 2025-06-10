@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
@@ -66,7 +65,7 @@ public static class Sauner
     /// <param name="Down">右下の座標</param>
     /// <param name="pos">今の座標</param>
     /// <returns></returns>
-    static bool CheckPos(Vector2 Up, Vector2 Down, Vector2 pos)
+    private static bool CheckPos(Vector2 Up, Vector2 Down, Vector2 pos)
     {
         return Up.x <= pos.x && pos.x <= Down.x &&
                Up.y >= pos.y && pos.y >= Down.y;
@@ -99,7 +98,7 @@ public static class Sauner
             case SaunerState.ObservationDeck:
                 return new() { new(-13.7f, -15), new(8f, -14.6f) };
             default:
-                Logger.Info("GetSaunerPosで予期しない位置が入力されました：" + RoleData.CurrentState.ToString());
+                Info("GetSaunerPosで予期しない位置が入力されました：" + RoleData.CurrentState.ToString());
                 return new();
         }
     }
@@ -114,7 +113,7 @@ public static class Sauner
             case SaunerState.ObservationDeck:
                 return new Color32(38, 200, 94, 103);
             default:
-                Logger.Info("想定していないStateが渡されました:" + state.ToString());
+                Info("想定していないStateが渡されました:" + state.ToString());
                 return new(255, 255, 255, 255);
         }
     }

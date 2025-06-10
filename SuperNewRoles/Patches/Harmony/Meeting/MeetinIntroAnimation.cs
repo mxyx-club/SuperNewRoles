@@ -1,5 +1,3 @@
-using HarmonyLib;
-
 namespace SuperNewRoles.Patches.Harmony;
 
 [HarmonyPatch(typeof(MeetingIntroAnimation), nameof(MeetingIntroAnimation.Init))]

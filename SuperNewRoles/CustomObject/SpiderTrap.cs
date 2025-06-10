@@ -1,9 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
@@ -141,7 +136,7 @@ public class SpiderTrap : MonoBehaviour
     }
     public void OnDestroy()
     {
-        Logger.Info("SpiderTrapObjectDeleted");
+        Info("SpiderTrapObjectDeleted");
         SpiderTraps.Remove(Id);
         CatchingPlayers.Remove(CatchingPlayerId);
         //矢印を破棄

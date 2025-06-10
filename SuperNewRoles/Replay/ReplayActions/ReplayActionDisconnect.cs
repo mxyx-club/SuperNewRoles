@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 public class ReplayActionDisconnect : ReplayAction
@@ -12,9 +9,9 @@ public class ReplayActionDisconnect : ReplayAction
     {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
-        Logger.Info("POS:" + reader.BaseStream.Position.ToString());
+        Info("POS:" + reader.BaseStream.Position.ToString());
         sourcePlayer = reader.ReadByte();
-        Logger.Info("POS2:" + reader.BaseStream.Position.ToString());
+        Info("POS2:" + reader.BaseStream.Position.ToString());
         reason = reader.ReadByte();
     }
     public override void WriteReplayFile(BinaryWriter writer)
@@ -32,7 +29,7 @@ public class ReplayActionDisconnect : ReplayAction
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
         {
-            Logger.Info("えらー");
+            Info("えらー");
             return;
         }
         GameData.Instance.HandleDisconnect(source, (DisconnectReasons)reason);

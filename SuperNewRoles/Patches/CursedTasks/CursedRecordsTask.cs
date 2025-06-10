@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -48,7 +47,7 @@ public class CursedRecordsTask
                         Color32 color = sprite.color;
                         color.a = (byte)(byte.MaxValue - id);
                         sprite.color = color;
-                        Logger.Info($"id : {id}", "CursedRecordsTask");
+                        Info($"id : {id}", "CursedRecordsTask");
                         __instance.GrabFolder(sprite);
                     }));
                     __instance.Folders[i] = sprite;

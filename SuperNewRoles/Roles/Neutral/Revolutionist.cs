@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Hazel;
 using Il2CppSystem;
 using SuperNewRoles.Patches;
-using TMPro;
 using UnityEngine;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
@@ -12,9 +9,9 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public static class Revolutionist
 {
-    static SpriteRenderer tempBodySprite;
-    static Sprite[] FSprites;
-    static Sprite[] BSprites;
+    private static SpriteRenderer tempBodySprite;
+    private static Sprite[] FSprites;
+    private static Sprite[] BSprites;
     public static void MeetingInit(MeetingCalledAnimation __instance, GameData.PlayerInfo reporter)
     {
         if (FSprites == null)
@@ -40,9 +37,9 @@ public static class Revolutionist
             BSprites = sprites.ToArray();
         }
     }
-    static float timer;
-    static int index;
-    static SpriteRenderer back;
+    private static float timer;
+    private static int index;
+    private static SpriteRenderer back;
     public static IEnumerator ShowMeeting(MeetingCalledAnimation __instance, KillOverlay parent)
     {
         tempBodySprite = __instance.playerParts.cosmetics.currentBodySprite.BodySprite;

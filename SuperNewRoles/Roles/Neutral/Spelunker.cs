@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using HarmonyLib;
 using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
@@ -22,7 +20,7 @@ public static class Spelunker
         }
         return true;
     }
-    const float VentDistance = 0.35f;
+    private const float VentDistance = 0.35f;
     public static void FixedUpdate()
     {
         if (RoleClass.IsMeeting) return;
@@ -87,7 +85,7 @@ public static class Spelunker
     }
     public static Vector2? DeathPosition;
     [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.Use), new Type[] { })]
-    class MovingPlatformUsePatch
+    private class MovingPlatformUsePatch
     {
         public static bool Prefix()
         {
@@ -95,7 +93,7 @@ public static class Spelunker
         }
     }
     [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.UsePlatform))]
-    class MovingPlatformUsePlatformPatch
+    private class MovingPlatformUsePlatformPatch
     {
         public static void Postfix(MovingPlatformBehaviour __instance, PlayerControl target)
         {
@@ -104,17 +102,17 @@ public static class Spelunker
                 target.IsRole(RoleId.Spelunker))
             {
                 bool isok = ModHelpers.IsSucsessChance(RoleClass.Spelunker.LiftDeathChance);
-                Logger.Info($"{target.Data.PlayerName}のぬーん転落死の結果は{isok}でした ", "ぬーん転落死");
+                Info($"{target.Data.PlayerName}のぬーん転落死の結果は{isok}でした ", "ぬーん転落死");
                 if (isok)
                 {
                     DeathPosition = __instance.transform.parent.TransformPoint((!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition);
-                    Logger.Info(DeathPosition.ToString());
+                    Info(DeathPosition.ToString());
                 }
             }
         }
     }
     [HarmonyPatch(typeof(DoorConsole), nameof(DoorConsole.Use))]
-    class DoorConsoleOpenPatch
+    private class DoorConsoleOpenPatch
     {
         public static void Postfix(DoorConsole __instance)
         {

@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
@@ -133,7 +130,7 @@ public class FixSabotage
                     MapUtilities.CachedShipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 16 | 1);
                     break;
                 default:
-                    Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
+                    Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
                     break;
             }
         }
@@ -186,7 +183,7 @@ public class FixSabotage
                     break;
                 default:
                     IsfixingSaboHere = false;
-                    Logger.Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
+                    Info($"リペア処理が異常な呼び出しを受けました。", "Repair Process");
                     sabotageId = (SystemTypes)255; // enumに割り当てされていない数字を設定
                     break;
             }

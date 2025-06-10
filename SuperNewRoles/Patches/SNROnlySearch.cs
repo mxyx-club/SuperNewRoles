@@ -1,6 +1,3 @@
-using AmongUs.Data;
-using HarmonyLib;
-
 namespace SuperNewRoles.Patches;
 
 public static class SNROnlySearch

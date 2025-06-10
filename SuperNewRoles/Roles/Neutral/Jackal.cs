@@ -1,16 +1,10 @@
 using System.Collections.Generic;
-using System.Text;
 using AmongUs.GameOptions;
-using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Role;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using UnityEngine;
-using UnityEngine.UI;
 using static SuperNewRoles.Helpers.RPCHelper;
-using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -60,7 +54,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
         JackalSKCooldown = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, Optioninfo.RoleOption.type,
             "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
         JackalNewJackalCreateSidekick = CustomOption.Create(Optioninfo.OptionId++, Optioninfo.SupportSHR, Optioninfo.RoleOption.type,
-            "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);           
+            "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
     }
 
     public CustomButtonInfo JackalKillButton;
@@ -152,7 +146,7 @@ public class Jackal : RoleBase, INeutral, IJackal, IRpcHandler, IFixedUpdaterAll
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             player.SetRole(RoleId.Sidekick);
-            if (player.TryGetRoleBase<Sidekick>(out Sidekick sidekick))
+            if (player.TryGetRoleBase(out Sidekick sidekick))
             {
                 sidekick.SetParent(Player);
                 CreatedSidekick = sidekick;

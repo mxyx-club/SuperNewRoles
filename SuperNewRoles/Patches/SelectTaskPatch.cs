@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Impostor.MadRole;
@@ -28,25 +26,25 @@ public static class SelectTask
             List<NormalPlayerTask> _common = __instance.CommonTasks.ToList();
             _common.ForEach(t => t.Length = NormalPlayerTask.TaskLength.Common);
             _common.Shuffle(0);
-            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> CommonTasks = _common.ToIl2CppList();
+            ISystem.List<NormalPlayerTask> CommonTasks = _common.ToIl2CppList();
 
             List<NormalPlayerTask> _long = __instance.LongTasks.ToList();
             _long.ForEach(t => t.Length = NormalPlayerTask.TaskLength.Long);
             _long.Shuffle(0);
-            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> LongTasks = _long.ToIl2CppList();
+            ISystem.List<NormalPlayerTask> LongTasks = _long.ToIl2CppList();
 
             List<NormalPlayerTask> _short = __instance.ShortTasks.ToList();
             _short.ForEach(t => t.Length = NormalPlayerTask.TaskLength.Short);
             _short.Shuffle(0);
-            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> ShortTasks = _short.ToIl2CppList();
+            ISystem.List<NormalPlayerTask> ShortTasks = _short.ToIl2CppList();
 
             IGameOptions currentGameOptions = GameOptionsManager.Instance.CurrentGameOptions;
             int numShort = currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             int numCommon = currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
             int numLong = currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
 
-            Il2CppSystem.Collections.Generic.HashSet<TaskTypes> types = new();
-            Il2CppSystem.Collections.Generic.List<byte> list = new();
+            ISystem.HashSet<TaskTypes> types = new();
+            ISystem.List<byte> list = new();
             int num1 = 0;
             int num2 = 0;
             int num3 = 0;
@@ -89,13 +87,13 @@ public static class SelectTask
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CoSetTasks))]
     public static class PlayerControlCoSetTasks
     {
-        public static bool Prefix(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<GameData.TaskInfo> tasks, ref Il2CppSystem.Collections.IEnumerator __result)
+        public static bool Prefix(PlayerControl __instance, ISystem.List<GameData.TaskInfo> tasks, ref Il2CppSystem.Collections.IEnumerator __result)
         {
             __result = CoSetTasks(__instance, tasks).WrapToIl2Cpp();
             return false;
         }
 
-        public static IEnumerator CoSetTasks(PlayerControl __instance, Il2CppSystem.Collections.Generic.List<GameData.TaskInfo> tasks)
+        public static IEnumerator CoSetTasks(PlayerControl __instance, ISystem.List<GameData.TaskInfo> tasks)
         {
             while (!ShipStatus.Instance) yield return null;
             if (__instance.AmOwner)

@@ -1,15 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles.Crewmate;
 
@@ -47,11 +42,11 @@ public static class Balancer
     public static SpriteRenderer BackPictureObject;
     public static List<(SpriteRenderer, float, int)> ChainObjects;
     public static Sprite BackSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Balancer.MeetingBack.png", 115f);
-    static SpriteRenderer eyebackrender;
-    static SpriteRenderer eyerender;
-    static TextMeshPro textuseability;
-    static TextMeshPro textpleasevote;
-    static float textpleasetimer;
+    private static SpriteRenderer eyebackrender;
+    private static SpriteRenderer eyerender;
+    private static TextMeshPro textuseability;
+    private static TextMeshPro textpleasevote;
+    private static float textpleasetimer;
     public enum BalancerState
     {
         NotBalance,
@@ -61,11 +56,11 @@ public static class Balancer
         WaitVote
     }
     public static BalancerState CurrentState = BalancerState.NotBalance;
-    static List<Sprite> chainsprites = new();
-    static int animIndex;
-    static int pleasevoteanimIndex;
-    static float rotate;
-    static float openMADENOtimer;
+    private static List<Sprite> chainsprites = new();
+    private static int animIndex;
+    private static int pleasevoteanimIndex;
+    private static float rotate;
+    private static float openMADENOtimer;
     public static void Update()
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
@@ -217,7 +212,7 @@ public static class Balancer
                         MeetingHud.Instance.TitleText.text = titletext;
                         leftplayerarea.transform.localPosition = leftpos;
                         rightplayerarea.transform.localPosition = rightpos;
-                        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(AmongUs.GameOptions.Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat();
+                        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat();
                         MeetingHud.Instance.TimerText.gameObject.SetActive(true);
                         MeetingHud.Instance.TimerText.transform.localPosition = new(2.05f, -2, -1);
                         MeetingHud.Instance.ProceedButton.transform.localPosition = new(3.5f, -2, -1.05f);
@@ -227,14 +222,14 @@ public static class Balancer
         }
     }
     public static PlayerControl targetplayerleft;
-    static PlayerVoteArea leftplayerarea;
-    static readonly Vector3 leftpos = new(-2.9f, 0, -0.9f);
+    private static PlayerVoteArea leftplayerarea;
+    private static readonly Vector3 leftpos = new(-2.9f, 0, -0.9f);
     public static PlayerControl targetplayerright;
-    static PlayerVoteArea rightplayerarea;
-    static readonly Vector3 rightpos = new(2.3f, 0, -0.9f);
+    private static PlayerVoteArea rightplayerarea;
+    private static readonly Vector3 rightpos = new(2.3f, 0, -0.9f);
     public static bool IsDoubleExile;
-    static PlayerControl currentTarget;
-    static string[] titletexts =
+    private static PlayerControl currentTarget;
+    private static string[] titletexts =
         new string[] {
             "BalancerTitleTextEither",
             "BalancerTitleTextAverage",
@@ -242,8 +237,8 @@ public static class Balancer
             "BalancerTitleTextEitherExile",
             "BalancerTitleTextWhoIsImpostor"
         };
-    static string titletext => ModTranslation.GetString(ModHelpers.GetRandom(titletexts));
-    static void SetActiveMeetingHud(bool active)
+    private static string titletext => ModTranslation.GetString(ModHelpers.GetRandom(titletexts));
+    private static void SetActiveMeetingHud(bool active)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         MeetingHud.Instance.TitleText.gameObject.SetActive(active);
@@ -274,7 +269,7 @@ public static class Balancer
     public static void StartAbility(PlayerControl source, PlayerControl player1, PlayerControl player2)
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(AmongUs.GameOptions.Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat() - 6.5f;
+        MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat() - 6.5f;
         currentAbilityUser = source;
         targetplayerleft = player1;
         targetplayerright = player2;
@@ -354,9 +349,9 @@ public static class Balancer
         textpleasetimer = 0.35f;
         SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Balancer.chain.raw"), false);
     }
-    static TextMeshPro createtext(Vector3 pos, string text, float fontsize)
+    private static TextMeshPro createtext(Vector3 pos, string text, float fontsize)
     {
-        TextMeshPro tmp = GameObject.Instantiate(MeetingHud.Instance.TitleText, MeetingHud.Instance.transform);
+        TextMeshPro tmp = Object.Instantiate(MeetingHud.Instance.TitleText, MeetingHud.Instance.transform);
         tmp.text = text;
         tmp.gameObject.gameObject.layer = 5;
         tmp.transform.localScale = Vector3.one;
@@ -366,10 +361,10 @@ public static class Balancer
         tmp.fontSizeMin = fontsize;
         tmp.enableWordWrapping = false;
         tmp.gameObject.SetActive(true);
-        GameObject.Destroy(tmp.GetComponent<TextTranslatorTMP>());
+        Object.Destroy(tmp.GetComponent<TextTranslatorTMP>());
         return tmp;
     }
-    static SpriteRenderer createchain(float pos, float rotate, float zpos = 7f)
+    private static SpriteRenderer createchain(float pos, float rotate, float zpos = 7f)
     {
 
         SpriteRenderer obj = new GameObject("Chain").AddComponent<SpriteRenderer>();
@@ -406,7 +401,7 @@ public static class Balancer
     public static class Balancer_Patch
     {
         private static string nameData;
-        static void BalancerOnClick(int Index, MeetingHud __instance)
+        private static void BalancerOnClick(int Index, MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (currentAbilityUser != null) return;
@@ -424,9 +419,9 @@ public static class Balancer
             writer.EndRPC();
             RPCProcedure.BalancerBalance(PlayerControl.LocalPlayer.PlayerId, currentTarget.PlayerId, Target.PlayerId);
             IsAbilityUsed = true;
-            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
+            __instance.playerStates.ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
         }
-        static void Event(MeetingHud __instance)
+        private static void Event(MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (PlayerControl.LocalPlayer.IsAlive() && !IsAbilityUsed)
@@ -467,11 +462,11 @@ public static class Balancer
 
         private class BalancerState
         {
-            public bool selecting = false;
+            public bool selecting;
             public byte target1 = byte.MaxValue;
             public byte target2 = byte.MaxValue;
         }
-        enum SHRBalancerState
+        private enum SHRBalancerState
         {
             NotBalance,
             ForBalancerMeeting,
@@ -542,12 +537,12 @@ public static class Balancer
                 if (state.target1 == byte.MaxValue || state.target1 == targetId)
                 {
                     state.target1 = targetId;
-                    Logger.Info($"BalancerSetTarget1 target: {targetId}", "Balancer.MeetingHudCastVote_Prefix");
+                    Info($"BalancerSetTarget1 target: {targetId}", "Balancer.MeetingHudCastVote_Prefix");
                 }
                 else
                 {
                     state.target2 = targetId;
-                    Logger.Info($"BalancerSetTarget2 target: {targetId}", "Balancer.MeetingHudCastVote_Prefix");
+                    Info($"BalancerSetTarget2 target: {targetId}", "Balancer.MeetingHudCastVote_Prefix");
                 }
 
                 if (state.target1 == byte.MaxValue)
@@ -576,7 +571,7 @@ public static class Balancer
                 state.selecting = true;
                 //Utils.SendMessage(Translator.GetString("message"), Player.PlayerId);
                 SendChat(balancer, $"{ModTranslation.GetString("BalancerSelectionText")}\n{ModTranslation.GetString("Balancer1st")}", ModTranslation.GetString("BalancerSelection"));
-                Logger.Info($"BalancerSelectStart balancer: {balancerId}", "Balancer.MeetingHudCastVote_Prefix");
+                Info($"BalancerSelectStart balancer: {balancerId}", "Balancer.MeetingHudCastVote_Prefix");
 
                 return false;
             }
@@ -590,7 +585,7 @@ public static class Balancer
 
             _ = new LateTask(() => SwitchBalancerMeeting(balancerId, target1Id, target2Id), 0.3f, "SwitchBalancerMeeting");
 
-            Logger.Info($"StartAbility balancer: {currentAbilityUser?.name}, target: {targetplayerleft?.name}, {targetplayerright?.name}", "Balancer.StartBalancerAbility");
+            Info($"StartAbility balancer: {currentAbilityUser?.name}, target: {targetplayerleft?.name}, {targetplayerright?.name}", "Balancer.StartBalancerAbility");
         }
         private static void SwitchBalancerMeeting(byte balancerId, byte target1Id, byte target2Id)
         {
@@ -600,7 +595,7 @@ public static class Balancer
         }
         private static void StartBalancerMeeting(byte balancerId, byte target1Id, byte target2Id)
         {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
 
             if (MeetingHud.Instance)
             {
@@ -624,7 +619,7 @@ public static class Balancer
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (!AmongUsClient.Instance.AmHost) return;
 
-            Logger.Info($"StartMeeting Balancer: {currentAbilityUser?.name}", "Balancer.OnStartMeeting");
+            Info($"StartMeeting Balancer: {currentAbilityUser?.name}", "Balancer.OnStartMeeting");
             if (CurrentState == SHRBalancerState.BalancerMeeting)
             {
                 StartMeetingBalancer();
@@ -666,7 +661,7 @@ public static class Balancer
                 num = OptionNumOfBalance;
             }
             NumOfBalance[currentAbilityUser.PlayerId] = --num;
-            Logger.Info($"BalancerMeetingStart Balancer: {currentAbilityUser?.name}, num: {num}, target: {targetplayerleft?.name}, {targetplayerright?.name}", "Balancer.OnStartMeeting");
+            Info($"BalancerMeetingStart Balancer: {currentAbilityUser?.name}, num: {num}, target: {targetplayerleft?.name}, {targetplayerright?.name}", "Balancer.OnStartMeeting");
             //BalancerMeeting = true;
 
             string decoration = $"<color=#ff8000><size=80%>～~*~≢⊕～~*~≢⊕～~*~≢⊕～~*~≢⊕～</size></color>\n" +
@@ -694,7 +689,7 @@ public static class Balancer
             if (!AmongUsClient.Instance.AmHost) return;
 
             State.Clear();
-            Logger.Info($"AfterMeeting Clear", "Balancer.AfterMeetingTasks");
+            Info($"AfterMeeting Clear", "Balancer.AfterMeetingTasks");
 
             if (CurrentState != SHRBalancerState.BalancerMeeting) return;
 
@@ -702,7 +697,7 @@ public static class Balancer
             currentAbilityUser = null;
             targetplayerleft = null;
             targetplayerright = null;
-            Logger.Info($"AfterBalancerMeeting Clear", "Balancer.AfterMeetingTasks");
+            Info($"AfterBalancerMeeting Clear", "Balancer.AfterMeetingTasks");
         }
         private static void SendChat(PlayerControl target, string text, string title = "")
         {

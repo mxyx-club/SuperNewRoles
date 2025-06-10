@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Agartha;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using static SuperNewRoles.MapCustoms.MapCustomHandler;
@@ -42,7 +40,7 @@ public class MapCustomHandler
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
-class IntroCutsceneOnDestroyPatch
+internal class IntroCutsceneOnDestroyPatch
 {
     public static void Postfix(ShipStatus __instance)
     {
@@ -56,7 +54,7 @@ class IntroCutsceneOnDestroyPatch
         {
             // シャワー 写真
             var array = new[] { "task_shower", "task_developphotos", "task_garbage1", "task_garbage2", "task_garbage3", "task_garbage4", "task_garbage5" };
-            foreach (var c in GameObject.FindObjectsOfType<Console>())
+            foreach (var c in UObject.FindObjectsOfType<Console>())
             {
                 if (c == null) continue;
                 if (array.Any(x => c.name == x)) c.checkWalls = true;
@@ -79,7 +77,7 @@ class IntroCutsceneOnDestroyPatch
         FungleAdditionalAdmin.AddAdmin();
 
         FungleShipStatus fungleShipStatus;
-        if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
+        if (IsMapCustom(MapCustomId.Airship) && __instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
         {
             GameObject gapRoom = __instance.AllRooms.ToList().Find(n => n.RoomId == SystemTypes.GapRoom).gameObject;
             // ぬ～んを消す
@@ -118,7 +116,7 @@ class IntroCutsceneOnDestroyPatch
                     float size = MapCustom.TheFungleCameraChangeRange.GetFloat();
                     EdgeCollider2D SecurityBoundaryCollider = SecurityBoundary.GetComponent<EdgeCollider2D>();
                     Vector2[] array = new Vector2[] { new(-size, -size), new(-size, size), new(size, size), new(size, -size), new(-size, -size) };
-                    SecurityBoundaryCollider.points = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<Vector2>(array);
+                    SecurityBoundaryCollider.points = new Il2CppStructArray<Vector2>(array);
                     SecurityBoundaryCollider.offset = new(-10f, 2.5f);
                 }
                 if (MapCustom.TheFunglePowerOutageSabotage.GetBool())
@@ -144,17 +142,17 @@ public static class Extensions
     }
     public static T Random<T>(this IList<T> self)
     {
-        return self.Count > 0 ? self[UnityEngine.Random.Range(0, self.Count)] : default;
+        return self.Count > 0 ? self[URandom.Range(0, self.Count)] : default;
     }
 }
 [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-class AirshipExileControllerWrapUpAndSpawnPatch
+internal class AirshipExileControllerWrapUpAndSpawnPatch
 {
-    static void Prefix()
+    private static void Prefix()
     { // エアーシップ電気室のドアをシャッフルする
-        if (MapCustoms.MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship)
+        if (IsMapCustom(MapCustomId.Airship)
             && MapCustom.ShuffleElectricalDoors.GetBool()
             && AmongUsClient.Instance.AmHost)
-            AirshipStatus.Instance.Systems[SystemTypes.Decontamination].Cast<ElectricalDoors>().Initialize();
+            ShipStatus.Instance.Systems[SystemTypes.Decontamination].Cast<ElectricalDoors>().Initialize();
     }
 }

@@ -1,11 +1,10 @@
-using HarmonyLib;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patches.Harmony;
 
 //キルされたとき実行！
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
-class PlayerControl_MurderPlayer
+internal class PlayerControl_MurderPlayer
 {
     private static void Postfix(PlayerControl __instance)
     {

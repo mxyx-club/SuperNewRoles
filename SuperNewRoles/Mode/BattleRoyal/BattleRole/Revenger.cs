@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole;
@@ -48,7 +44,7 @@ public class Revenger : BattleRoyalRole
     {
         IsAbilityUsingNow = true;
         AbilityTime = RoleParameter.RevengerReviveTime;
-        Logger.Info($"{ModHelpers.GetInRoom(DeathPosition)} : {DeathPosition}");
+        Info($"{ModHelpers.GetInRoom(DeathPosition)} : {DeathPosition}");
         SystemTypes roomtype = ModHelpers.GetInRoom(DeathPosition);
         string room = roomtype is SystemTypes.Doors ? "None" : FastDestroyableSingleton<TranslationController>.Instance.GetString(roomtype);
         string msg = string.Format(ModTranslation.GetString("RevengerStartRevenge"), CurrentPlayer.GetDefaultName(), room);

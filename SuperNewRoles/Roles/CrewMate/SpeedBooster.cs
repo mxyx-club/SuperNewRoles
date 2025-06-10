@@ -1,12 +1,10 @@
 using System;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles;
 
-class SpeedBooster
+internal class SpeedBooster
 {
     public static void ResetCooldown()
     {
@@ -44,7 +42,7 @@ class SpeedBooster
     {
         public static void Postfix(PlayerPhysics __instance)
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (__instance.AmOwner && __instance.myPlayer.IsRole(RoleId.SpeedBooster) && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])

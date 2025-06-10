@@ -19,8 +19,8 @@ public struct CustomPlates
 }
 public static class DownLoadClassPlate
 {
-    public static bool IsEndDownload = false;
-    public static bool running = false;
+    public static bool IsEndDownload;
+    public static bool running;
     public static List<string> fetchs = new();
     public static List<CustomPlates> platedetails = new();
     public static void Load()

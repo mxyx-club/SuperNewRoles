@@ -3,7 +3,7 @@ using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles;
 
-class JackalFriends
+internal class JackalFriends
 {
     public static HashSet<byte> CheckedJackal;
 

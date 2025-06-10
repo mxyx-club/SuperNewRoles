@@ -2,12 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -15,9 +12,9 @@ using UnityEngine.Networking;
 namespace SuperNewRoles.Modules;
 public static class ContentManager
 {
-    private readonly static Dictionary<string, DownloadedContent> Contents = new();
-    private readonly static string BasePath = $@"{Path.GetDirectoryName(Application.dataPath)}\SuperNewRoles\DownloadContent\";
-    private readonly static DirectoryInfo directory = new(BasePath);
+    private static readonly Dictionary<string, DownloadedContent> Contents = new();
+    private static readonly string BasePath = $@"{Path.GetDirectoryName(Application.dataPath)}\SuperNewRoles\DownloadContent\";
+    private static readonly DirectoryInfo directory = new(BasePath);
     private const string ContentURL = "https://raw.githubusercontent.com/SuperNewRoles/SupernewRolesData/main/Contents";
     public static MD5 MD5Hash = MD5.Create();
     public static void Load()
@@ -74,7 +71,7 @@ public static class ContentManager
     {
         if (!Contents.TryGetValue(path, out DownloadedContent content))
         {
-            Logger.Info("一覧からの取得に失敗しました。");
+            Info("一覧からの取得に失敗しました。");
             return defaultvalue;
         }
         //content.Valueにキャッシュする
@@ -91,20 +88,20 @@ public static class ContentManager
                     content.Value = clip;
                     break;
                 default:
-                    Logger.Info($"このタイプは対応していません。対応してください。パス：{path}、拡張子:{path[path.Length - 1]}");
+                    Info($"このタイプは対応していません。対応してください。パス：{path}、拡張子:{path[path.Length - 1]}");
                     return defaultvalue;
             }
         }
         if (content.Value == null || content.Value is not T)
         {
-            Logger.Info("正常に取得できませんでした。");
+            Info("正常に取得できませんでした。");
             return defaultvalue;
         }
         return (T)content.Value;
     }
-    static bool Downloading = false;
+    private static bool Downloading;
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
-    class AmongUsClientAwakePatch
+    private class AmongUsClientAwakePatch
     {
         public static void Postfix(AmongUsClient __instance)
         {
@@ -122,7 +119,7 @@ public static class ContentManager
         yield return request.SendWebRequest();
         if (request.isNetworkError || request.isHttpError)
         {
-            Logger.Info("ContentItiranError:一覧の取得に失敗しました。");
+            Info("ContentItiranError:一覧の取得に失敗しました。");
             yield break;
         }
         //Jsonを処理する
@@ -138,7 +135,7 @@ public static class ContentManager
             //万が一すでにあった場合を対策する
             if (!Contents.TryAdd(dc.WebPath, dc))
             {
-                Logger.Info(dc.WebPath + "の追加に失敗しました。");
+                Info(dc.WebPath + "の追加に失敗しました。");
             }
         }
         foreach (DownloadedContent content in Contents.Values)
@@ -150,7 +147,7 @@ public static class ContentManager
                 FileStream stream = content.file.Open(FileMode.Open);
                 //ファイルが違う、やファイルの改ざんをチェック
                 content.Downloaded = content.hash == BitConverter.ToString(MD5Hash.ComputeHash(stream)).Replace("-", "");
-                Logger.Info($"ファイル：{content.WebPath}が存在しました。ハッシュチェック：{content.Downloaded}");
+                Info($"ファイル：{content.WebPath}が存在しました。ハッシュチェック：{content.Downloaded}");
                 //ちゃんと閉じる
                 stream.Close();
                 stream.Dispose();
@@ -166,7 +163,7 @@ public static class ContentManager
                 if (request.isNetworkError || request.isHttpError)
                 {
                     //失敗したのでフリーズ対策に1フレーム待機して次の処理へ移る
-                    Logger.Info("Contentダウンロードに失敗しました。:" + content.WebPath);
+                    Info("Contentダウンロードに失敗しました。:" + content.WebPath);
                     yield return null;
                     continue;
                 }
@@ -194,7 +191,7 @@ public static class ContentManager
     public static void ToHashFile(string Ex)
     {
         FileStream o_stream = new(BasePath + "hashcheck." + Ex, FileMode.Open, FileAccess.Read);
-        Logger.Info("HASH:" + BitConverter.ToString(MD5Hash.ComputeHash(o_stream)).Replace("-", ""));
+        Info("HASH:" + BitConverter.ToString(MD5Hash.ComputeHash(o_stream)).Replace("-", ""));
         o_stream.Close();
     }
     //暗号化をする。コードでは使わない。
@@ -232,13 +229,13 @@ public static class ContentManager
             }
         }
         FileStream o_stream = new(BasePath + "ato." + Ex, FileMode.Open, FileAccess.Read);
-        Logger.Info("HASH:" + BitConverter.ToString(MD5Hash.ComputeHash(o_stream)).Replace("-", ""));
+        Info("HASH:" + BitConverter.ToString(MD5Hash.ComputeHash(o_stream)).Replace("-", ""));
         o_stream.Close();
     }
 }
 public class DownloadedContent
 {
-    public bool Downloaded = false;
+    public bool Downloaded;
     public string hash;
     public bool Encrypted;
     public string path;

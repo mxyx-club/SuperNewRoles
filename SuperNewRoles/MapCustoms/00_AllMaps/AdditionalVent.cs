@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -11,7 +10,7 @@ public class AdditionalVents
 {
     public Vent vent;
     public static List<AdditionalVents> AllVents = new();
-    public static bool flag = false;
+    public static bool flag;
     public AdditionalVents(Vector3 p)
     {
         // Create the vent
@@ -39,7 +38,7 @@ public class AdditionalVents
     {
         if (flag) return;
         flag = true;
-        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
         System.Console.WriteLine("AddAdditionalVents");
 
         //MiraHQにベントを追加する

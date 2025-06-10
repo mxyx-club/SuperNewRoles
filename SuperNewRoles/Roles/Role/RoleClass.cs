@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patches;
@@ -16,7 +14,6 @@ using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using SuperNewRoles.SuperNewRolesWeb;
 using SuperNewRoles.WaveCannonObj;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -162,7 +159,7 @@ public static class RoleClass
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
-        Crewmate.SeerHandler.ShowFlash_ClearAndReload();
+        SeerHandler.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
         EvilSeer.CreateMode = -1;
         RemoteSheriff.ClearAndReload();
@@ -336,7 +333,7 @@ public static class RoleClass
     public static class EvilLighter
     {
         public static List<PlayerControl> EvilLighterPlayer;
-        public static Color32 color = RoleClass.ImpostorRed;
+        public static Color32 color = ImpostorRed;
         //public static float CoolTime;
         //public static float DurationTime;
 
@@ -415,7 +412,7 @@ public static class RoleClass
     public static class Teleporter
     {
         public static List<PlayerControl> TeleporterPlayer;
-        public static Color32 color = RoleClass.ImpostorRed;
+        public static Color32 color = ImpostorRed;
         public static float CoolTime;
         public static float DurationTime;
         public static DateTime ButtonTimer;
@@ -540,7 +537,7 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.ShielderCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.ShielderDurationTime.GetFloat();
             IsShield = new Dictionary<byte, bool>();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers) RoleClass.Shielder.IsShield[p.PlayerId] = false;
+            foreach (PlayerControl p in CachedPlayer.AllPlayers) IsShield[p.PlayerId] = false;
         }
     }
     public static class Freezer
@@ -656,7 +653,7 @@ public static class RoleClass
         public static Color32 color = new(222, 184, 135, byte.MaxValue);
         public static bool Reported;
         public static List<int> ReportedPlayer;
-        public static float ReportTime = 0f;
+        public static float ReportTime;
 
         public static void ClearAndReload()
         {
@@ -755,7 +752,7 @@ public static class RoleClass
             {
                 a.Add("No");
             }
-            return ModHelpers.GetRandom<string>(a) == "Suc";
+            return ModHelpers.GetRandom(a) == "Suc";
         }
     }
     public static class Researcher
@@ -916,13 +913,13 @@ public static class RoleClass
     {
         public static List<PlayerControl> PursuerPlayer;
         public static Color32 color = ImpostorRed;
-        public static Arrow arrow = null;
+        public static Arrow arrow;
         public static void ClearAndReload()
         {
             PursuerPlayer = new();
             if (arrow != null)
             {
-                GameObject.Destroy(arrow.arrow);
+                UObject.Destroy(arrow.arrow);
             }
             arrow = new Arrow(color);
             arrow.arrow.SetActive(false);
@@ -1075,7 +1072,7 @@ public static class RoleClass
         public static bool IsSuicideView;
         public static Dictionary<byte, bool> IsSuicideViews;
         public static bool IsMeetingReset;
-        public static TextMeshPro SuicideKillText = null;
+        public static TextMeshPro SuicideKillText;
         public static void ClearAndReload()
         {
             SerialKillerPlayer = new();
@@ -2102,15 +2099,15 @@ public static class RoleClass
                 KillCoolTime = 0.001f;
             KillKunai = CustomOptionHolder.KunoichiKillKunai.GetInt();
             HitCount = new();
-            if (Kunai != null) { GameObject.Destroy(Kunai.kunai); }
-            if (SendKunai != null) { GameObject.Destroy(SendKunai.kunai); }
+            if (Kunai != null) { UObject.Destroy(Kunai.kunai); }
+            if (SendKunai != null) { UObject.Destroy(SendKunai.kunai); }
             if (Kunais.Count > 0)
             {
                 foreach (Kunai kunai in Kunais)
                 {
                     if (kunai != null)
                     {
-                        GameObject.Destroy(kunai.kunai);
+                        UObject.Destroy(kunai.kunai);
                     }
                 }
             }
@@ -2369,7 +2366,7 @@ public static class RoleClass
             WinKillCount = CustomOptionHolder.HitmanWinKillCount.GetInt();
             if (TargetArrow != null && TargetArrow.arrow != null)
             {
-                UnityEngine.Object.Destroy(TargetArrow.arrow);
+                UObject.Destroy(TargetArrow.arrow);
             }
             TargetArrow = null;
             ArrowUpdateTimeDefault = CustomOptionHolder.HitmanIsArrowView.GetBool() ? CustomOptionHolder.HitmanArrowUpdateTime.GetFloat() : -1;
@@ -2601,7 +2598,7 @@ public static class RoleClass
         public static float SucCool;
         public static float NotSucCool;
         public static float Duration;
-        public static TextMeshPro DoppelgangerDurationText = null;
+        public static TextMeshPro DoppelgangerDurationText;
         public static Dictionary<byte, PlayerControl> Targets;
         public static float CurrentCool;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
@@ -2658,7 +2655,7 @@ public static class RoleClass
         {
             PavlovsownerPlayer = new();
             CurrentChildPlayer = null;
-            if (DogArrow != null) GameObject.Destroy(DogArrow.arrow);
+            if (DogArrow != null) UObject.Destroy(DogArrow.arrow);
             DogArrow = new(color);
             DogArrow.arrow.SetActive(false);
             CreateLimit = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();

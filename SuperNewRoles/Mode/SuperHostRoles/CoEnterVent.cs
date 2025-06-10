@@ -1,10 +1,6 @@
-using Hazel;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Impostor.MadRole;
-
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
-class CoEnterVent
+internal class CoEnterVent
 {
     public static bool Prefix(PlayerPhysics __instance, int id)
     {

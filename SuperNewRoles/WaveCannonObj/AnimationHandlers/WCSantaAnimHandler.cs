@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
@@ -74,7 +70,7 @@ public class WCSantaAnimHandler : IWaveCannonAnimationHandler
                         .ResetCoolTime();
                     }
                     Santas.ForEach(santa => { if (santa != null) santa.transform.SetParent(null, true); });
-                    GameObject.Destroy(CannonObject.gameObject);
+                    Object.Destroy(CannonObject.gameObject);
                 }
             });
         });

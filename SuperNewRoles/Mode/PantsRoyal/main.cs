@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
@@ -37,7 +36,7 @@ public static class main
         LastUpdateTime = 7;
         CurrentTurnData = null;
     }
-    readonly static Dictionary<SystemTypes, Vector2> AirshipSpawnPositions = new()
+    private static readonly Dictionary<SystemTypes, Vector2> AirshipSpawnPositions = new()
     {
         {SystemTypes.Security, new(7.0886f, -12.501f) }, //セキュ
         {SystemTypes.VaultRoom, new(-8.7701f, 12.4399f) }, //金庫
@@ -49,7 +48,7 @@ public static class main
         {SystemTypes.Records,new() },
 
     };
-    readonly static List<Vector2> AirshipToiletSpawnPositions = new()
+    private static readonly List<Vector2> AirshipToiletSpawnPositions = new()
     {
         new(29.3f, 7.5f),
         new(30.825f, 7.5f),
@@ -69,7 +68,7 @@ public static class main
     }
     public static void GameEnd()
     {
-        main.CurrentTurnData = null;
+        CurrentTurnData = null;
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             if (player.IsAlive())
@@ -79,14 +78,14 @@ public static class main
                 writer.EndRPC();
                 player.RpcSetRole(AmongUs.GameOptions.RoleTypes.CrewmateGhost);
                 player.Data.IsDead = false;
-                Logger.Info("クルー！");
+                Info("クルー！");
             }
             else
             {
                 player.RpcSetRole(AmongUs.GameOptions.RoleTypes.ImpostorGhost);
-                Logger.Info("インポ");
+                Info("インポ");
             }
-            Logger.Info(player.Data.Role.Role.ToString(), player.GetDefaultName());
+            Info(player.Data.Role.Role.ToString(), player.GetDefaultName());
         }
         RPCHelper.RpcSyncGameData();
         new LateTask(() =>
@@ -105,7 +104,7 @@ public static class main
                 AlivePlayerCount++;
             }
         int PantsHaversLimit = (int)Math.Floor(AlivePlayerCount / 2.0);
-        Logger.Info(PantsHaversLimit.ToString() + ":" + targets.Count.ToString());
+        Info(PantsHaversLimit.ToString() + ":" + targets.Count.ToString());
         for (int i = 0; i < PantsHaversLimit; i++)
         {
             int targetindex = ModHelpers.GetRandomIndex(targets);
@@ -118,7 +117,7 @@ public static class main
     }
     public static void OnMurderClick(PlayerControl source, PlayerControl target)
     {
-        if (!IsMove || ShowRoleTime >= 0 || !main.CurrentTurnData.IsStarted) return;
+        if (!IsMove || ShowRoleTime >= 0 || !CurrentTurnData.IsStarted) return;
         if (!IsPantsHaver(source) && IsPantsHaver(target))
         {
             StealPants(target, source);
@@ -169,9 +168,9 @@ public static class main
             }
         }
     }
-    public static Il2CppSystem.Collections.Generic.List<PlayerControl> IntroHandler(IntroCutscene __instance)
+    public static ISystem.List<PlayerControl> IntroHandler(IntroCutscene __instance)
     {
-        Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
+        ISystem.List<PlayerControl> Teams = new();
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
         {
             Teams.Add(player);

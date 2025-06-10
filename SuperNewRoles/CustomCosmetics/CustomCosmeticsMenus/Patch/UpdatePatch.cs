@@ -1,11 +1,9 @@
-using AmongUs.Data;
-using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch;
 
 [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]
-class UpdatePatch
+internal class UpdatePatch
 {
     public static PlayerVoteArea area;
     public static void Postfix(PlayerCustomizationMenu __instance)
@@ -15,9 +13,9 @@ class UpdatePatch
         ObjectData.CosmicubeMenuHolderTint.enabled = false;
         if (!ObjectData.IsShow)
         {
-            if (GameObject.FindObjectOfType<PlayerTab>()?.ColorChips != null)
+            if (Object.FindObjectOfType<PlayerTab>()?.ColorChips != null)
             {
-                foreach (ColorChip chip in GameObject.FindObjectOfType<PlayerTab>().ColorChips)
+                foreach (ColorChip chip in Object.FindObjectOfType<PlayerTab>().ColorChips)
                 {
                     chip.gameObject.SetActive(false);
                 }
@@ -117,7 +115,7 @@ class UpdatePatch
                 outfit.SkinId = data.Skin.Value;
                 outfit.NamePlateId = data.NamePlate.Value;
                 outfit.PetId = data.Pet.Value;
-                Logger.Info(outfit.PetId, "");
+                Info(outfit.PetId, "");
                 player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.ComplexUI, false, data.Pet.Value == "");
                 player.cosmetics.petParent.gameObject.SetActive(data.Pet.Value != "");
                 i++;

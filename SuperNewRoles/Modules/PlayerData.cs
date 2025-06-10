@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuperNewRoles.Modules;
 
@@ -11,8 +8,8 @@ public class PlayerData<T>
 {
     private Dictionary<byte, T> _data;
     private Dictionary<PlayerControl, T> _playerdata;
-    private T defaultvalue = default;
-    private bool nonsetinit = false;
+    private T defaultvalue;
+    private bool nonsetinit;
     public T Local
     {
         get
@@ -95,7 +92,7 @@ public class PlayerData<T>
             return new();
         if (obj._playerdata == null)
         {
-            Logger.Info("needplayerlistが無効なのにも関わらず、PlayerControlをKeyにしたDictionaryが要求されました。needplayerlistを有効に変更してください。");
+            Info("needplayerlistが無効なのにも関わらず、PlayerControlをKeyにしたDictionaryが要求されました。needplayerlistを有効に変更してください。");
             if (obj._data == null)
             {
                 obj._data = new();

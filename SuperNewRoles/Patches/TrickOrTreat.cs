@@ -1,17 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
-using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 public static class TrickOrTreat
 {
     [HarmonyPatch(typeof(PlayerParticles), nameof(PlayerParticles.Start))]
-    class PlayerParticlesStartPatch
+    private class PlayerParticlesStartPatch
     {
         public static bool Prefix(PlayerParticles __instance)
         {
@@ -39,7 +33,7 @@ public static class TrickOrTreat
                 __instance.fill.Set(__instance.Sprites.IEnumerableToIl2Cpp());
             }
             int AdditionalCount = ModHelpers.GetRandomInt(15, min: 5);
-            Logger.Info($"{AdditionalCount}お菓子増量キャンペーン中！");
+            Info($"{AdditionalCount}お菓子増量キャンペーン中！");
             for (int i = 0; i < AdditionalCount; i++)
             {
                 __instance.pool.CreateOneInactive(__instance.pool.Prefab);

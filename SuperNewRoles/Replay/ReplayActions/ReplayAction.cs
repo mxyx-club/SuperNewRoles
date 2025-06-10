@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Hazel;
 
 namespace SuperNewRoles.Replay.ReplayActions;
 
@@ -32,7 +29,7 @@ public enum ReplayActionId
 }
 public abstract class ReplayAction
 {
-    public float ActionTime = 0f;
+    public float ActionTime;
     public int ReplayId;
     public static ReplayAction GetLastAction(ReplayAction action, Func<ReplayAction, bool> check = null)
     {
@@ -47,7 +44,7 @@ public abstract class ReplayAction
     public abstract void ReadReplayFile(BinaryReader reader);
     public abstract void WriteReplayFile(BinaryWriter writer);
     public abstract void OnAction();
-    public virtual void OnReplay() { Logger.Info("Commedd!!!"); }
+    public virtual void OnReplay() { Info("Commedd!!!"); }
     public abstract ReplayActionId GetActionId();
     public static bool CheckAndCreate(ReplayAction action)
     {
@@ -58,7 +55,7 @@ public abstract class ReplayAction
         Recorder.ReplayActionTime = 0f;
         return true;
     }
-    public static int MaxId = 0;
+    public static int MaxId;
     public void Init()
     {
         ReplayId = MaxId;
@@ -113,7 +110,7 @@ public abstract class ReplayAction
             case ReplayActionId.MovingPlatform:
                 return new ReplayActionMovingPlatform();
         }
-        Logger.Info("typeに合うReplayActionがありませんでした。:" + id);
+        Info("typeに合うReplayActionがありませんでした。:" + id);
         return null;
     }
 }
