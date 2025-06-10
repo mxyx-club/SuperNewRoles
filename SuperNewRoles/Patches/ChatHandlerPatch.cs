@@ -28,17 +28,6 @@ public class AmongUsClientOnPlayerJoinedPatch
                     AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetWelcomeMessage(), GetChatCommands.WelcomeToSuperNewRoles);
                 }
             }, 1f, "Welcome Message");
-
-            if (SuperNewRolesPlugin.IsBeta)
-            {
-                new LateTask(() =>
-                {
-                    if (!__instance.myPlayer.IsBot())
-                    {
-                        AddChatPatch.SendCommand(__instance.myPlayer, GetChatCommands.GetVersionMessage());
-                    }
-                }, 2f, "Welcome Beta Message");
-            }
         }
     }
 }

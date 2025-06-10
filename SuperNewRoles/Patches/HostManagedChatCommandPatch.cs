@@ -252,28 +252,7 @@ internal static class GetChatCommands
 
     internal static string GetVersionMessage()
     {
-        string VersionText = $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by TeamSuperNewRoles";
-
-        if (SuperNewRolesPlugin.IsBeta)
-        {
-            string betaText = $"{ModTranslation.GetString("betatext1")}{ModTranslation.GetString("betatext2")}\nBranch: {{0}}\nCommitId: {ThisAssembly.Git.Commit}";
-            string branchText;
-            if (SuperNewRolesPlugin.IsSecretBranch)
-            {
-                for (int i = 0; i < ThisAssembly.Git.Branch.Length; i++)
-                {
-                    branchText += "*";
-                }
-            }
-            else
-            {
-                branchText = ThisAssembly.Git.Branch;
-            }
-
-            VersionText += Format(betaText, branchText);
-        }
-
-        return VersionText;
+        return $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by TeamSuperNewRoles";
     }
 
     internal static string GetWebInfo()

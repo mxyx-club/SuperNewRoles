@@ -33,11 +33,7 @@ public static class CredentialsPatch
             credentials.transform.localScale = Vector3.one * 2;
             //ブランチ名表示
             string credentialsText = "";
-            if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
-            {
-                //色+ブランチ名+コミット番号
-                credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
-            }
+
             credentialsText += ModTranslation.GetString("creditsMain");
             credentials.SetText(credentialsText);
 
@@ -75,12 +71,7 @@ public static class CredentialsPatch
                     }
                 }
                 catch { }
-                //ブランチ名表示
-                if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
-                {
-                    //改行+Branch名+コミット番号
-                    __instance.text.text += "\n" + $"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})";
-                }
+
                 __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
                     ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
                     : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);

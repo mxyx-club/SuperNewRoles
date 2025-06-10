@@ -30,8 +30,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
 {
     public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
-    public const bool IsBeta = ThisAssembly.Git.Branch != MasterBranch && !IsHideText;
-
     public const bool IsSecretBranch = false; // プルリク時にtrueなら指摘してください
     public const bool IsHideText = false; // プルリク時にtrueなら指摘してください
 
@@ -127,15 +125,6 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
         // Old Delete End
 
-        SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
-        SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
-        SuperNewRoles.Logger.Info(VersionString, "VersionString");
-        SuperNewRoles.Logger.Info(Version, nameof(Version));
-        SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
         try
         {
             var directoryPath = Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins";
