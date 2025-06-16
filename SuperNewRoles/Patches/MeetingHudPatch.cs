@@ -16,7 +16,6 @@ using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using SuperNewRoles.SuperNewRolesWeb;
 using UnityEngine;
 using static MeetingHud;
 
@@ -101,14 +100,7 @@ internal class VotingComplete
         if (!AmongUsClient.Instance.AmHost) ReplayActionVotingComplete.Create(states, exiled is null ? (byte)255 : exiled.PlayerId, tie);
     }
 }
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
-internal class VotingComplatePatch
-{
-    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled, bool tie)
-    {
-        new GameHistoryManager.MeetingHistory(states, exiled);
-    }
-}
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
 internal class CheckForEndVotingPatch
 {

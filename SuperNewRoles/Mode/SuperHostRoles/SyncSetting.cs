@@ -7,7 +7,6 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Roles.RoleBases.Interfaces;
-using SuperNewRoles.SuperNewRolesWeb;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -328,20 +327,5 @@ public static class SyncSetting
     {
         var optByte = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(opt, AprilFoolsMode.IsAprilFoolsModeToggledOn);
         return GameOptionsManager.Instance.gameOptionsFactory.FromBytes(optByte);
-    }
-
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
-    public class StartGame
-    {
-        public static void Postfix()
-        {
-            var RPD = RoomPlayerData.Instance;
-            DefaultOption = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
-            OptionDatas = new(defaultvalue: DefaultOption);
-            OnGameEndPatch.PlayerData = new();
-            ReplayLoader.CoStartGame();
-            if (ModeHandler.IsMode(ModeId.BattleRoyal))
-                BattleRoyalWebManager.StartGame();
-        }
     }
 }

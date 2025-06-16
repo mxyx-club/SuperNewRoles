@@ -84,24 +84,6 @@ public class MainMenuPatch
                 CredentialsPatch.LogoPatch.CreditsPopup.SetActive(true);
             }
         });
-
-        //ModDownloader
-
-        var ModDownloaderButton = Object.Instantiate(bottomTemplate, null);
-        var passiveModDownloaderButton = ModDownloaderButton.GetComponent<PassiveButton>();
-        var spriteModDownloaderButton = ModDownloaderButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
-        hidebtn(passiveModDownloaderButton);
-
-        ModDownloaderButton.transform.localPosition = new(2.025f, -1.1f, 0);
-
-        spriteModDownloaderButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ModDownloaderButton.png", 75f);
-
-        passiveModDownloaderButton.OnClick = new ButtonClickedEvent();
-
-        passiveModDownloaderButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
-        {
-            ModDownloader.OnPopupOpen(__instance);
-        });
     }
 }
 

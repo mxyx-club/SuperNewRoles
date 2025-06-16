@@ -9,32 +9,6 @@ internal class GameStartPatch
     public static bool lastPublic;
     public static float lastTimer;
 
-    /// <summary>公開部屋を封印するか</summary>
-    private const bool PublicSeal = false;
-
-    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
-    private class MakePublicPatch
-    {
-        public static bool Prefix(GameStartManager __instance)
-        {
-            if (!AmongUsClient.Instance.AmHost || ModHelpers.IsCustomServer()) return true;
-            if (!PublicSeal) return true;
-
-            string HostAmongUSVer = $"{Application.version}({Constants.GetPurchasingPlatformType()})";
-            System.Version HostSNRVer = ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[AmongUsClient.Instance.HostId].version; // HostのSNRVersion取得
-
-            string reason = null; // 都度変える
-            string error = string.Format(ModTranslation.GetString("PublicRoomError"), HostAmongUSVer, HostSNRVer, reason == null ? ModTranslation.GetString("CheckOfficialInformation") : reason);
-
-            Error($"公開が無効に関わらず, 公開ボタンが押されました。", "MakePublicPatch");
-            __instance.MakePublicButton.color = Palette.DisabledClear;
-            __instance.privatePublicText.color = Palette.DisabledClear;
-
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, error);
-            return false;
-        }
-    }
-
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
     private class CoStartGamePatch
     {

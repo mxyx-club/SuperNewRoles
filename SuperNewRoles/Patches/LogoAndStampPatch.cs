@@ -37,12 +37,11 @@ public static class CredentialsPatch
 
             credentials.alignment = TextAlignmentOptions.Center;
             credentials.fontSize *= 0.9f;
-            _ = AutoUpdate.checkForUpdate(credentials);
 
             var version = UObject.Instantiate(credentials);
             version.transform.position = new Vector3(2, -0.5f, 0);
             version.transform.localScale = Vector3.one * 1.5f;
-            version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}");
+            version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.Version}");
 
             //            credentials.transform.SetParent(amongUsLogo.transform);
             //            version.transform.SetParent(amongUsLogo.transform);
@@ -121,64 +120,6 @@ public static class CredentialsPatch
         public static string SupporterData = "";
         public static string TransData = "";
 
-        public static async Task<HttpStatusCode> FetchBoosters()
-        {
-            if (!Downloaded)
-            {
-                Downloaded = true;
-                HttpClient http = new();
-                http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false };
-                var response = await http.GetAsync(new Uri($"https://raw.githubusercontent.com/{SuperNewRolesPlugin.ModUrl}/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
-                try
-                {
-                    if (response.StatusCode != HttpStatusCode.OK)
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("NOTOK!!!");
-                        return response.StatusCode;
-                    }
-                    ;
-                    if (response.Content == null)
-                    {
-                        System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
-                        return HttpStatusCode.ExpectationFailed;
-                    }
-                    string json = await response.Content.ReadAsStringAsync();
-                    JToken jobj = JObject.Parse(json);
-
-                    var devs = jobj["Devs"];
-                    for (JToken current = devs.First; current != null; current = current.Next)
-                    {
-                        if (current.HasValues)
-                        {
-                            DevsData += $"{current["number"]?.ToString()} : {current["name"]?.ToString()}\n";
-                        }
-                    }
-
-                    var Sponsers = jobj["Supporter"];
-                    for (JToken current = Sponsers.First; current != null; current = current.Next)
-                    {
-                        if (current.HasValues)
-                        {
-                            SupporterData += current["name"]?.ToString() + "\n";
-                        }
-                    }
-
-                    var Translator = jobj["Translate"];
-                    for (JToken current = Translator.First; current != null; current = current.Next)
-                    {
-                        if (current.HasValues)
-                        {
-                            TransData += $"{current["name"]?.ToString()}<size=40%>({current["language"]?.ToString()})</size>\n";
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogError(e);
-                }
-            }
-            return HttpStatusCode.OK;
-        }
         public static GameObject CreditsPopup;
         private static void ViewBoosterPatch(MainMenuManager __instance)
         {
@@ -226,24 +167,7 @@ public static class CredentialsPatch
         }
         private static bool Downloaded;
         public static MainMenuManager instance;
-        private static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
-        {
-            while (true)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo(AutoUpdate.announcement);
-                if (AutoUpdate.announcement == "None")
-                    yield return null;
-                else
-                    break;
-            }
-            var AnnouncementPopup = __instance.transform.FindChild("Announcement").GetComponent<AnnouncementPopUp>();
-            if (AnnouncementPopup != null)
-            {
-                AnnouncementPopup.Show();
-                AnnouncementPopup.AnnouncementBodyText.text = AutoUpdate.announcement;
-            }
-            ConfigRoles.IsUpdated = false;
-        }
+
         public static void Postfix(MainMenuManager __instance)
         {
             AprilFoolsManager.SetRandomModMode();
@@ -256,16 +180,11 @@ public static class CredentialsPatch
 
             __instance.StartCoroutine(Blacklist.FetchBlacklist().WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation().WrapToIl2Cpp());
-            if (ConfigRoles.IsUpdated)
-            {
-                __instance.StartCoroutine(ShowAnnouncementPopUp(__instance).WrapToIl2Cpp());
-            }
 
             DownLoadCustomCosmetics.CosmeticsLoad();
 
             instance = __instance;
 
-            AmongUsClient.Instance.StartCoroutine(ModDownloader.DownloadModData(__instance).WrapToIl2Cpp());
             AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance).WrapToIl2Cpp());
 
             //ViewBoosterPatch(__instance);

@@ -22,7 +22,6 @@ public static class ConfigRoles
     public static ConfigEntry<bool> IsModCosmeticsAreNotLoaded { get; set; }
     public static ConfigEntry<bool> IsNotUsingBlood { get; set; }
     public static ConfigEntry<bool> DownloadOtherSkins { get; set; }
-    public static ConfigEntry<bool> IsUpdate { get; set; }
     public static ConfigEntry<bool> IsDeleted { get; set; }
     public static ConfigEntry<bool> IsSendAnalytics { get; set; }
     public static ConfigEntry<bool> IsLightAndDarker { get; set; }
@@ -32,7 +31,6 @@ public static class ConfigRoles
     public static ConfigEntry<bool> ReplayEnable { get; set; }
     public static ConfigEntry<float> ReplayQualityTime { get; set; }
     public static bool IsSendAnalyticsPopupViewd;
-    public static bool IsUpdated;
     public static void Load()
     {
         var issendanaly = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalyticsViewd", false);
@@ -55,7 +53,6 @@ public static class ConfigRoles
         IsLightAndDarker = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsLightAndDarker", true);
         Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
         Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
-        IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);
         IsDeleted = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsDeleted", false);
         //リプレイ
         ReplayEnable = SuperNewRolesPlugin.Instance.Config.Bind("Replay", "Enable", false);
@@ -69,12 +66,7 @@ public static class ConfigRoles
             }
             IsDeleted.Value = true;
         }
-        if (IsUpdate.Value)
-        {
-            SuperNewRolesPlugin.Logger.LogInfo("IsUpdateが有効でした");
-            IsUpdated = true;
-        }
-        IsUpdate.Value = false;
+
         IsViewdApril2024Popup = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsViewdApril2024Popup", false);
         _isCPUProcessorAffinity = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "CPUProcessorAffinity", true);
         //ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;

@@ -25,7 +25,6 @@ public static class DownLoadClassPlate
     public static List<CustomPlates> platedetails = new();
     public static void Load()
     {
-        _ = Patches.CredentialsPatch.LogoPatch.FetchBoosters();
         if (running)
             return;
         IsEndDownload = false;
